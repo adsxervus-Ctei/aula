@@ -1,15 +1,17 @@
 {
-  "encuentros_abiertos": 1,
+  "encuentros_abiertos": 3,
   "avance_secuencial": true,
-  "parciales": {
-    "p1": false,
-    "p2": false,
-    "p3": false
-  },
+  "google_client_id": "",
   "docentes": [
     "rcastroc@unicaribe.edu.co",
     "inbox.nativo@gmail.com"
   ],
+  "parciales": {
+    "p1": false,
+    "p2": false,
+    "p3": false
+  }
+}
   "firebase": {
     "apiKey": "AIzaSyBPSq_4AwlpYydi2ykCE6Cm2E_hzNsbB2k",
     "authDomain": "aula-unicaribe.firebaseapp.com",
