@@ -1,7 +1,11 @@
 {
-  "encuentros_abiertos": 6,
+  "encuentros_abiertos": 0,
   "avance_secuencial": true,
-  "parciales": { "p1": true, "p2": true, "p3": false },
+  "parciales": {
+    "p1": true,
+    "p2": true,
+    "p3": false
+  },
   "docentes": [
     "rcastroc@unicaribe.edu.co",
     "inbox.nativo@gmail.com"
