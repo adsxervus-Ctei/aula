@@ -1403,10 +1403,7 @@ async function cargarCurso(){
   }catch(e){ cerrarProg(esc(e.message||'No se pudo contactar la hoja.'),true);
     z.innerHTML='<div class="av2" style="background:#FCE9E9;color:#8A2020"><b>El puente no respondió bien.</b><br>'+
       'Suele ser porque la implementación del Apps Script quedó en una versión anterior. '+
-      'Causa más frecuente: tiene <b>varias cuentas de Google abiertas</b> y Google devuelve el selector de cuenta en vez de los datos.<br>'+
-      '<a class="bt g sm" style="margin-top:9px;display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="'+
-      urlDiag('solicitudes',(document.getElementById('solClave')||document.getElementById('curClave')||{}).value||lsG('clave_doc')||'')+
-      '">Ver qué responde el puente</a></div>'; }
+      'Entre al editor, pulse <b>Implementar → Administrar implementaciones → lápiz</b>, elija <b>Nueva versión</b> y vuelva a implementar.</div>'; }
   finally{ if(PROG) cerrarProg('Listo.'); }
 }
 
@@ -1468,7 +1465,7 @@ function abrirProg(titulo,detalle){
   </div></div>`;
   PROG={v:0, tope:88, vigia:setTimeout(()=>{
     if(PROG) cerrarProg('El puente no respondió. Revise que la clave del Apps Script coincida con la del config.json y que esté implementada la última versión.',true);
-  },12000), timer:setInterval(()=>{
+  },8000), timer:setInterval(()=>{
     if(!PROG) return;
     const salto=PROG.v<40?4:(PROG.v<70?2:1);
     PROG.v=Math.min(PROG.tope,PROG.v+salto);
@@ -1880,37 +1877,16 @@ function salirFB(){ if(FBA&&FBM){ try{ FBM.signOut(FBA); }catch(e){} } }
 
 /* ---------- autorización contra la hoja de Google ---------- */
 function jsonpPuente(url,payload){
-  // Primero se intenta por etiqueta script. Si Google responde con una página
-  // HTML —pasa cuando hay varias cuentas abiertas— el navegador no puede leerla
-  // y se reintenta por POST, que no depende de la sesión.
-  return jsonpCrudo(url,payload).catch(e=>{
-    return postPuente(url,payload).catch(()=>{ throw e; });
-  });
-}
-function jsonpCrudo(url,payload){
   return new Promise((res,rej)=>{
     const cb='ac'+Date.now()+Math.floor(Math.random()*9999);
     const sc=document.createElement('script'); let listo=false;
     const limpiar=()=>{clearTimeout(tm);try{delete window[cb]}catch(e){window[cb]=undefined}sc.remove();};
-    const tm=setTimeout(()=>{if(listo)return;limpiar();
-      rej(new Error('El puente respondió algo inesperado. Revise que la clave del Apps Script coincida con la del config.json y que la implementación esté en la última versión.'));},3500);
+    const tm=setTimeout(()=>{if(listo)return;limpiar();rej(new Error('El puente respondió algo inesperado. Revise que la clave del Apps Script coincida con la del config.json y que la implementación esté en la última versión.'));},7000);
     window[cb]=j=>{listo=true;limpiar();res(j);};
-    sc.onerror=()=>{if(listo)return;limpiar();rej(new Error('No se pudo contactar el puente.'));};
+    sc.onerror=()=>{if(listo)return;limpiar();rej(new Error('red'));};
     sc.src=url+(url.includes('?')?'&':'?')+'callback='+cb+'&d='+encodeURIComponent(JSON.stringify(payload));
     document.body.appendChild(sc);
   });
-}
-async function postPuente(url,payload){
-  const r=await fetch(url,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},
-    body:JSON.stringify(payload),redirect:'follow'});
-  const t=await r.text();
-  if(t.trim().startsWith('<')) throw new Error('html');
-  return JSON.parse(t);
-}
-/* Enlace de diagnóstico: abre la respuesta cruda del puente en otra pestaña. */
-function urlDiag(accion,clave){
-  return (CFG&&CFG.puente_url?CFG.puente_url:'')+'?d='+
-    encodeURIComponent(JSON.stringify({accion,clave,datos:{curso:CODIGO}}));
 }
 async function pedirAcceso(correo,nombre){
   const c=normCorreo(correo);
@@ -1982,10 +1958,7 @@ async function cargarSolicitudes(){
   }catch(e){ cerrarProg(esc(e.message||'No se pudo contactar la hoja.'),true);
     z.innerHTML='<div class="av2" style="background:#FCE9E9;color:#8A2020"><b>El puente no respondió bien.</b><br>'+
       'Suele ser porque la implementación del Apps Script quedó en una versión anterior. '+
-      'Causa más frecuente: tiene <b>varias cuentas de Google abiertas</b> y Google devuelve el selector de cuenta en vez de los datos.<br>'+
-      '<a class="bt g sm" style="margin-top:9px;display:inline-block;text-decoration:none" target="_blank" rel="noopener" href="'+
-      urlDiag('solicitudes',(document.getElementById('solClave')||document.getElementById('curClave')||{}).value||lsG('clave_doc')||'')+
-      '">Ver qué responde el puente</a></div>'; }
+      'Entre al editor, pulse <b>Implementar → Administrar implementaciones → lápiz</b>, elija <b>Nueva versión</b> y vuelva a implementar.</div>'; }
   finally{ if(PROG) cerrarProg('Listo.'); }
 }
 async function resolverSol(correo,estado){
