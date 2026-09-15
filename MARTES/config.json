@@ -1,14 +1,21 @@
 {
   "encuentros_abiertos": 4,
   "avance_secuencial": true,
-  "google_client_id": "",
-  "docentes": [
-    "rcastroc@unicaribe.edu.co",
-    "inbox.nativo@gmail.com"
-  ],
   "parciales": {
     "p1": false,
     "p2": false,
     "p3": false
-  }
+  },
+  "docentes": [
+    "rcastroc@unicaribe.edu.co",
+    "inbox.nativo@gmail.com"
+  ],
+  "firebase": {
+    "apiKey": "AIzaSyBPSq_4AwlpYydi2ykCE6Cm2E_hzNsbB2k",
+    "authDomain": "aula-unicaribe.firebaseapp.com",
+    "projectId": "aula-unicaribe",
+    "appId": "1:882517171933:web:07971e6e7180ea65408534"
+  },
+  "puente_url": "https://script.google.com/macros/s/AKfycbzKG5sXxiWBNcS6DiJ-209iZ5_Pzyf5e7M6iXOQR9hX8yMVxQMgkaXeZvD9hOo2rm62rQ/exec",
+  "clave_publica": "AXERVUS_2026"
 }
