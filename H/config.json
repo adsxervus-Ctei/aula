@@ -1,9 +1,9 @@
 {
-  "encuentros_abiertos": 3,
+  "encuentros_abiertos": 6,
   "avance_secuencial": false,
   "parciales": {
     "p1": true,
-    "p2": false,
+    "p2": true,
     "p3": false
   },
   "docentes": [
