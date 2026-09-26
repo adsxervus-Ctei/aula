@@ -1,8 +1,8 @@
 {
-  "encuentros_abiertos": 4,
+  "encuentros_abiertos": 6,
   "avance_secuencial": true,
   "parciales": {
-    "p1": true,
+    "p1": false,
     "p2": false,
     "p3": false
   },
