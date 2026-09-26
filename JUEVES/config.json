@@ -3,7 +3,7 @@
   "avance_secuencial": true,
   "parciales": {
     "p1": false,
-    "p2": false,
+    "p2": true,
     "p3": false
   },
   "docentes": [
