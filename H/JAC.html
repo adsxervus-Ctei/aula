@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>JAC Central Chimi V3.0 - PWA Rural</title>
+<style>:root{--azul:#0f2a44;--verde:#00b67a;--naranja:#ff7a00;--gris:#f2f4f7}
+*{box-sizing:border-box;margin:0;padding:0;font-family:system-ui}body{background:var(--gris);padding-bottom:90px}
+.header{background:var(--azul);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;position:sticky;top:0}
+.status{padding:6px;font-size:12px;text-align:center;font-weight:700}.offline{background:#fee2e2;color:#991b1b}.online{background:#d1fae5;color:#065f46}
+.container{padding:16px;max-width:480px;margin:0 auto}.card{background:#fff;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 4px 12px rgba(0,0,0,.06)}
+.bigbtn{width:100%;border:none;border-radius:16px;padding:20px 14px;margin-bottom:12px;font-size:18px;font-weight:800;display:flex;gap:12px}
+.btn-azul{background:var(--azul);color:#fff}.btn-verde{background:var(--verde);color:#fff}.btn-naranja{background:var(--naranja);color:#fff}
+.btn-voz{width:100%;background:#1f2937;color:#fff;border:2px dashed #4b5563;border-radius:14px;padding:16px;font-weight:700}
+.input{width:100%;padding:12px;border:1px solid #d1d5db;border-radius:10px;margin:8px 0}
+nav{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #e5e7eb;display:flex;justify-content:space-around;padding:8px 0}
+</style></head><body>
+<div class="header"><div><h1 style="font-size:18px">JAC CENTRAL CHIMI<br><small>San Martin de Loba - Placa 1972</small></h1></div><div>⚓ V3.0</div></div>
+<div id="status" class="status offline">● SIN INTERNET - Guardando OFFLINE</div>
+<div class="container" id="view-inicio">
+<div class="card"><h3>Bienvenido vecino!</h3><p>Toca un boton grande. Si no sabes escribir, usa microfono.</p></div>
+<button class="bigbtn btn-azul" onclick="showView('pedir')">📝 PEDIR AYUDA</button>
+<button class="bigbtn btn-verde" onclick="showView('ver')">🔍 VER MI SOLICITUD</button>
+<button class="bigbtn btn-naranja" onclick="showView('reportar')">⚠️ REPORTAR DAÑO</button>
+<div class="card"><button class="btn-voz" onclick="startVoice('inicio')">🎤 PULSA Y HABLA - VOZ A TEXTO</button><div id="textoVozInicio" style="margin-top:10px;background:#f3f4f6;padding:10px;border-radius:8px">Aqui aparece lo que digas...</div></div>
+</div>
+<div class="container" id="view-pedir" style="display:none"><div class="card"><h3>Nueva Solicitud - Registro Asistido</h3>
+<label><input type="checkbox" id="checkTercero"> Estoy registrando a otra persona (abuelo/vecino)</label>
+<div id="datosTercero" style="display:none;background:#fffbeb;padding:10px;border-radius:10px"><label>Titular Real:</label><input id="titular" class="input"><label>Registrado por:</label><input id="registradoPor" class="input"></div>
+<label>Que necesitas? (puedes hablar)</label><button class="btn-voz" onclick="startVoice('pedir')">🎤 Grabar por voz</button>
+<textarea id="descripcion" class="input" rows="4" placeholder="Recuperacion casa comunal placa 1972..."></textarea>
+<input type="file" id="evidencia" accept="image/*,video/*" class="input"><input id="ubicacion" class="input" readonly>
+<button class="bigbtn btn-azul" onclick="guardarSolicitud()">GUARDAR OFFLINE</button><div id="codigoGenerado" style="display:none;background:#d1fae5;padding:12px;border-radius:10px;text-align:center"></div></div></div>
+<div class="container" id="view-ver" style="display:none"><div class="card"><h3>Seguimiento</h3><input id="buscarCodigo" class="input" placeholder="JAC-CHIMI-2026-0001"><button class="bigbtn btn-verde" onclick="buscar()">Buscar</button><div id="resultadoBusqueda"></div><div id="listaLocal"></div></div></div>
+<div class="container" id="view-admin" style="display:none"><div class="card"><h3>Vista Junta - Admin</h3><div style="background:#0f2a44;color:#fff;padding:12px;border-radius:12px">Resumen IA: 7 tareas criticas</div><button class="bigbtn btn-azul" onclick="generarReporte()">Generar Reporte Alcaldia</button></div></div>
+<nav><button onclick="showView('inicio')">Inicio</button><button onclick="showView('pedir')">Pedir</button><button onclick="showView('ver')">Ver</button><button onclick="showView('admin')">Junta</button></nav>
+<script>
+let contador=parseInt(localStorage.getItem('contadorChimi')||'0');
+document.getElementById('checkTercero').addEventListener('change',function(){document.getElementById('datosTercero').style.display=this.checked?'block':'none'});
+function startVoice(o){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;let r=new SR();r.lang='es-CO';r.onresult=e=>{let t=e.results[0][0].transcript;if(o=='inicio')document.getElementById('textoVozInicio').textContent=t;document.getElementById('descripcion').value+= ' '+t;};r.start();}
+function showView(v){['inicio','pedir','ver','admin'].forEach(x=>{document.getElementById('view-'+x).style.display=x==v?'block':'none';});if(v=='ver')renderLocal();}
+function guardarSolicitud(){contador++;localStorage.setItem('contadorChimi',contador);let codigo='JAC-CHIMI-2026-'+String(contador).padStart(4,'0');let datos={codigo,fecha:new Date().toLocaleString(),titular:document.getElementById('titular').value||'Directo',descripcion:document.getElementById('descripcion').value,ubicacion:document.getElementById('ubicacion').value,estado:'Recibida'};let lista=JSON.parse(localStorage.getItem('solicitudesChimi')||'[]');lista.unshift(datos);localStorage.setItem('solicitudesChimi',JSON.stringify(lista));document.getElementById('codigoGenerado').style.display='block';document.getElementById('codigoGenerado').innerHTML='Guardado OFFLINE<br>'+codigo;}
+function renderLocal(){let lista=JSON.parse(localStorage.getItem('solicitudesChimi')||'[]');document.getElementById('listaLocal').innerHTML=lista.map(s=>'<div style="border-left:4px solid #0f2a44;background:#fff;padding:8px;margin:6px 0"><b>'+s.codigo+'</b> '+s.estado+'<br>'+s.descripcion.substring(0,60)+'</div>').join('');}
+function buscar(){let cod=document.getElementById('buscarCodigo').value.trim().toUpperCase();let lista=JSON.parse(localStorage.getItem('solicitudesChimi')||'[]');let f=lista.find(s=>s.codigo==cod);document.getElementById('resultadoBusqueda').innerHTML=f?'<div style="background:#d1fae5;padding:10px">'+f.codigo+' '+f.descripcion+'</div>':'No encontrado';}
+function generarReporte(){let lista=JSON.parse(localStorage.getItem('solicitudesChimi')||'[]');let txt='INFORME JAC CHIMI '+new Date().toLocaleString()+'\n';lista.forEach(s=>{txt+=s.codigo+' | '+s.estado+' | '+s.titular+' | '+s.descripcion+'\n';});let blob=new Blob([txt],{type:'text/plain'});let url=URL.createObjectURL(blob);let a=document.createElement('a');a.href=url;a.download='Reporte_Chimi.txt';a.click();}
+if(navigator.geolocation)navigator.geolocation.getCurrentPosition(p=>{document.getElementById('ubicacion').value=p.coords.latitude.toFixed(4)+','+p.coords.longitude.toFixed(4)+' Chimi';});
+</script></body></html>
