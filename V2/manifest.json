@@ -1,0 +1,27 @@
+{
+  "name": "JAC Central de Chimí",
+  "short_name": "JAC Chimí",
+  "description": "Radicación de solicitudes, Libro de Actas y franja informativa de la Junta de Acción Comunal Central de Chimí.",
+  "lang": "es-CO",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#FFFFFF",
+  "theme_color": "#143A2B",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='28' fill='%23143A2B'/%3E%3Cpath d='M44 54h104v16H44zM44 86h104v12H44zM44 114h72v12H44z' fill='%23F2A73B'/%3E%3Ccircle cx='136' cy='132' r='20' fill='none' stroke='%23F2A73B' stroke-width='8'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' fill='%23143A2B'/%3E%3Cpath d='M118 144h276v42H118zM118 229h276v32H118zM118 304h192v32H118z' fill='%23F2A73B'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}
