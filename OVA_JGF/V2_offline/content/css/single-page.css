@@ -1,0 +1,42 @@
+/* Single-page specific styles */
+.exe-single-page .single-page-section {
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 40px;
+  margin-bottom: 40px;
+}
+
+.exe-single-page .single-page-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.exe-single-page .single-page-nav {
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.exe-single-page .single-page-content {
+  padding: 20px 30px;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Section target offset for fixed header */
+.single-page-section:target {
+  scroll-margin-top: 20px;
+}
+
+/* Print styles for single page */
+@media print {
+  .exe-single-page .single-page-nav {
+    display: none;
+  }
+  .exe-single-page .single-page-section {
+    page-break-inside: avoid;
+  }
+}
