@@ -1,0 +1,37 @@
+FOTOS DE LA APLICACIÓN
+======================
+
+Mientras esta carpeta no tenga fotos, la app muestra un marco lavanda con la
+descripción de la foto que va en ese lugar.
+
+Para poner una foto:
+  1. Súbala a esta carpeta con el nombre exacto de la lista de abajo.
+  2. Agregue ese nombre al archivo fotos.json, entre comillas y separado por
+     comas. Ejemplo con dos fotos:
+        ["taller-1.jpg", "bienvenida-1.jpg"]
+  3. Suba la VERSION en sw.js.
+No hay que cambiar nada más.
+
+Logo de la apertura (formato PNG, cuadrado, fondo índigo o transparente):
+
+  logo-asocomunal.png   Logo de ASOCOMUNAL San Martín de Loba. Si no está,
+                        la apertura usa el emblema de la casa comunal.
+
+Nombres que espera la app (formato JPG):
+
+  bienvenida-1.jpg   Vecinos reunidos en la sede comunal de Chimí
+  bienvenida-2.jpg   Una persona mayor aprendiendo a usar el teléfono
+  bienvenida-3.jpg   Dignatarios firmando el acta de la asamblea
+  taller-1.jpg       Taller en la sede comunal
+  taller-2.jpg       Un vecino mostrando el número de su radicado
+  taller-3.jpg       Entrega de una constancia impresa en mano
+  taller-4.jpg       Cartel de convocatoria a la asamblea
+  taller-5.jpg       Secretario levantando el acta
+  taller-6.jpg       Conversación sobre el cuidado de los datos
+
+Recomendaciones:
+  - Tamaño: 1200 px de ancho, horizontal, menos de 250 KB cada una.
+    (Comprímalas con una app como Squoosh antes de subirlas.)
+  - Toda persona que aparezca debe firmar autorización de uso de imagen.
+  - No use fotos donde se vean cédulas, actas reales ni pantallas con datos.
+  - Después de subir fotos nuevas, suba la VERSION en sw.js.
