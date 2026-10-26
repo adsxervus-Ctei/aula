@@ -1,0 +1,30 @@
+import sys
+from playwright.sync_api import sync_playwright
+B, OUT = sys.argv[1], sys.argv[2]; R=[]
+def ok(n,v): R.append(v); print(('OK  ' if v else 'XX  ')+n, flush=True)
+with sync_playwright() as p:
+    br = p.chromium.launch()
+    ctx = br.new_context(viewport={'width':390,'height':844}, device_scale_factor=2, locale='es-CO', bypass_csp=True)
+    ctx.add_init_script("Object.defineProperty(Notification,'permission',{get:()=>window.__perm||'default'});Notification.requestPermission=async()=>{window.__perm='granted';return 'granted'};localStorage.setItem('myr2_video_cliente','true')")
+    for u in ['https://images.unsplash.com/**','https://tile.openstreetmap.org/**','https://router.project-osrm.org/**','https://nominatim.openstreetmap.org/**']: ctx.route(u, lambda r: r.abort())
+    errs=[]; pg=ctx.new_page(); pg.on('pageerror', lambda e: errs.append(str(e)))
+    pg.goto(B); pg.wait_for_timeout(1500)
+    pg.click('#b-ir-ingresar'); pg.fill('#in-usuario','cliente@demo.co'); pg.fill('#in-clave','DEMO-2026'); pg.click('#f-ingresar button[type=submit]'); pg.wait_for_timeout(1200)
+    pg.click('#b-perfil'); pg.wait_for_timeout(600)
+    ok('perfil: botón activar avisos', pg.locator('#b-pf-avisos').is_visible())
+    pg.click('#b-pf-avisos'); pg.wait_for_timeout(1200)
+    ok('pantalla de avisos coherente', pg.locator('#velo-avisos').is_visible()); pg.screenshot(path=OUT+'/40-avisos.png')
+    pg.click('#b-av-si'); pg.wait_for_timeout(500)
+    ok('permitir → concedido y botón se oculta', pg.evaluate('Notification.permission')=='granted' and not pg.locator('#b-pf-avisos').is_visible())
+    # mapa con pin al centro y dirección sin mapa
+    pg.evaluate("MYR.E.modo={tipo:'domicilio',fuente:'manual'}; MYR.ir('mapa')"); pg.wait_for_timeout(1500)
+    ok('pin fijo al centro', pg.locator('#pin-centro').is_visible())
+    pg.evaluate("MYR.mapas.mapa.mp.panBy([80,-60])"); pg.wait_for_timeout(2500)
+    ok('mover el mapa fija la dirección', pg.evaluate("!!(MYR.E.borradorDir && MYR.E.borradorDir.lat)") and 'km' in pg.locator('#mp-datos').inner_text())
+    pg.screenshot(path=OUT+'/41-mapa-pin.png')
+    pg.click('#b-dir-manual'); pg.fill('#mp-direccion','Calle 4 # 3-15, frente a la iglesia'); pg.fill('#mp-barrio','El Centro'); pg.wait_for_timeout(200)
+    pg.screenshot(path=OUT+'/42-dir-manual.png')
+    pg.click('#b-dir-sin-mapa'); pg.wait_for_timeout(900)
+    ok('dirección sin mapa aceptada', pg.evaluate("MYR.E.modo.sinMapa===true && MYR.E.modo.direccion.includes('El Centro')"))
+    print('errores', errs); br.close()
+print('fallas', R.count(False))
