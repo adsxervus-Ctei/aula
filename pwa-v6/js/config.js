@@ -63,10 +63,10 @@ window.CONFIG = {
 
   // Inicio de sesión con Google: cree un «ID de cliente OAuth» tipo Web en
   // Google Cloud y péguelo aquí. Vacío = el botón pide el correo de Gmail.
-  google: { clientId: '' },
+  google: { clientId: '893450739343-8mdd9qktkcei0eea3eim1u49e9fd00ce.apps.googleusercontent.com' },
 
   // Base de datos en la nube (Supabase). Vacío = MODO DEMO en este navegador.
-  supabase: { url: '', llave: '' },
+  supabase: { url: 'https://qlsoktatjhaihagozzrg.supabase.co', llave: 'sb_publishable_yu69Jk-hZ8CVAwckDDNfYA_El4Xkym2' },
 
   // Asistente del chat con inteligencia artificial (opcional): dirección de la
   // función en servidor (supabase/functions/asistente). Vacío = asistente local.
