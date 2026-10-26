@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fogón del Río · Pedidos</title>
+<meta name="description" content="Pida en la mesa, para recoger o a domicilio: carrusel de platos, salsas, bebidas, pago y chat con el negocio.">
+<meta name="theme-color" content="#1E1A17">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org; connect-src 'self' https://router.project-osrm.org https://nominatim.openstreetmap.org https://*.supabase.co; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; frame-src 'none'; object-src 'none'; base-uri 'self'">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icono-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preload" href="fonts/poppins-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-atras" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-adelante" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-abajo" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6M6 4l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-bolsa" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
+  <symbol id="i-mas" viewBox="0 0 24 24"><path d="M12 6v12M6 12h12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-menos" viewBox="0 0 24 24"><path d="M6 12h12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-mesa" viewBox="0 0 24 24"><path d="M3 9h18M5 9v11M19 9v11M8 9V6h8v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-recoger" viewBox="0 0 24 24"><path d="M5 9h14l-1.2 11H6.2L5 9zM9 9V7a3 3 0 0 1 6 0v2M9.5 14.5l2 2 3.5-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-moto" viewBox="0 0 24 24"><circle cx="6" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 17h6l2-6h-4l-2 3H8M14 7h3l1 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-ubicacion" viewBox="0 0 24 24"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-mira" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M5 5h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H10l-4 3v-3H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 10h8M8 13h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-enviar" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.5-6.5L4 12z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 .9c-1-.5-2.2-1.7-2.7-2.7l.9-1-1-2-1.7 1z" fill="currentColor"/></symbol>
+  <symbol id="i-efectivo" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-transfer" viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-tarjeta" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M7 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-persona" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-copiar" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 15V5a1 1 0 0 1 1-1h9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-cerrar" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-basura" viewBox="0 0 24 24"><path d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-reloj" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v4.5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-llama" viewBox="0 0 24 24"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.2 1.2-3.6 2.4-4.6.3 1.5 1 2.4 2 2.8C11 8.5 11 5.5 12 3z" fill="currentColor"/></symbol>
+</svg>
+
+<!-- ============ APERTURA ============ -->
+<div id="apertura" class="apertura" aria-hidden="true">
+  <div class="apLogo"><svg viewBox="0 0 24 24"><use href="#i-llama"/></svg></div>
+  <p class="apNombre"><b>Fogón del Río</b><span>Asadero · comidas rápidas</span></p>
+  <div class="apBarra"><i id="ap-barra"></i></div>
+  <p class="apCreditos">Powered by <b>ACERBUS</b> · CTeI</p>
+</div>
+
+<main id="app">
+
+<!-- ============ BIENVENIDA ============ -->
+<section id="v-bienvenida" class="vista bienvenida" data-titulo="Bienvenida">
+  <div class="bnArte" aria-hidden="true">
+    <div class="bnPlato bnP1" id="bn-p1"></div>
+    <div class="bnPlato bnP2" id="bn-p2"></div>
+    <div class="bnPlato bnP3" id="bn-p3"></div>
+  </div>
+  <div class="bnTexto">
+    <p class="marca"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-llama"/></svg> <span id="bn-negocio">Fogón del Río</span></p>
+    <h1>Pida a su manera:<br>en la mesa, para recoger o a domicilio.</h1>
+    <p class="sub">Escoja el plato, sus salsas y su bebida. Pague como prefiera y hable con nosotros por el chat.</p>
+  </div>
+  <div class="bnBotones">
+    <button class="btn verde grande" id="b-ver-menu" type="button">Ver el menú</button>
+    <div class="fila2">
+      <button class="btn claro" id="b-ir-ingresar" type="button">Ingresar</button>
+      <button class="btn claro" id="b-ir-registro" type="button">Crear cuenta</button>
+    </div>
+    <p class="mini" id="bn-sesion"></p>
+  </div>
+</section>
+
+<!-- ============ CUENTA ============ -->
+<section id="v-cuenta" class="vista cuenta oculta" data-titulo="Cuenta">
+  <header class="barra">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit">Su cuenta</h2>
+    <span class="redondo vacio"></span>
+  </header>
+  <div class="tabs" role="tablist">
+    <button role="tab" id="tab-ingresar" aria-selected="true" type="button">Ingresar</button>
+    <button role="tab" id="tab-registro" aria-selected="false" type="button">Crear cuenta</button>
+  </div>
+  <p class="aviso" id="cuenta-motivo" hidden></p>
+  <form id="f-ingresar" class="formulario" autocomplete="on">
+    <label>Correo o celular<input id="in-usuario" autocomplete="username" required></label>
+    <label>Clave<input id="in-clave" type="password" autocomplete="current-password" required minlength="6"></label>
+    <p class="nota" id="in-nota" role="status"></p>
+    <button class="btn verde grande" type="submit">Ingresar</button>
+  </form>
+  <form id="f-registro" class="formulario" hidden autocomplete="on">
+    <label>Nombre completo<input id="rg-nombre" autocomplete="name" required minlength="3"></label>
+    <label>Celular (WhatsApp)<input id="rg-celular" inputmode="numeric" autocomplete="tel-national" required pattern="3[0-9]{9}" placeholder="3001234567"></label>
+    <label>Correo<input id="rg-correo" type="email" autocomplete="email" required></label>
+    <label>Clave (mínimo 6)<input id="rg-clave" type="password" autocomplete="new-password" required minlength="6"></label>
+    <label>Dirección habitual (opcional)<input id="rg-direccion" autocomplete="street-address" placeholder="Barrio, calle, número, referencia"></label>
+    <label class="check"><input type="checkbox" id="rg-datos" required> <span>Autorizo el tratamiento de mis datos para gestionar mis pedidos, según la Ley 1581 de 2012. Puedo consultarlos, corregirlos o borrarlos desde mi perfil.</span></label>
+    <p class="nota" id="rg-nota" role="status"></p>
+    <button class="btn verde grande" type="submit">Crear cuenta</button>
+  </form>
+</section>
+
+<!-- ============ MENÚ / CARRUSEL ============ -->
+<section id="v-menu" class="vista menu oculta" data-etapa="carrusel" data-titulo="Menú">
+  <div class="heroe" id="heroe" aria-hidden="true"><div class="heroeArte" id="heroe-arte"></div></div>
+  <header class="barra flotante">
+    <button class="redondo" id="b-menu-atras" type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <button class="chipModo" id="b-chip-modo" type="button"><svg aria-hidden="true"><use href="#i-moto"/></svg><span id="chip-modo">¿Cómo lo quiere?</span></button>
+    <button class="redondo" id="b-bolsa" type="button" aria-label="Ver mi pedido"><svg><use href="#i-bolsa"/></svg><b class="insignia" id="insignia" hidden>0</b></button>
+  </header>
+
+  <div class="escenario" id="escenario">
+    <button class="flecha izq" id="b-ant" type="button" aria-label="Plato anterior"><svg><use href="#i-atras"/></svg></button>
+    <div class="plato" id="plato" style="view-transition-name: plato"></div>
+    <button class="flecha der" id="b-sig" type="button" aria-label="Plato siguiente"><svg><use href="#i-adelante"/></svg></button>
+  </div>
+
+  <div class="ficha" id="ficha">
+    <div class="fichaNombre"><h1 id="pl-nombre"></h1></div>
+    <p class="precio" id="pl-precio"></p>
+    <p class="desc" id="pl-desc"></p>
+    <button class="btn verde pastilla" id="b-agregar" type="button">Agregar al pedido</button>
+    <button class="deslizar" id="b-receta" type="button">Desliza para ver la receta<svg aria-hidden="true"><use href="#i-abajo"/></svg></button>
+    <div class="puntos" id="puntos" role="tablist" aria-label="Platos"></div>
+  </div>
+
+  <div class="hoja vidrio" id="hoja" aria-hidden="true">
+    <div class="asa" id="asa" aria-hidden="true"></div>
+    <div class="hojaCab">
+      <p class="paso" id="hoja-paso">Paso 1 de 3</p>
+      <h2 id="hoja-tit">Receta</h2>
+      <p class="mini" id="hoja-sub"></p>
+    </div>
+    <ul class="lista" id="hoja-lista"></ul>
+    <div class="hojaPie">
+      <button class="btn pastilla contorno" id="b-hoja" type="button">Elegir salsas</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESUMEN ============ -->
+<section id="v-resumen" class="vista resumen oculta" data-titulo="Resumen">
+  <header class="barra">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit">Su pedido</h2>
+    <button class="redondo" id="b-otro" type="button" aria-label="Agregar otro plato"><svg><use href="#i-mas"/></svg></button>
+  </header>
+  <div class="platoGrande" id="plato-grande" style="view-transition-name: plato"></div>
+  <div class="tarjeta vidrio" id="res-tarjeta">
+    <div class="modos" role="radiogroup" aria-label="Cómo recibe el pedido" id="res-modos">
+      <button role="radio" data-modo="local" type="button"><svg aria-hidden="true"><use href="#i-mesa"/></svg>Comer aquí</button>
+      <button role="radio" data-modo="recoger" type="button"><svg aria-hidden="true"><use href="#i-recoger"/></svg>Recoger</button>
+      <button role="radio" data-modo="domicilio" type="button"><svg aria-hidden="true"><use href="#i-moto"/></svg>Domicilio</button>
+    </div>
+    <div id="res-destino" class="destino"></div>
+    <ul class="items" id="res-items"></ul>
+    <button class="enlace" id="b-otro2" type="button"><svg aria-hidden="true"><use href="#i-mas"/></svg> Agregar otro plato</button>
+    <dl class="cuentas" id="res-cuentas"></dl>
+    <h3 class="subt">Forma de pago</h3>
+    <div class="pagos" role="radiogroup" aria-label="Forma de pago" id="res-pagos">
+      <button role="radio" data-pago="efectivo" type="button"><svg aria-hidden="true"><use href="#i-efectivo"/></svg>Efectivo</button>
+      <button role="radio" data-pago="transferencia" type="button"><svg aria-hidden="true"><use href="#i-transfer"/></svg>Transferencia</button>
+      <button role="radio" data-pago="tarjeta" type="button"><svg aria-hidden="true"><use href="#i-tarjeta"/></svg>Tarjeta</button>
+    </div>
+    <div class="pagoDetalle" id="res-pago-detalle"></div>
+    <label class="nota-campo">Nota para la cocina (opcional)<input id="res-nota" maxlength="140" placeholder="Ej.: término 3/4, sin hielo…"></label>
+  </div>
+  <div class="barraTotal">
+    <div><small>Total</small><b id="res-total">$ 0</b></div>
+    <button class="btn verde" id="b-pedir" type="button">Hacer pedido</button>
+  </div>
+</section>
+
+<!-- ============ MAPA ============ -->
+<section id="v-mapa" class="vista mapa oculta" data-titulo="Ruta">
+  <header class="barra flotante">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit fondoClaro">Dirección de entrega</h2>
+    <button class="redondo" id="b-mi-ubicacion" type="button" aria-label="Usar mi ubicación"><svg><use href="#i-mira"/></svg></button>
+  </header>
+  <div id="mapa" class="lienzoMapa" role="application" aria-label="Mapa de la ruta del domicilio"></div>
+  <div class="tarjeta vidrio mapaTarjeta">
+    <form id="f-direccion" class="buscar">
+      <input id="mp-direccion" placeholder="Escriba barrio, calle o referencia" autocomplete="street-address" aria-label="Dirección">
+      <button class="btn claro" type="submit">Buscar</button>
+    </form>
+    <p class="mini">Puede mover el pin rojo hasta su puerta.</p>
+    <div class="rutaDatos" id="mp-datos"></div>
+    <label class="nota-campo">Indicaciones para el domiciliario<input id="mp-indicaciones" maxlength="120" placeholder="Casa azul, segundo piso…"></label>
+    <button class="btn verde grande" id="b-confirmar-dir" type="button">Confirmar dirección</button>
+  </div>
+</section>
+
+<!-- ============ PEDIDO ============ -->
+<section id="v-pedido" class="vista pedido oculta" data-titulo="Pedido">
+  <header class="barra">
+    <button class="redondo" id="b-pedido-atras" type="button" aria-label="Volver al menú"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit">Pedido <span id="pd-codigo"></span></h2>
+    <button class="redondo" id="b-pedido-chat" type="button" aria-label="Chat con el negocio"><svg><use href="#i-chat"/></svg></button>
+  </header>
+  <div class="tarjeta" id="pd-estado"></div>
+  <div class="tarjeta" id="pd-ruta-caja" hidden>
+    <h3 class="subt">Ruta del domicilio</h3>
+    <div id="mapa-pedido" class="lienzoMapa chico" aria-label="Mapa de la ruta"></div>
+    <p class="mini" id="pd-ruta-txt"></p>
+  </div>
+  <div class="tarjeta" id="pd-pago"></div>
+  <div class="tarjeta" id="pd-detalle"></div>
+  <div class="botonera">
+    <button class="btn verde grande" id="b-pd-chat" type="button"><svg aria-hidden="true"><use href="#i-chat"/></svg> Chat con el negocio</button>
+    <a class="btn claro grande" id="b-pd-wa" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg> Enviar por WhatsApp</a>
+  </div>
+</section>
+
+<!-- ============ CHAT ============ -->
+<section id="v-chat" class="vista chat oculta" data-titulo="Chat">
+  <header class="barra chatCab">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <div class="chatQuien"><span class="avatar"><svg aria-hidden="true"><use href="#i-llama"/></svg></span><div><b id="ch-negocio">Fogón del Río</b><small id="ch-estado">Pedido</small></div></div>
+    <a class="redondo" id="b-chat-wa" target="_blank" rel="noopener" aria-label="Seguir por WhatsApp"><svg><use href="#i-wa"/></svg></a>
+  </header>
+  <ol class="hilo" id="hilo" aria-live="polite"></ol>
+  <div class="chips" id="ch-rapidas">
+    <button type="button" data-rapido="¿Cuánto falta para mi pedido?">¿Cuánto falta?</button>
+    <button type="button" data-rapido="Ya hice la transferencia.">Ya transferí</button>
+    <button type="button" data-rapido="Necesito cambiar algo de mi pedido.">Cambiar algo</button>
+  </div>
+  <form id="f-chat" class="escribir">
+    <input id="ch-txt" placeholder="Escriba su mensaje" autocomplete="off" aria-label="Mensaje" maxlength="500">
+    <button class="redondo verde" type="submit" aria-label="Enviar"><svg><use href="#i-enviar"/></svg></button>
+  </form>
+</section>
+
+<!-- ============ PERFIL ============ -->
+<section id="v-perfil" class="vista perfil oculta" data-titulo="Perfil">
+  <header class="barra">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit">Mi perfil</h2>
+    <span class="redondo vacio"></span>
+  </header>
+  <div class="tarjeta" id="pf-datos"></div>
+  <h3 class="subt pad">Mis pedidos</h3>
+  <ul class="pedidos" id="pf-pedidos"></ul>
+  <div class="botonera">
+    <button class="btn claro" id="b-salir" type="button">Cerrar sesión</button>
+    <button class="btn peligro" id="b-borrar-cuenta" type="button">Borrar mis datos de este teléfono</button>
+  </div>
+</section>
+
+</main>
+
+<!-- ============ HOJA: ¿CÓMO LO QUIERE? ============ -->
+<div class="velo" id="velo-modo" hidden>
+  <div class="modal vidrio" role="dialog" aria-modal="true" aria-labelledby="md-tit">
+    <h2 id="md-tit">¿Cómo quiere su pedido?</h2>
+    <p class="mini" id="md-sub">Si nos deja ver su ubicación, lo decidimos por usted.</p>
+    <button class="btn verde grande" id="b-md-ubicar" type="button"><svg aria-hidden="true"><use href="#i-ubicacion"/></svg> Usar mi ubicación</button>
+    <p class="nota" id="md-nota" role="status"></p>
+    <div class="opcModo">
+      <button data-elegir="local" type="button"><svg aria-hidden="true"><use href="#i-mesa"/></svg><b>Comer aquí</b><small>Estoy en el local</small></button>
+      <button data-elegir="recoger" type="button"><svg aria-hidden="true"><use href="#i-recoger"/></svg><b>Recoger</b><small>Paso por él</small></button>
+      <button data-elegir="domicilio" type="button"><svg aria-hidden="true"><use href="#i-moto"/></svg><b>Domicilio</b><small>Me lo llevan</small></button>
+    </div>
+    <label class="nota-campo" id="md-mesa-caja" hidden>Número de mesa (opcional)<input id="md-mesa" inputmode="numeric" maxlength="3"></label>
+    <button class="btn claro" id="b-md-cerrar" type="button">Decidir después</button>
+  </div>
+</div>
+
+<div class="aviso-flotante" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/config.js"></script>
+<script src="js/menu.js"></script>
+<script src="vendor/leaflet/leaflet.js" defer></script>
+<script src="js/datos.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

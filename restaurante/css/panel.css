@@ -1,0 +1,63 @@
+/* Mesa y Ruta · panel del negocio */
+body.panel { background: #F3EEE7; }
+.pnEntrar { min-height: 100dvh; display: grid; place-items: center; padding: 20px; }
+.pnEntrar form { width: min(380px, 100%); display: grid; gap: 12px; text-align: center; margin: 0; }
+.apLogo.chico { width: 64px; height: 64px; border-radius: 22px; margin: 0 auto; animation: none; }
+.apLogo.chico svg { width: 36px; height: 36px; }
+.pnEntrar h1 { font-size: 22px; }
+.pnEntrar label { text-align: left; }
+.pnCab { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 14px; padding: 10px 16px; background: var(--carbon); color: #fff; flex-wrap: wrap; }
+.pnMarca { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 180px; } .pnMarca small { display: block; opacity: .7; font-size: 12px; }
+.pnTabs { display: flex; gap: 4px; background: rgba(255, 255, 255, .08); padding: 4px; border-radius: 14px; }
+.pnTabs button { border: 0; background: none; color: #fff; min-height: 40px; padding: 0 14px; border-radius: 10px; font-weight: 500; position: relative; }
+.pnTabs button[aria-selected=true] { background: #fff; color: var(--carbon); }
+.pnCab .btn.claro { min-height: 40px; }
+.pnPedidos { display: grid; grid-template-columns: minmax(280px, 380px) 1fr; gap: 14px; padding: 14px; max-width: 1200px; margin: 0 auto; }
+.pnFiltro { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; background: #fff; border-radius: 14px; padding: 4px; margin-bottom: 10px; }
+.pnFiltro button { border: 0; background: none; min-height: 40px; border-radius: 10px; font-weight: 500; }
+.pnFiltro button[aria-checked=true] { background: var(--carbon); color: #fff; }
+.pnItems { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.pnItems button { width: 100%; text-align: left; border: 2px solid transparent; background: #fff; border-radius: 16px; padding: 12px 14px; display: grid; grid-template-columns: 40px 1fr auto; gap: 10px; align-items: center; box-shadow: 0 3px 10px rgba(0, 0, 0, .05); }
+.pnItems button[aria-current=true] { border-color: var(--verde); }
+.pnItems .ico { width: 40px; height: 40px; border-radius: 12px; background: var(--arena); display: grid; place-items: center; color: var(--brasa2); }
+.pnItems small { display: block; color: var(--texto2); font-size: 12px; }
+.pnItems .nuevo { background: #FFF6E5; }
+.pnDetalle { background: #fff; border-radius: 20px; padding: 18px; box-shadow: var(--sombra); min-height: 60vh; display: flex; flex-direction: column; gap: 12px; }
+.pnVacio { margin: auto; text-align: center; max-width: 280px; }
+.pnDetCab { display: flex; justify-content: space-between; gap: 10px; align-items: start; flex-wrap: wrap; }
+.pnDetCab h2 { font-size: 20px; }
+.pnEstados { display: flex; gap: 6px; flex-wrap: wrap; }
+.pnEstados button { border: 1.5px solid var(--linea); background: #fff; border-radius: 12px; min-height: 40px; padding: 0 12px; font-size: 13px; font-weight: 500; }
+.pnEstados button[aria-pressed=true] { background: var(--verde); border-color: var(--verde); color: #fff; }
+.pnBloques { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.pnBloque { background: var(--crema); border-radius: 14px; padding: 12px; font-size: 13.5px; }
+.pnBloque h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--texto2); margin-bottom: 6px; }
+.pnBloque a { color: var(--verde2); font-weight: 600; }
+.pnChat { display: flex; flex-direction: column; border: 1px solid var(--linea); border-radius: 16px; overflow: hidden; min-height: 260px; }
+.pnChat .hilo { max-height: 320px; background: linear-gradient(180deg, #F7F2EC, #EEF5EF); }
+.pnChat .hilo li.cliente { align-self: flex-start; background: #fff; color: var(--texto); border-radius: 18px; border-bottom-left-radius: 6px; }
+.pnChat .hilo li.negocio { align-self: flex-end; background: var(--verde); color: #fff; border-radius: 18px; border-bottom-right-radius: 6px; }
+.pnChat .chips { padding: 8px 10px 0; }
+.pnChat .escribir { padding: 8px 10px 10px; }
+.pnQR, .pnAjustes { max-width: 1100px; margin: 0 auto; padding: 14px; }
+.pnQRcab { display: grid; gap: 10px; background: #fff; padding: 16px; border-radius: 18px; margin-bottom: 14px; }
+.pnQRcab p { margin: 0; }
+.qrGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 12px; }
+.qrMesa { background: #fff; border-radius: 18px; padding: 14px; text-align: center; break-inside: avoid; }
+.qrMesa img { width: 100%; max-width: 180px; image-rendering: pixelated; }
+.qrMesa b { display: block; font-size: 20px; } .qrMesa small { color: var(--texto2); font-size: 11.5px; }
+.ajLista { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; }
+@media (max-width: 760px) {
+  .pnPedidos { grid-template-columns: 1fr; }
+  .pnPedidos.conDetalle .pnLista { display: none; }
+  .pnPedidos:not(.conDetalle) .pnDetalle { display: none; }
+  .pnBloques { grid-template-columns: 1fr; }
+}
+@media print {
+  .pnCab, .pnQRcab, #tab-pedidos { display: none !important; }
+  body.panel { background: #fff; }
+  .qrGrid { grid-template-columns: repeat(3, 1fr); }
+  .qrMesa { border: 1px dashed #999; }
+}
+.pnVolver { display: none; }
+@media (max-width: 760px) { .pnVolver { display: inline-flex; } }

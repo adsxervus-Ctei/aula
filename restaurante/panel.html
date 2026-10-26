@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Panel del negocio · Fogón del Río</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#1E1A17">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; connect-src 'self' https://*.supabase.co; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self'; object-src 'none'; base-uri 'self'">
+<link rel="icon" href="icons/icono-192.png" type="image/png">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/panel.css">
+</head>
+<body class="panel">
+<div class="pnEntrar" id="pn-entrar">
+  <form class="tarjeta" id="f-panel">
+    <div class="apLogo chico"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.2 1.2-3.6 2.4-4.6.3 1.5 1 2.4 2 2.8C11 8.5 11 5.5 12 3z" fill="#fff"/></svg></div>
+    <h1>Panel del negocio</h1>
+    <p class="mini" id="pn-modo"></p>
+    <label class="nota-campo" id="pn-correo-caja" hidden>Correo del personal<input id="pn-correo" type="email" autocomplete="username"></label>
+    <label class="nota-campo">Clave del panel<input id="pn-clave" type="password" autocomplete="current-password" required></label>
+    <p class="nota" id="pn-nota" role="status"></p>
+    <button class="btn verde grande" type="submit">Entrar</button>
+  </form>
+</div>
+
+<div class="pnApp" id="pn-app" hidden>
+  <header class="pnCab">
+    <div class="pnMarca"><span class="avatar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.2 1.2-3.6 2.4-4.6.3 1.5 1 2.4 2 2.8C11 8.5 11 5.5 12 3z" fill="#fff"/></svg></span><div><b id="pn-negocio">Fogón del Río</b><small id="pn-sub">Panel de pedidos</small></div></div>
+    <nav class="pnTabs" role="tablist">
+      <button role="tab" aria-selected="true" data-tab="pedidos" type="button">Pedidos <b class="insignia" id="pn-nuevos" hidden>0</b></button>
+      <button role="tab" aria-selected="false" data-tab="qr" type="button">QR de mesas</button>
+      <button role="tab" aria-selected="false" data-tab="ajustes" type="button">Ajustes</button>
+    </nav>
+    <button class="btn claro" id="pn-salir" type="button">Salir</button>
+  </header>
+
+  <section class="pnPedidos" id="tab-pedidos">
+    <div class="pnLista">
+      <div class="pnFiltro" role="radiogroup" aria-label="Filtro">
+        <button role="radio" aria-checked="true" data-filtro="activos" type="button">Activos</button>
+        <button role="radio" aria-checked="false" data-filtro="todos" type="button">Todos</button>
+      </div>
+      <ul id="pn-lista" class="pnItems"></ul>
+    </div>
+    <div class="pnDetalle" id="pn-detalle"><p class="mini pnVacio">Escoja un pedido para verlo, cambiar su estado y chatear con el cliente.</p></div>
+  </section>
+
+  <section class="pnQR" id="tab-qr" hidden>
+    <div class="pnQRcab"><p>Imprima y pegue un código en cada mesa. Al escanearlo, la app sabe que la persona está en el local y en qué mesa: no cobra domicilio.</p>
+      <label class="nota-campo">Dirección pública de la app<input id="qr-base"></label>
+      <button class="btn verde" id="qr-imprimir" type="button">Imprimir</button></div>
+    <div class="qrGrid" id="qr-grid"></div>
+  </section>
+
+  <section class="pnAjustes" id="tab-ajustes" hidden>
+    <div class="tarjeta" id="aj-datos"></div>
+  </section>
+</div>
+
+<div class="aviso-flotante" id="toast" role="status" aria-live="polite"></div>
+<script src="js/config.js"></script>
+<script src="js/datos.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="js/panel.js"></script>
+</body>
+</html>

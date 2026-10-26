@@ -1,0 +1,8 @@
+Pruebas automáticas (Python 3 + Playwright: pip install playwright && playwright install chromium)
+1. En la carpeta de la app:  python3 -m http.server 8790
+2. Recorrido completo (40 comprobaciones; capturas en la carpeta indicada):
+     python3 pruebas/myr_flujo.py http://localhost:8790/ capturas
+   Sin animaciones:  python3 pruebas/myr_flujo.py http://localhost:8790/ capturas robot
+3. Modo Supabase contra un servidor simulado (9 comprobaciones):
+     python3 pruebas/myr_supabase.py http://localhost:8790/
+Las rutas (OSRM), direcciones (Nominatim) y mosaicos del mapa se simulan en la prueba.
