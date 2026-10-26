@@ -11,11 +11,12 @@ window.CONFIG = {
     nombre: 'Fogón del Río',                  // nombre de ejemplo (ficticio)
     lema: 'Asadero · comida costeña · comidas rápidas',
     municipio: 'Hatillo de Loba, Bolívar',
-    direccion: 'Calle Principal (dirección de ejemplo)',
+    direccion: 'Cl. 7 #8-2, Hatillo de Loba, Bolívar',
     // Punto de salida de los domicilios. Ajuste a la puerta del negocio:
-    // Google Maps → clic derecho sobre el local → copiar coordenadas.
-    lat: 8.95861,
-    lng: -74.08080,
+    // Google Maps → clic derecho sobre el local → copiar coordenadas.  
+     
+    lat: 8.957648102800887,
+    lng: -74.07715808167755,
     whatsapp: '3004693145',                   // 10 dígitos, sin +57 (también se cambia en Admin → Ajustes)
     telefono: '',
     nit: '',                                  // si el negocio lo tiene, sale en el ticket
