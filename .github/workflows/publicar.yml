@@ -1,0 +1,77 @@
+# Mesa y Ruta · Publicar la app (con fotos)
+# Va en el repositorio como:  .github/workflows/publicar.yml
+# Requisito (una sola vez): Settings → Pages → Build and deployment → Source: «GitHub Actions».
+# Este archivo trae todo adentro: no necesita .github/fotos.py.
+name: Publicar la app (con fotos)
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.despliegue.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Bajar las fotos del menú al sitio
+        # Si las fotos fallan, la app igual se publica (usa las ilustraciones)
+        continue-on-error: true
+        run: |
+          python3 - <<'PY'
+          import json, os, re, urllib.request, concurrent.futures as cf
+          if not os.path.exists('js/catalogo.js'):
+              print('No está js/catalogo.js: se publica sin bajar fotos.'); raise SystemExit(0)
+          ids = sorted(set(re.findall(r"photo-\d+-[0-9a-f]+", open('js/catalogo.js', encoding='utf-8').read())))
+          os.makedirs('img/fotos', exist_ok=True)
+          BASE = 'https://images.unsplash.com/'
+          def bajar(i):
+              ok = True
+              for suf, w, h in (('c', 900, 900), ('a', 1400, 780)):
+                  url = f'{BASE}{i}?fm=webp&fit=crop&w={w}&h={h}&q=74'
+                  try:
+                      req = urllib.request.Request(url, headers={'User-Agent': 'MesaYRuta-despliegue/1.0'})
+                      with urllib.request.urlopen(req, timeout=40) as r:
+                          datos = r.read()
+                      if len(datos) < 2000: raise ValueError('archivo muy pequeño')
+                      open(f'img/fotos/{i}-{suf}.webp', 'wb').write(datos)
+                  except Exception as e:
+                      print('FALLÓ', i, suf, e); ok = False
+              return i, ok
+          with cf.ThreadPoolExecutor(8) as ex:
+              res = list(ex.map(bajar, ids))
+          bien = [i for i, ok in res if ok]; mal = [i for i, ok in res if not ok]
+          json.dump({'fotos': bien, 'fallaron': mal}, open('img/fotos/lista.json', 'w'))
+          resumen = f'### Fotos del menú\n\n{len(bien)} de {len(ids)} fotos quedaron dentro del sitio.\n'
+          if mal:
+              resumen += '\nNo se pudieron bajar (la app mostrará la ilustración; súbalas desde el panel):\n' + '\n'.join(f'- `{i}`' for i in mal) + '\n'
+          print(resumen)
+          if os.environ.get('GITHUB_STEP_SUMMARY'):
+              open(os.environ['GITHUB_STEP_SUMMARY'], 'a').write(resumen)
+          PY
+
+      - name: Preparar el sitio
+        run: |
+          mkdir -p _site
+          rsync -a --exclude '.git' --exclude '.github' --exclude '_site' --exclude 'pruebas' ./ _site/
+          touch _site/.nojekyll
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: despliegue
+        uses: actions/deploy-pages@v4
