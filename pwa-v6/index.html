@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fogón del Río · Pedidos y reservas</title>
+<meta name="description" content="Pida en la mesa, para recoger o a domicilio en Hatillo de Loba: menú con fotos, salsas, bebidas, pago, ticket, reservas y chat con el negocio.">
+<meta name="theme-color" content="#1E1A17">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob: https://images.unsplash.com https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://*.supabase.co https://lh3.googleusercontent.com; media-src 'self' blob:; connect-src 'self' https://router.project-osrm.org https://nominatim.openstreetmap.org https://*.supabase.co https://*.functions.supabase.co https://accounts.google.com; style-src 'self' 'unsafe-inline' https://accounts.google.com/gsi/style; script-src 'self' https://accounts.google.com/gsi/client; frame-src 'self' https://accounts.google.com/gsi/; font-src 'self'; object-src 'none'; base-uri 'self'">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icono-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+<link rel="preload" href="fonts/poppins-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/negocio.css">
+<link rel="stylesheet" href="css/v6.css">
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-atras" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-adelante" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-abajo" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6M6 4l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-bolsa" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8zM9 8V6a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
+  <symbol id="i-mas" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-menos" viewBox="0 0 24 24"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-mesa" viewBox="0 0 24 24"><path d="M3 9h18M5 9v11M19 9v11M8 9V6h8v3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-recoger" viewBox="0 0 24 24"><path d="M5 9h14l-1.2 11H6.2L5 9zM9 9V7a3 3 0 0 1 6 0v2M9.5 14.5l2 2 3.5-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-moto" viewBox="0 0 24 24"><circle cx="6" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="18" cy="17" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 17h6l2-6h-4l-2 3H8M14 7h3l1 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-ubicacion" viewBox="0 0 24 24"><path d="M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-mira" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.2" fill="currentColor"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-chat" viewBox="0 0 24 24"><path d="M5 5h14a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H10l-4 3v-3H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M8 10h8M8 13h5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-enviar" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-2.5-6.5L4 12z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"/></symbol>
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8.5c0 3.5 3 6.5 6.5 6.5l1-1.6-2-1-1 .9c-1-.5-2.2-1.7-2.7-2.7l.9-1-1-2-1.7 1z" fill="currentColor"/></symbol>
+  <symbol id="i-efectivo" viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="2.6" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-transfer" viewBox="0 0 24 24"><path d="M4 8h13l-3-3M20 16H7l3 3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-tarjeta" viewBox="0 0 24 24"><rect x="3" y="5.5" width="18" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 10h18M7 15h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-persona" viewBox="0 0 24 24"><circle cx="12" cy="8.5" r="3.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-copiar" viewBox="0 0 24 24"><rect x="8" y="8" width="11" height="12" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 15V5a1 1 0 0 1 1-1h9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-cerrar" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></symbol>
+  <symbol id="i-basura" viewBox="0 0 24 24"><path d="M5 7h14M10 7V5h4v2M7 7l1 13h8l1-13" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-reloj" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 8v4.5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-llama" viewBox="0 0 24 24"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.2 1.2-3.6 2.4-4.6.3 1.5 1 2.4 2 2.8C11 8.5 11 5.5 12 3z" fill="currentColor"/></symbol>
+  <symbol id="i-calendario" viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="15" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 10h16M9 3v4M15 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-ticket" viewBox="0 0 24 24"><path d="M6 3h12v18l-2-1.5-2 1.5-2-1.5-2 1.5-2-1.5L6 21V3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 8h6M9 12h6M9 16h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-descargar" viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-compartir" viewBox="0 0 24 24"><path d="M12 15V4M8 8l4-4 4 4M5 13v6a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-6" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5l11 7-11 7V5z" fill="currentColor"/></symbol>
+  <symbol id="i-repetir" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v4h4" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-tienda" viewBox="0 0 24 24"><path d="M4 9l1.5-5h13L20 9M4 9h16v2a3 3 0 0 1-5.3 1.9A3 3 0 0 1 12 14a3 3 0 0 1-2.7-1.1A3 3 0 0 1 4 11V9zM5 13v7h14v-7M10 20v-4h4v4" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></symbol>
+  <symbol id="i-casa" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H14v-6h-4v6H4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-campana" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l2 2H4l2-2zM10 20a2 2 0 0 0 4 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-personas" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17" cy="9.5" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M3 19c.7-3 3-4.5 6-4.5s5.3 1.5 6 4.5M15 14.6c2.6 0 4.4 1.3 5 3.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-estrella" viewBox="0 0 24 24"><path d="M12 4l2.4 5 5.4.6-4 3.7 1.1 5.3L12 16l-4.9 2.6 1.1-5.3-4-3.7 5.4-.6z" fill="currentColor"/></symbol>
+  <symbol id="i-google" viewBox="0 0 24 24"><path d="M21.6 12.2c0-.7-.1-1.3-.2-1.9H12v3.7h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3z" fill="#4285F4"/><path d="M12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22z" fill="#34A853"/><path d="M6.4 14c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3.1a10 10 0 0 0 0 9.2L6.4 14z" fill="#FBBC05"/><path d="M12 5.9c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.4L6.4 10C7.2 7.7 9.4 5.9 12 5.9z" fill="#EA4335"/></symbol>
+  <symbol id="i-sinsenal" viewBox="0 0 24 24"><path d="M3 3l18 18M8.5 16.5a5 5 0 0 1 5.4-1M5 12.6a10 10 0 0 1 4.3-2.4M19 12.6a10 10 0 0 0-5.4-2.7M12 20h.01" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></symbol>
+  <symbol id="i-volumen" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-chispa" viewBox="0 0 24 24"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z M18 15l.8 2.2L21 18l-2.2.8L18 21l-.8-2.2L15 18l2.2-.8z" fill="currentColor"/></symbol>
+  <symbol id="i-motoGrande" viewBox="0 0 48 48"><circle cx="11" cy="34" r="6.5" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="37" cy="34" r="6.5" fill="none" stroke="currentColor" stroke-width="3"/><path d="M17 34h12l5-11h-8l-4 6h-8M26 13h6l3 9" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><rect x="5" y="20" width="10" height="8" rx="2" fill="currentColor"/><circle cx="30" cy="9" r="3.5" fill="currentColor"/></symbol>
+  <symbol id="i-pausa" viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></symbol>
+  <symbol id="i-silencio" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4zM17 9l5 6M22 9l-5 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-escribir" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13.5 6.5l4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+  <symbol id="i-ampliar" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-candado" viewBox="0 0 24 24"><rect x="5" y="10.5" width="14" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+  <symbol id="i-escudo" viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 4.5-3 8.3-7 10-4-1.7-7-5.5-7-10V6z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 12l2 2 4-4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</svg>
+
+<!-- ============ APERTURA ============ -->
+<div id="apertura" class="apertura" aria-hidden="true">
+  <div class="apLogo marca"><svg viewBox="0 0 24 24"><use href="#i-llama"/></svg></div>
+  <p class="apNombre"><b id="ap-negocio">Fogón del Río</b><span id="ap-lugar">Hatillo de Loba</span></p>
+  <div class="apBarra"><i id="ap-barra"></i></div>
+  <p class="apCreditos">Mesa y Ruta · Powered by <b>AXERVUS CTeI</b></p>
+</div>
+
+<main id="app">
+
+<!-- ============ ENTRADA (primera vez) ============ -->
+<section id="v-entrada" class="vista entrada oculta">
+  <div class="enFoto" id="en-foto" aria-hidden="true"></div>
+  <div class="enContenido">
+    <div class="enMarca"><span class="logoMini marca"><svg aria-hidden="true"><use href="#i-llama"/></svg></span><div><b id="en-negocio">Fogón del Río</b><small id="en-lugar">Hatillo de Loba, Bolívar</small></div></div>
+    <h1>Su comida favorita,<br><em>en la mesa o en su casa.</em></h1>
+    <p class="sub">Cree su cuenta una sola vez. Después entra aunque no tenga señal, con su correo y su clave.</p>
+    <div class="enBotones">
+      <div id="g-boton" class="gBoton" hidden></div>
+      <button class="btn google grande" id="b-google" type="button"><svg aria-hidden="true"><use href="#i-google"/></svg> Continuar con Google</button>
+      <button class="btn verde grande" id="b-ir-registro" type="button">Crear cuenta con mi correo</button>
+      <button class="btn claro grande" id="b-ir-ingresar" type="button"><svg aria-hidden="true"><use href="#i-sinsenal"/></svg> Ya tengo cuenta · entrar sin señal</button>
+      <button class="enlace centro" id="b-ir-negocio" type="button"><svg aria-hidden="true"><use href="#i-tienda"/></svg> Admin</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CUENTA DEL CLIENTE ============ -->
+<section id="v-cuenta" class="vista cuenta oculta">
+  <header class="barra">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit" id="cuenta-tit">Su cuenta</h2>
+    <span class="redondo vacio"></span>
+  </header>
+  <div class="tabs" role="tablist" id="cuenta-tabs">
+    <button role="tab" id="tab-registro" aria-selected="true" type="button">Crear cuenta</button>
+    <button role="tab" id="tab-ingresar" aria-selected="false" type="button">Ingresar</button>
+  </div>
+  <p class="aviso" id="cuenta-motivo" hidden></p>
+  <form id="f-registro" class="formulario" autocomplete="on">
+    <div class="gResumen" id="g-resumen" hidden></div>
+    <label>Nombre completo<input id="rg-nombre" autocomplete="name" required minlength="3"></label>
+    <label>Correo (Gmail u otro)<input id="rg-correo" type="email" autocomplete="email" required></label>
+    <label>Celular (WhatsApp)<input id="rg-celular" inputmode="numeric" autocomplete="tel-national" required pattern="3[0-9]{9}" placeholder="3001234567"></label>
+    <label><span id="rg-clave-lbl">Clave (mínimo 6)</span><input id="rg-clave" type="password" autocomplete="new-password" required minlength="6"></label>
+    <label>Dirección habitual (opcional)<input id="rg-direccion" autocomplete="street-address" placeholder="Barrio, calle, número, referencia"></label>
+    <label class="check"><input type="checkbox" id="rg-datos" required> <span>Autorizo el tratamiento de mis datos para gestionar pedidos y reservas (Ley 1581 de 2012). Puedo consultarlos o borrarlos desde mi perfil.</span></label>
+    <p class="nota" id="rg-nota" role="status"></p>
+    <button class="btn verde grande" type="submit">Crear mi cuenta</button>
+  </form>
+  <form id="f-ingresar" class="formulario" hidden autocomplete="on">
+    <label>Correo<input id="in-usuario" type="email" autocomplete="username" required></label>
+    <label>Clave<input id="in-clave" type="password" autocomplete="current-password" required minlength="6"></label>
+    <p class="mini"><svg class="ico14" aria-hidden="true"><use href="#i-sinsenal"/></svg> Sin señal también funciona si ya usó esta cuenta en este teléfono.</p>
+    <p class="nota" id="in-nota" role="status"></p>
+    <button class="btn verde grande" type="submit">Ingresar</button>
+  </form>
+</section>
+
+<!-- ============ ENTRADA DEL NEGOCIO ============ -->
+<section id="v-negocio-entrar" class="vista cuenta negEntrar oculta">
+  <header class="barra">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit">Admin · acceso del negocio</h2>
+    <span class="redondo vacio"></span>
+  </header>
+  <div class="negEntrarCaja">
+    <span class="logoMini grande"><svg aria-hidden="true"><use href="#i-tienda"/></svg></span>
+    <p class="sub centro">Administrador, empleados y superadministrador entran por aquí. Cada uno ve solo lo que su rol permite.</p>
+    <form id="f-negocio" class="formulario">
+      <label>Correo<input id="ng-correo" type="email" autocomplete="username" required></label>
+      <label>Clave<input id="ng-clave" type="password" autocomplete="current-password" required></label>
+      <p class="nota" id="ng-nota" role="status"></p>
+      <button class="btn oscuro grande" type="submit">Entrar al panel</button>
+    </form>
+    <p class="mini centro" id="ng-ayuda"></p>
+  </div>
+</section>
+
+<!-- ============ INICIO ============ -->
+<section id="v-inicio" class="vista inicio oculta">
+  <div class="hojasFlotan" aria-hidden="true"><i class="h1"></i><i class="h2"></i><i class="h3"></i><i class="h4"></i></div>
+  <header class="inCab">
+    <button class="avatarBtn" id="b-perfil" type="button" aria-label="Mi perfil"><span id="in-avatar"></span></button>
+    <div class="inMarca"><span class="logoMini chico marca"><svg aria-hidden="true"><use href="#i-llama"/></svg><span class="inArco" aria-hidden="true"></span></span><b id="in-negocio">Fogón del Río</b></div>
+    <button class="redondo" id="b-bolsa-inicio" type="button" aria-label="Ver mi pedido"><svg><use href="#i-bolsa"/></svg><b class="insignia" id="insignia-inicio" hidden>0</b></button>
+  </header>
+  <div class="saludo"><p id="in-hora">Buenas tardes</p><h1 id="in-saludo">Hola</h1></div>
+  <div class="anuncios" id="anuncios" aria-roledescription="carrusel" aria-label="Publicidad del negocio">
+    <div class="anPista" id="an-pista"></div>
+    <div class="anPuntos" id="an-puntos"></div>
+  </div>
+  <div class="accesos">
+    <button class="acceso grande" id="b-ver-menu" type="button"><span class="acIco"><svg aria-hidden="true"><use href="#i-llama"/></svg></span><b>Ver el menú</b><small>Pedir ahora</small></button>
+    <button class="acceso" id="b-ir-reservas" type="button"><span class="acIco"><svg aria-hidden="true"><use href="#i-calendario"/></svg></span><b>Reservar</b><small>Celebraciones</small></button>
+    <button class="acceso" id="b-mis-pedidos" type="button"><span class="acIco"><svg aria-hidden="true"><use href="#i-ticket"/></svg></span><b>Mis pedidos</b><small>Tickets</small></button>
+  </div>
+  <div id="in-encurso"></div>
+  <section class="bloque">
+    <div class="bloqueCab"><h2>Especialidades de la casa</h2><button class="enlace" id="b-todo-menu" type="button">Ver todo</button></div>
+    <div class="carril" id="in-especiales"></div>
+  </section>
+  <section class="bloque">
+    <div class="bloqueCab"><h2>Categorías</h2></div>
+    <div class="catsLista" id="in-cats"></div>
+  </section>
+  <div id="in-reserva"></div>
+  <p class="pie">Mesa y Ruta · Powered by <b>AXERVUS CTeI</b><br><span id="in-pie-fotos">Fotos de ejemplo: Unsplash</span></p>
+</section>
+
+<!-- ============ MENÚ / CARRUSEL ============ -->
+<section id="v-menu" class="vista menu oculta" data-etapa="carrusel">
+  <div class="heroe" id="heroe" aria-hidden="true"><div class="heroeArte" id="heroe-arte"></div></div>
+  <header class="barra flotante">
+    <button class="redondo" id="b-menu-atras" type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <button class="chipModo" id="b-chip-modo" type="button"><svg aria-hidden="true"><use href="#i-moto"/></svg><span id="chip-modo">¿Cómo lo quiere?</span></button>
+    <button class="redondo" id="b-bolsa" type="button" aria-label="Ver mi pedido"><svg><use href="#i-bolsa"/></svg><b class="insignia" id="insignia" hidden>0</b></button>
+  </header>
+  <nav class="catsMenu" id="cats-menu" aria-label="Categorías del menú"></nav>
+  <div class="escenario" id="escenario">
+    <button class="flecha izq" id="b-ant" type="button" aria-label="Plato anterior"><svg><use href="#i-atras"/></svg></button>
+    <div class="vecino izq" id="vecino-ant" aria-hidden="true"></div>
+    <div class="plato" id="plato" style="view-transition-name: plato" role="button" tabindex="0" aria-label="Ver el detalle del plato"></div>
+    <div class="vecino der" id="vecino-sig" aria-hidden="true"></div>
+    <button class="flecha der" id="b-sig" type="button" aria-label="Plato siguiente"><svg><use href="#i-adelante"/></svg></button>
+  </div>
+  <div class="ficha" id="ficha">
+    <p class="etiquetas" id="pl-etiquetas"></p>
+    <div class="fichaNombre"><h1 id="pl-nombre"></h1></div>
+    <p class="precio"><b id="pl-precio"></b> <span id="pl-porcion"></span></p>
+    <p class="desc" id="pl-desc"></p>
+    <button class="btn verde pastilla" id="b-agregar" type="button">Agregar al pedido</button>
+    <button class="deslizar" id="b-receta" type="button">Desliza para ver la receta<svg aria-hidden="true"><use href="#i-abajo"/></svg></button>
+    <div class="puntos" id="puntos" role="tablist" aria-label="Platos"></div>
+  </div>
+  <div class="detalle" id="detalle" aria-hidden="true">
+    <ul class="dtTags" id="dt-tags"></ul>
+    <button class="dtVolver" id="b-dt-volver" type="button" aria-label="Volver al carrusel"><svg><use href="#i-atras"/></svg></button>
+    <h2 id="dt-nombre"></h2>
+    <p class="dtDesc" id="dt-desc"></p>
+    <p class="dtPrecio" id="dt-precio"></p>
+    <div class="dtAcc"><button class="btn oro" id="b-dt-agregar" type="button"><svg aria-hidden="true"><use href="#i-mas"/></svg> Agregar al pedido</button></div>
+  </div>
+  <div class="hoja vidrio" id="hoja" aria-hidden="true">
+    <div class="asa" id="asa" aria-hidden="true"></div>
+    <div class="hojaCab">
+      <p class="paso" id="hoja-paso">Paso 1 de 3</p>
+      <h2 id="hoja-tit">Receta</h2>
+      <p class="mini" id="hoja-sub"></p>
+    </div>
+    <ul class="lista" id="hoja-lista"></ul>
+    <div class="hojaPie">
+      <div class="cantPlato" id="cant-plato" hidden><button type="button" data-cp="-1" aria-label="Uno menos"><svg><use href="#i-menos"/></svg></button><b id="cp-n">1</b><button type="button" data-cp="1" aria-label="Uno más"><svg><use href="#i-mas"/></svg></button></div>
+      <button class="btn pastilla contorno" id="b-hoja" type="button">Elegir salsas</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ RESUMEN ============ -->
+<section id="v-resumen" class="vista resumen oculta">
+  <header class="barra">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit">Su pedido</h2>
+    <button class="redondo" id="b-otro" type="button" aria-label="Agregar otro plato"><svg><use href="#i-mas"/></svg></button>
+  </header>
+  <div class="resHeroe">
+    <div class="platoGrande" id="plato-grande" style="view-transition-name: plato"></div>
+    <div class="resCab"><p>Su pedido</p><b id="res-cab-total">$ 0</b><small id="res-cab-n"></small></div>
+  </div>
+  <div class="tarjeta vidrio" id="res-tarjeta">
+    <div class="modos" role="radiogroup" aria-label="Cómo recibe el pedido" id="res-modos">
+      <button role="radio" data-modo="local" type="button"><svg aria-hidden="true"><use href="#i-mesa"/></svg>Comer aquí</button>
+      <button role="radio" data-modo="recoger" type="button"><svg aria-hidden="true"><use href="#i-recoger"/></svg>Recoger</button>
+      <button role="radio" data-modo="domicilio" type="button"><svg aria-hidden="true"><use href="#i-moto"/></svg>Domicilio</button>
+    </div>
+    <div id="res-destino" class="destino"></div>
+    <ul class="items" id="res-items"></ul>
+    <button class="enlace" id="b-otro2" type="button"><svg aria-hidden="true"><use href="#i-mas"/></svg> Agregar otro plato</button>
+    <dl class="cuentas" id="res-cuentas"></dl>
+    <h3 class="subt">Forma de pago</h3>
+    <div class="pagos" role="radiogroup" aria-label="Forma de pago" id="res-pagos">
+      <button role="radio" data-pago="efectivo" type="button"><svg aria-hidden="true"><use href="#i-efectivo"/></svg>Efectivo</button>
+      <button role="radio" data-pago="transferencia" type="button"><svg aria-hidden="true"><use href="#i-transfer"/></svg>Transferencia</button>
+      <button role="radio" data-pago="tarjeta" type="button"><svg aria-hidden="true"><use href="#i-tarjeta"/></svg>Tarjeta</button>
+    </div>
+    <div class="pagoDetalle" id="res-pago-detalle"></div>
+    <label class="nota-campo">Nota para la cocina (opcional)<input id="res-nota" maxlength="140" placeholder="Ej.: término 3/4, sin hielo…"></label>
+  </div>
+  <div class="barraTotal">
+    <div><small>Total</small><b id="res-total">$ 0</b></div>
+    <button class="btn blanco" id="b-pedir" type="button"><svg aria-hidden="true"><use href="#i-ticket"/></svg> Ver ticket</button>
+  </div>
+</section>
+
+<!-- ============ TICKET ============ -->
+<section id="v-ticket" class="vista ticket oculta">
+  <header class="barra">
+    <button class="redondo" data-atras type="button" aria-label="Volver al resumen"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit">Ticket de compra</h2>
+    <span class="redondo vacio"></span>
+  </header>
+  <p class="mini centro pad" id="tk-ayuda">Revise su pedido. Al tocar «Enviar», el negocio lo recibe con este ticket.</p>
+  <div class="tkPapel" id="tk-papel"><div class="tkCargando">Generando su ticket…</div></div>
+  <div class="tkBotones">
+    <button class="btn claro" id="b-tk-descargar" type="button"><svg aria-hidden="true"><use href="#i-descargar"/></svg> Descargar</button>
+    <button class="btn claro" id="b-tk-compartir" type="button"><svg aria-hidden="true"><use href="#i-compartir"/></svg> Compartir</button>
+    <button class="btn verde grande span2" id="b-tk-enviar" type="button"><svg aria-hidden="true"><use href="#i-enviar"/></svg> Enviar pedido</button>
+  </div>
+</section>
+
+<!-- ============ MAPA ============ -->
+<section id="v-mapa" class="vista mapa oculta">
+  <header class="barra flotante">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit fondoClaro">Dirección de entrega</h2>
+    <button class="redondo" id="b-mi-ubicacion" type="button" aria-label="Usar mi ubicación"><svg><use href="#i-mira"/></svg></button>
+  </header>
+  <div id="mapa" class="lienzoMapa" role="application" aria-label="Mapa: mueva el mapa hasta que el pin quede en su casa"></div>
+  <div class="pinCentro" id="pin-centro" aria-hidden="true"><span class="pcGlobo"><svg><use href="#i-casa"/></svg></span><span class="pcPunta"></span><span class="pcSombra"></span><b class="pcAyuda" id="pc-ayuda">Mueva el mapa: el pin es su casa</b></div>
+  <div class="tarjeta vidrio mapaTarjeta">
+    <form id="f-direccion" class="buscar">
+      <input id="mp-direccion" placeholder="Barrio, calle o referencia" autocomplete="street-address" aria-label="Dirección">
+      <button class="btn claro" type="submit">Buscar</button>
+    </form>
+    <p class="mini">Mueva el mapa con el dedo hasta que el pin quede sobre su casa, o toque <b>⊙</b> para usar su ubicación.</p>
+    <button class="enlace" id="b-dir-manual" type="button"><svg aria-hidden="true"><use href="#i-escribir"/></svg> No encuentro mi casa: escribir la dirección</button>
+    <div class="dirManual" id="dir-manual" hidden>
+      <label class="nota-campo sinMargen">Barrio<input id="mp-barrio" maxlength="60" placeholder="Ej.: El Centro, San José…"></label>
+      <p class="mini">Escriba la calle y una referencia arriba. Cobramos el domicilio mínimo y el negocio le confirma por el chat si cambia.</p>
+      <button class="btn oscuro" id="b-dir-sin-mapa" type="button">Usar esta dirección sin mapa</button>
+    </div>
+    <div class="rutaDatos" id="mp-datos"></div>
+    <label class="nota-campo">Indicaciones para el domiciliario<input id="mp-indicaciones" maxlength="120" placeholder="Casa azul, frente al parque…"></label>
+    <button class="btn verde grande" id="b-confirmar-dir" type="button">Confirmar dirección</button>
+  </div>
+</section>
+
+<!-- ============ PEDIDO ============ -->
+<section id="v-pedido" class="vista pedido oculta">
+  <header class="barra">
+    <button class="redondo" id="b-pedido-atras" type="button" aria-label="Volver al inicio"><svg><use href="#i-casa"/></svg></button>
+    <h2 class="barraTit">Pedido <span id="pd-codigo"></span></h2>
+    <button class="redondo" id="b-pedido-chat" type="button" aria-label="Chat con el negocio"><svg><use href="#i-chat"/></svg></button>
+  </header>
+  <div class="tarjeta" id="pd-estado"></div>
+  <div class="tarjeta" id="pd-ruta-caja" hidden>
+    <div class="rutaCab"><h3 class="subt sinMargen">Su domicilio</h3><button class="enlace" id="b-pd-seguir" type="button"><svg aria-hidden="true"><use href="#i-ampliar"/></svg> Ver en grande</button></div>
+    <div class="etaFranja" id="pd-eta"></div>
+    <div id="mapa-pedido" class="lienzoMapa chico" aria-label="Mapa de la ruta con la moto"></div>
+    <p class="mini" id="pd-ruta-txt"></p>
+  </div>
+  <div class="tarjeta pagoPedido" id="pd-pago" hidden></div>
+  <div class="tarjeta" id="pd-detalle"></div>
+  <div class="botonera">
+    <button class="btn verde grande" id="b-pd-chat" type="button"><svg aria-hidden="true"><use href="#i-chat"/></svg> Chat con el negocio</button>
+    <button class="btn claro grande" id="b-pd-ticket" type="button"><svg aria-hidden="true"><use href="#i-ticket"/></svg> Ver ticket</button>
+    <a class="btn claro grande" id="b-pd-wa" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg> Enviar por WhatsApp</a>
+    <button class="btn oscuro grande" id="b-pd-inicio" type="button"><svg aria-hidden="true"><use href="#i-casa"/></svg> Volver al inicio</button>
+  </div>
+</section>
+
+<!-- ============ SEGUIR EL DOMICILIO ============ -->
+<section id="v-seguir" class="vista mapa seguir oculta">
+  <header class="barra flotante">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit fondoClaro">¿Por dónde va mi pedido?</h2>
+    <button class="redondo" id="b-sg-centrar" type="button" aria-label="Ver la moto"><svg><use href="#i-mira"/></svg></button>
+  </header>
+  <div id="mapa-seguir" class="lienzoMapa" aria-label="Mapa con la moto del domicilio"></div>
+  <div class="tarjeta vidrio mapaTarjeta sgTarjeta">
+    <div class="sgEta"><span class="sgMoto"><svg><use href="#i-motoGrande"/></svg></span><div><small id="sg-estado">La moto va en camino</small><b id="sg-min">— min</b><small id="sg-km"></small></div></div>
+    <div class="sgBarra"><i id="sg-barra"></i><span class="sgIni"><svg><use href="#i-llama"/></svg></span><span class="sgFin"><svg><use href="#i-casa"/></svg></span></div>
+    <p class="mini" id="sg-fuente"></p>
+    <div class="dos"><button class="btn claro" id="b-sg-chat" type="button"><svg aria-hidden="true"><use href="#i-chat"/></svg> Chat</button><button class="btn oscuro" id="b-sg-inicio" type="button"><svg aria-hidden="true"><use href="#i-casa"/></svg> Inicio</button></div>
+  </div>
+</section>
+
+<!-- ============ CHAT ============ -->
+<section id="v-chat" class="vista chat oculta">
+  <header class="barra chatCab">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <div class="chatQuien"><span class="avatar marca"><svg aria-hidden="true"><use href="#i-llama"/></svg></span><div><b id="ch-negocio">Fogón del Río</b><small id="ch-estado">Pedido</small></div></div>
+    <a class="redondo" id="b-chat-wa" target="_blank" rel="noopener" aria-label="Seguir por WhatsApp"><svg><use href="#i-wa"/></svg></a>
+  </header>
+  <ol class="hilo" id="hilo" aria-live="polite"></ol>
+  <div class="chips" id="ch-rapidas">
+    <button type="button" data-rapido="¿Cuánto falta para mi pedido?">¿Cuánto falta?</button>
+    <button type="button" data-rapido="¿En qué va mi pedido?">¿En qué va?</button>
+    <button type="button" data-rapido="¿Cómo pago?">¿Cómo pago?</button>
+    <button type="button" data-rapido="Ya hice la transferencia.">Ya transferí</button>
+    <button type="button" data-rapido="Quiero hablar con una persona.">Hablar con una persona</button>
+  </div>
+  <form id="f-chat" class="escribir">
+    <input id="ch-txt" placeholder="Pregunte lo que quiera de su pedido" autocomplete="off" aria-label="Mensaje" maxlength="500">
+    <button class="redondo verde" type="submit" aria-label="Enviar"><svg><use href="#i-enviar"/></svg></button>
+  </form>
+</section>
+
+<!-- ============ RESERVAS ============ -->
+<section id="v-reservas" class="vista reservas oculta">
+  <header class="barra">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit">Reservar</h2>
+    <button class="redondo" id="b-rv-mias" type="button" aria-label="Mis reservas"><svg><use href="#i-calendario"/></svg><b class="insignia" id="rv-insignia" hidden>0</b></button>
+  </header>
+  <div class="rvPaso"><h3 class="subt pad centro">¿Qué van a celebrar?</h3>
+    <div class="rvEscena" id="rv-escena">
+      <button class="flecha izq" id="rv-ant" type="button" aria-label="Ocasión anterior"><svg><use href="#i-atras"/></svg></button>
+      <div class="plato rvPlato" id="rv-plato"></div>
+      <button class="flecha der" id="rv-sig" type="button" aria-label="Ocasión siguiente"><svg><use href="#i-adelante"/></svg></button>
+    </div>
+    <div class="rvFicha"><div class="fichaNombre"><h1 id="rv-oc-nombre"></h1></div><p class="desc" id="rv-oc-texto"></p></div>
+    <div class="miniPlatos" id="rv-ocasiones" role="tablist" aria-label="Ocasiones"></div>
+  </div>
+  <div class="rvPaso"><h3 class="subt pad">¿Qué día?</h3><div class="calendario" id="rv-dias"></div></div>
+  <div class="rvPaso"><h3 class="subt pad">¿A qué hora?</h3><div class="horas" id="rv-horas"></div></div>
+  <div class="tarjeta">
+    <div class="personas"><span><b>Personas</b><small>Incluya a los niños</small></span>
+      <div class="cantGrande"><button type="button" id="rv-menos" aria-label="Una persona menos"><svg><use href="#i-menos"/></svg></button><b id="rv-n">2</b><button type="button" id="rv-mas" aria-label="Una persona más"><svg><use href="#i-mas"/></svg></button></div></div>
+    <label class="nota-campo">Cuéntenos un poco (opcional)<textarea id="rv-desc" maxlength="300" rows="3" placeholder="Ej.: cumpleaños de mi mamá, vamos con torta propia"></textarea></label>
+  </div>
+  <div class="rvPaso"><h3 class="subt pad">Menú para la ocasión</h3><div class="carril" id="rv-menu"></div></div>
+  <div class="botonera"><button class="btn verde grande" id="b-reservar" type="button"><svg aria-hidden="true"><use href="#i-calendario"/></svg> Solicitar reserva</button>
+    <button class="btn claro grande" id="b-rv-mias2" type="button">Ver mis reservas</button></div>
+</section>
+
+<!-- ============ RESERVA GUARDADA ============ -->
+<section id="v-reserva-ok" class="vista reservaOk oculta">
+  <div class="okCaja">
+    <div class="okCheck" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24" fill="none"/><path d="M14 27l8 8 16-17" fill="none"/></svg></div>
+    <h1>¡Su reserva ha sido guardada!</h1>
+    <p class="sub">El negocio la confirma en un momento y le avisamos aquí mismo.</p>
+    <div class="tarjeta okResumen" id="rok-resumen"></div>
+    <div class="botonera">
+      <button class="btn verde grande" id="b-rok-inicio" type="button"><svg aria-hidden="true"><use href="#i-casa"/></svg> Volver al inicio</button>
+      <button class="btn claro grande" id="b-rok-mias" type="button"><svg aria-hidden="true"><use href="#i-calendario"/></svg> Ver mis reservas</button>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MIS RESERVAS ============ -->
+<section id="v-mis-reservas" class="vista misReservas oculta">
+  <header class="barra">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit">Mis reservas</h2>
+    <button class="redondo" id="b-mr-inicio" type="button" aria-label="Inicio"><svg><use href="#i-casa"/></svg></button>
+  </header>
+  <div class="tabs" role="tablist">
+    <button role="tab" id="mr-tab-prox" aria-selected="true" type="button">Próximas</button>
+    <button role="tab" id="mr-tab-ant" aria-selected="false" type="button">Anteriores</button>
+  </div>
+  <ul class="reservasLista" id="mr-lista"></ul>
+  <div class="botonera"><button class="btn verde grande" id="b-mr-nueva" type="button"><svg aria-hidden="true"><use href="#i-mas"/></svg> Hacer otra reserva</button></div>
+</section>
+
+<!-- ============ VERIFICAR CARNÉ (se abre al escanear el QR del carné) ============ -->
+<section id="v-verificar" class="vista verificar oculta">
+  <div class="verCaja" id="ver-caja"><div class="tkCargando">Verificando el carné…</div></div>
+</section>
+
+<!-- ============ PERFIL ============ -->
+<section id="v-perfil" class="vista perfil oculta">
+  <header class="barra">
+    <button class="redondo" data-atras type="button" aria-label="Volver"><svg><use href="#i-atras"/></svg></button>
+    <h2 class="barraTit">Mi perfil</h2>
+    <span class="redondo vacio"></span>
+  </header>
+  <div class="tarjeta" id="pf-datos"></div>
+  <div id="pf-resumen"></div>
+  <h3 class="subt pad">Mis pedidos y tickets</h3>
+  <ul class="pedidos" id="pf-pedidos"></ul>
+  <div class="botonera">
+    <button class="btn claro" id="b-pf-reservas" type="button"><svg aria-hidden="true"><use href="#i-calendario"/></svg> Mis reservas</button>
+    <button class="btn claro" id="b-pf-avisos" type="button" hidden><svg aria-hidden="true"><use href="#i-campana"/></svg> Activar avisos del pedido</button>
+    <button class="btn claro" id="b-ver-tutorial" type="button"><svg aria-hidden="true"><use href="#i-play"/></svg> Ver el tutorial de cómo pedir</button>
+    <button class="btn claro" id="b-instalar-perfil" type="button" hidden><svg aria-hidden="true"><use href="#i-descargar"/></svg> Instalar la app o ver si ya está instalada</button>
+    <button class="btn claro" id="b-salir" type="button">Cerrar sesión</button>
+    <button class="btn claro" id="b-pf-admin" type="button"><svg aria-hidden="true"><use href="#i-tienda"/></svg> ¿Trabaja en el negocio? Entrar como Admin</button>
+    <button class="btn peligro" id="b-borrar-cuenta" type="button">Borrar mi cuenta y mis datos</button>
+  </div>
+</section>
+
+<!-- ============ PANEL DEL NEGOCIO (lo arma negocio.js) ============ -->
+<section id="v-negocio" class="vista vistaNegocio oculta"></section>
+
+</main>
+
+<!-- ============ ¿CÓMO LO QUIERE? ============ -->
+<div class="velo" id="velo-modo" hidden>
+  <div class="modal vidrio" role="dialog" aria-modal="true" aria-labelledby="md-tit">
+    <h2 id="md-tit">¿Cómo quiere su pedido?</h2>
+    <p class="mini">Si nos deja ver su ubicación, lo decidimos por usted.</p>
+    <button class="btn verde grande" id="b-md-ubicar" type="button"><svg aria-hidden="true"><use href="#i-ubicacion"/></svg> Usar mi ubicación</button>
+    <p class="nota" id="md-nota" role="status"></p>
+    <div class="opcModo">
+      <button data-elegir="local" type="button"><svg aria-hidden="true"><use href="#i-mesa"/></svg><b>Comer aquí</b><small>Estoy en el local</small></button>
+      <button data-elegir="recoger" type="button"><svg aria-hidden="true"><use href="#i-recoger"/></svg><b>Recoger</b><small>Paso por él</small></button>
+      <button data-elegir="domicilio" type="button"><svg aria-hidden="true"><use href="#i-moto"/></svg><b>Domicilio</b><small>Me lo llevan</small></button>
+    </div>
+    <label class="nota-campo" id="md-mesa-caja" hidden>Número de mesa (opcional)<input id="md-mesa" inputmode="numeric" maxlength="3"></label>
+    <button class="btn claro" id="b-md-cerrar" type="button">Listo</button>
+  </div>
+</div>
+
+<!-- ============ INSTALAR LA APP (hoja tipo tienda de aplicaciones) ============ -->
+<div class="velo" id="velo-instalar" hidden>
+  <div class="modal tienda" role="dialog" aria-modal="true" aria-labelledby="it-tit">
+    <div class="tdAsa" aria-hidden="true"></div>
+    <div class="tdCab">
+      <img class="tdIcono" src="icons/icono-192.png" alt="" width="84" height="84">
+      <div><h2 id="it-tit">Fogón del Río</h2><p class="tdDev">Mesa y Ruta · AXERVUS CTeI</p><p class="tdCat">Comida y bebida · Pedidos y reservas</p></div>
+    </div>
+    <div class="tdDatos" id="it-datos">
+      <div><b id="it-peso">≈ 2 MB</b><small>Tamaño</small></div>
+      <div><b>Sin señal</b><small>También abre</small></div>
+      <div><b>3+</b><small>Para todos</small></div>
+    </div>
+    <p class="itEquipo" id="it-equipo"></p>
+    <div class="itBotones">
+      <button class="btn verde grande" id="b-it-instalar" type="button"><svg aria-hidden="true"><use href="#i-descargar"/></svg> Instalar</button>
+      <a class="btn oscuro grande" id="b-it-chrome" hidden>Abrir en Chrome para instalar</a>
+    </div>
+    <div class="itEstado" id="it-estado" hidden></div>
+    <ol class="itPasos" id="it-pasos" hidden></ol>
+    <p class="sub tdSub" id="it-sub">Para el mejor uso: abre más rápido, funciona sin señal y le avisa con voz cuando su pedido esté listo.</p>
+    <div class="tdCapturas" id="it-capturas" aria-label="Capturas de la app"></div>
+    <h3 class="tdTit">Acerca de esta app</h3>
+    <p class="tdTexto">Pida en la mesa, para recoger o a domicilio en Hatillo de Loba. Vea cada plato con su foto, escoja salsas y bebida, pague como prefiera, reciba su ticket y siga la moto en el mapa. También puede reservar para su celebración.</p>
+    <ul class="itVentajas"><li><svg><use href="#i-chispa"/></svg>Más rápida que la página web</li><li><svg><use href="#i-sinsenal"/></svg>Abre aunque no haya señal</li><li><svg><use href="#i-campana"/></svg>Aviso con voz cuando el pedido está listo</li><li><svg><use href="#i-escudo"/></svg>Sin publicidad de terceros · sus datos protegidos (Ley 1581)</li></ul>
+    <button class="btn claro" id="b-it-luego" type="button">Seguir en el navegador</button>
+  </div>
+</div>
+
+<!-- ============ PERMISO DE AVISOS ============ -->
+<div class="velo centro" id="velo-avisos" hidden>
+  <div class="modal avisos" role="dialog" aria-modal="true" aria-labelledby="av-tit">
+    <div class="avCampana" aria-hidden="true"><svg><use href="#i-campana"/></svg><i></i><i></i></div>
+    <h2 id="av-tit">¿Le avisamos cuando su pedido esté listo?</h2>
+    <p class="sub">Le mostramos un aviso en el celular cuando confirmen su pedido, cuando esté listo y cuando la moto salga. Puede quitarlo cuando quiera.</p>
+    <div class="avEjemplo" aria-hidden="true"><span class="logoMini chico marca"><svg><use href="#i-llama"/></svg></span><div><b id="av-negocio">Fogón del Río · Listo</b><small>Ana, su pedido ya está listo y sale para su casa.</small></div><small class="avHora">ahora</small></div>
+    <button class="btn verde grande" id="b-av-si" type="button"><svg aria-hidden="true"><use href="#i-campana"/></svg> Permitir avisos</button>
+    <button class="btn claro" id="b-av-no" type="button">Ahora no</button>
+  </div>
+</div>
+
+<!-- ============ PIN (clave de caja) ============ -->
+<div class="velo centro" id="velo-pin" hidden>
+  <div class="modal pin" role="dialog" aria-modal="true" aria-labelledby="pin-tit">
+    <span class="logoMini grande pinCandado"><svg aria-hidden="true"><use href="#i-candado"/></svg></span>
+    <h2 id="pin-tit">Clave de caja</h2>
+    <p class="mini centro" id="pin-sub">Solo el administrador la conoce.</p>
+    <div class="pinPuntos" id="pin-puntos" aria-live="polite"></div>
+    <p class="nota centro" id="pin-nota" role="status"></p>
+    <div class="pinTeclado" id="pin-teclado">
+      <button type="button" data-k="1">1</button><button type="button" data-k="2">2</button><button type="button" data-k="3">3</button>
+      <button type="button" data-k="4">4</button><button type="button" data-k="5">5</button><button type="button" data-k="6">6</button>
+      <button type="button" data-k="7">7</button><button type="button" data-k="8">8</button><button type="button" data-k="9">9</button>
+      <button type="button" data-k="x" aria-label="Cancelar" class="pinCancelar">Cancelar</button><button type="button" data-k="0">0</button><button type="button" data-k="b" aria-label="Borrar"><svg><use href="#i-atras"/></svg></button>
+    </div>
+    <button class="btn verde grande" id="b-pin-ok" type="button">Confirmar</button>
+  </div>
+</div>
+
+<canvas id="confeti" class="confeti" aria-hidden="true"></canvas>
+<div class="aviso-flotante" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/config.js"></script>
+<script src="js/instalar.js"></script>
+<script src="js/catalogo.js"></script>
+<script src="js/arte.js"></script>
+<script src="vendor/qrcode.js"></script>
+<script src="vendor/leaflet/leaflet.js" defer></script>
+<script src="js/nucleo.js"></script>
+<script src="js/ticket.js"></script>
+<script src="js/carnet.js"></script>
+<script src="vendor/jsQR.js" defer></script>
+<script src="js/seguimiento.js"></script>
+<script src="js/asistente.js"></script>
+<script src="js/tutorial.js" defer></script>
+<script src="js/cliente.js" defer></script>
+<script src="vendor/fflate.js" defer></script>
+<script src="js/xlsx.js" defer></script>
+<script src="js/informe.js" defer></script>
+<script src="js/datos.js" defer></script>
+<script src="js/negocio.js" defer></script>
+</body>
+</html>
