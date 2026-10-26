@@ -1,0 +1,117 @@
+{
+ "voz": "Piper es_MX claude-high (Apache-2.0)",
+ "pasos": [
+  {
+   "id": "c01",
+   "texto": "¡Hola! Así de fácil se pide en esta app. Arriba verá las ofertas del día.",
+   "dur": 5.71
+  },
+  {
+   "id": "c02",
+   "texto": "Toque «Ver el menú». Primero escoja cómo recibe su pedido. Aquí lo pedimos a domicilio.",
+   "dur": 6.22
+  },
+  {
+   "id": "c03",
+   "texto": "Mueva el mapa hasta que el pin quede sobre su casa. La app calcula la ruta y el valor del domicilio. Luego toque «Confirmar dirección».",
+   "dur": 9.32
+  },
+  {
+   "id": "c04",
+   "texto": "Este es el menú. Deslice el plato hacia los lados para ver más, o escoja otra categoría arriba.",
+   "dur": 7.29
+  },
+  {
+   "id": "c05",
+   "texto": "¿Le gustó? Toque «Agregar al pedido». Puede quitar ingredientes y escoger cuántos quiere.",
+   "dur": 6.0
+  },
+  {
+   "id": "c06",
+   "texto": "Luego, las salsas. Van en un recipiente aparte.",
+   "dur": 4.1
+  },
+  {
+   "id": "c07",
+   "texto": "Ahora la bebida, bien fría. Y toque «Confirmar».",
+   "dur": 3.87
+  },
+  {
+   "id": "c08",
+   "texto": "En el resumen ve su pedido y el total. Los botones grandes suben o bajan la cantidad.",
+   "dur": 5.95
+  },
+  {
+   "id": "c09",
+   "texto": "Escoja cómo paga: efectivo, transferencia o tarjeta. Luego toque «Ver ticket».",
+   "dur": 6.68
+  },
+  {
+   "id": "c10",
+   "texto": "Revise su ticket y toque «Enviar pedido». ¡Listo! El negocio lo recibe al instante.",
+   "dur": 6.06
+  },
+  {
+   "id": "c11",
+   "texto": "Aquí sigue su pedido. Cuando esté listo, la app le avisa con voz, y en el mapa ve por dónde va la moto.",
+   "dur": 7.97
+  },
+  {
+   "id": "c12",
+   "texto": "Si tiene dudas, escríbale al negocio por el chat. ¡Buen provecho!",
+   "dur": 4.76
+  }
+ ],
+ "musica": {
+  "archivo": "musica.mp3",
+  "dur": 38.4,
+  "autor": "Música original generada para Mesa y Ruta (sin derechos de terceros)"
+ },
+ "negocio": [
+  {
+   "id": "n01",
+   "texto": "Bienvenido al panel del negocio. Desde aquí se maneja todo, en el celular, la tableta o el computador.",
+   "dur": 7.16
+  },
+  {
+   "id": "n02",
+   "texto": "En «Resumen» ve las ventas del día, los gastos y el balance, con la gráfica de las dos últimas semanas.",
+   "dur": 7.64
+  },
+  {
+   "id": "n03",
+   "texto": "Cuando entra un pedido, suena una alerta. Tóquelo para ver el detalle y el ticket del cliente.",
+   "dur": 7.29
+  },
+  {
+   "id": "n04",
+   "texto": "Avance el pedido con el botón verde: confirmar, a la cocina y listo. El cliente recibe el aviso con voz.",
+   "dur": 8.11
+  },
+  {
+   "id": "n05",
+   "texto": "En «Caja y balance» registre los gastos y los ingresos. Abrir y cerrar la caja pide la clave del administrador.",
+   "dur": 7.29
+  },
+  {
+   "id": "n06",
+   "texto": "En «Menú y fotos» cambia precios, sube las fotos de sus platos y crea ofertas.",
+   "dur": 5.52
+  },
+  {
+   "id": "n07",
+   "texto": "En «Equipo y roles» crea a sus empleados, les da permisos y genera su carné con código QR.",
+   "dur": 6.97
+  },
+  {
+   "id": "n08",
+   "texto": "Al llegar a trabajar, cada empleado escanea su carné en «Asistencia», y queda registrada su hora de entrada.",
+   "dur": 7.73
+  },
+  {
+   "id": "n09",
+   "texto": "Cada quince días la app le recuerda generar el consolidado en Excel. ¡Listo! A vender.",
+   "dur": 6.22
+  }
+ ]
+}
