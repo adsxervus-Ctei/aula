@@ -1,0 +1,70 @@
+{
+ "voz": "ef_dora",
+ "pasos": [
+  {
+   "id": "c01",
+   "texto": "¡Hola! Así de fácil se pide en esta app. Arriba verá las ofertas del día.",
+   "dur": 4.9
+  },
+  {
+   "id": "c02",
+   "texto": "Toque «Ver el menú». Primero escoja cómo recibe su pedido. Aquí lo pedimos a domicilio.",
+   "dur": 5.29
+  },
+  {
+   "id": "c03",
+   "texto": "Mueva el mapa hasta que el pin quede sobre su casa. La app calcula la ruta y el valor del domicilio. Luego toque «Confirmar dirección».",
+   "dur": 8.23
+  },
+  {
+   "id": "c04",
+   "texto": "Este es el menú. Deslice el plato hacia los lados para ver más, o escoja otra categoría arriba.",
+   "dur": 5.61
+  },
+  {
+   "id": "c05",
+   "texto": "¿Le gustó? Toque «Agregar al pedido». Puede quitar ingredientes y escoger cuántos quiere.",
+   "dur": 5.01
+  },
+  {
+   "id": "c06",
+   "texto": "Luego, las salsas. Van en un recipiente aparte.",
+   "dur": 3.02
+  },
+  {
+   "id": "c07",
+   "texto": "Ahora la bebida, bien fría. Y toque «Confirmar».",
+   "dur": 2.85
+  },
+  {
+   "id": "c08",
+   "texto": "En el resumen ve su pedido y el total. Los botones grandes suben o bajan la cantidad.",
+   "dur": 5.33
+  },
+  {
+   "id": "c09",
+   "texto": "Escoja cómo paga: efectivo, transferencia o tarjeta. Luego toque «Ver ticket».",
+   "dur": 5.03
+  },
+  {
+   "id": "c10",
+   "texto": "Revise su ticket y toque «Enviar pedido». ¡Listo! El negocio lo recibe al instante.",
+   "dur": 5.18
+  },
+  {
+   "id": "c11",
+   "texto": "Aquí sigue su pedido. Cuando esté listo, la app le avisa con voz, y en el mapa ve por dónde va la moto.",
+   "dur": 6.29
+  },
+  {
+   "id": "c12",
+   "texto": "Si tiene dudas, escríbale al negocio por el chat. ¡Buen provecho!",
+   "dur": 3.98
+  }
+ ],
+ "musica": {
+  "archivo": "musica.mp3",
+  "dur": 38.4,
+  "autor": "Música original generada para Mesa y Ruta (sin derechos de terceros)"
+ }
+}
