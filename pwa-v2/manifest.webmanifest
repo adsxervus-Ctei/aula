@@ -1,0 +1,24 @@
+{
+  "id": "./",
+  "name": "Fogón del Río · Pedidos y reservas",
+  "short_name": "Fogón del Río",
+  "description": "Pida en la mesa, para recoger o a domicilio en Hatillo de Loba, reserve su celebración y hable con el negocio.",
+  "lang": "es-CO",
+  "start_url": "./?origen=app",
+  "scope": "./",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait",
+  "background_color": "#1E1A17",
+  "theme_color": "#1E1A17",
+  "categories": ["food", "shopping"],
+  "icons": [
+    { "src": "icons/icono-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icono-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/icono-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Ver el menú", "url": "./?ir=menu", "icons": [{ "src": "icons/icono-192.png", "sizes": "192x192" }] },
+    { "name": "Reservar", "url": "./?ir=reservas", "icons": [{ "src": "icons/icono-192.png", "sizes": "192x192" }] }
+  ]
+}
