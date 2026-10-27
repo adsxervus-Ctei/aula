@@ -1,0 +1,127 @@
+"""Mesa y Ruta v4: instalación en cada apertura, Admin tras borrar la base, consolidado con
+«Generar / Más tarde», pagos (QR Bre-B, enlace, comprobante) y fotos locales con respaldo."""
+import sys, io, json, os
+from PIL import Image
+from playwright.sync_api import sync_playwright
+import demo_cfg  # noqa: F401
+B, OUT = sys.argv[1], sys.argv[2]; R = []
+os.makedirs(OUT, exist_ok=True)
+def ok(n, v): R.append(bool(v)); print(('OK  ' if v else 'XX  ') + n, flush=True)
+def png(c=(30, 30, 30)):
+    im = Image.new('RGB', (500, 500), (255, 255, 255))
+    for x in range(0, 500, 40):
+        for y in range(0, 500, 40):
+            if (x + y) // 40 % 2: im.paste(c, (x, y, x + 40, y + 40))
+    b = io.BytesIO(); im.save(b, 'PNG'); return b.getvalue()
+ANDROID = 'Mozilla/5.0 (Linux; Android 14; SM-A155M) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0 Mobile Safari/537.36'
+with sync_playwright() as p:
+    br = p.chromium.launch()
+    def ctx_nuevo(**kw):
+        c = br.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, locale='es-CO', bypass_csp=True, accept_downloads=True, **kw)
+        for u in ['https://tile.openstreetmap.org/**', 'https://router.project-osrm.org/**', 'https://nominatim.openstreetmap.org/**']: c.route(u, lambda r: r.abort())
+        return c
+    errs = []
+    # ---------- 1. instalación: sale en cada apertura (celular Android)
+    c1 = ctx_nuevo(user_agent=ANDROID, is_mobile=True, has_touch=True)
+    c1.route('https://images.unsplash.com/**', lambda r: r.abort())
+    pg = c1.new_page(); pg.on('pageerror', lambda e: errs.append(str(e)))
+    pg.goto(B); pg.wait_for_timeout(1800)
+    ok('instalar: sale al abrir', pg.locator('#velo-instalar').is_visible())
+    pg.click('#b-it-luego'); pg.wait_for_timeout(300)
+    pg.evaluate("sessionStorage.clear()"); pg.reload(); pg.wait_for_timeout(1800)
+    ok('instalar: sale de nuevo en otra apertura', pg.locator('#velo-instalar').is_visible())
+    pg.click('#b-it-luego')
+    pg.evaluate("localStorage.setItem('myr2_instalada','true'); sessionStorage.clear()"); pg.reload(); pg.wait_for_timeout(1800)
+    ok('instalada: avisa que ya está instalada', pg.locator('#it-estado').is_visible() and 'Ya está instalada' in pg.locator('#it-estado').inner_text())
+    pg.screenshot(path=OUT + '/50-ya-instalada.png'); pg.click('#b-it-luego')
+    pg.evaluate("localStorage.removeItem('myr2_instalada'); sessionStorage.clear()")
+    # simular app instalada (modo standalone) en una página nueva
+    p2 = c1.new_page(); p2.add_init_script("const mm=window.matchMedia.bind(window);window.matchMedia=q=>q.includes('display-mode: standalone')?{matches:true,media:q,addEventListener(){},removeEventListener(){},addListener(){},removeListener(){}}:mm(q);sessionStorage.clear()")
+    p2.goto(B); p2.wait_for_timeout(1800)
+    ok('app instalada: aviso «App instalada en su equipo»', p2.locator('.avisoInstalada').count() == 1)
+    p2.screenshot(path=OUT + '/51-aviso-instalada.png'); p2.close()
+    # ---------- 2. Admin entra aunque el navegador haya borrado la base local
+    pg.evaluate("indexedDB.deleteDatabase('mesa-y-ruta')"); pg.wait_for_timeout(500)
+    pg.evaluate("sessionStorage.setItem('myr2_inst_sesion','1')"); pg.reload(); pg.wait_for_timeout(1800)
+    pg.click('#b-ir-negocio'); pg.fill('#ng-correo', 'Admin@fogondelrio.co '); pg.fill('#ng-clave', 'FOGON-2026 '); pg.click('#f-negocio button[type=submit]'); pg.wait_for_timeout(1500)
+    ok('admin entra (base borrada, mayúscula y espacio al final)', pg.locator('.ngNav').count() == 1)
+    if pg.locator('.tuVelo').count(): pg.click('#tu-cerrar'); pg.wait_for_timeout(300)
+    if pg.locator('#velo-corte').count(): pg.click('#ct-manana')
+    pg.evaluate("document.querySelector('#ng-salir').click()"); pg.wait_for_timeout(1500)
+    pg.click('#b-ir-negocio'); pg.fill('#ng-correo', 'super@mesayruta.co'); pg.fill('#ng-clave', 'SUPER-2026'); pg.click('#f-negocio button[type=submit]'); pg.wait_for_timeout(1500)
+    ok('superadmin entra', pg.locator('.ngNav').count() == 1)
+    if pg.locator('.tuVelo').count(): pg.click('#tu-cerrar'); pg.wait_for_timeout(300)
+    if pg.locator('#velo-corte').count(): pg.click('#ct-manana')
+    # ---------- 3. consolidado: ventana con «Generar ahora» y «Más tarde»
+    pg.evaluate("(async()=>{const d=new Date();d.setDate(d.getDate()-16);await N.guardar('ajustes',{id:'reportes',ultimoCorte:N.U.hoy(d)})})()"); pg.wait_for_timeout(400)
+    pg.reload(); pg.wait_for_timeout(2000)
+    if pg.locator('.tuVelo').count(): pg.click('#tu-cerrar'); pg.wait_for_timeout(300)
+    ok('consolidado: ventana al abrir el panel', pg.locator('#velo-corte').is_visible())
+    pg.screenshot(path=OUT + '/52-consolidado.png')
+    pg.click('#ct-manana'); pg.wait_for_timeout(600)
+    ok('«Más tarde» lo pospone hasta mañana', pg.evaluate("!!NEGOCIO.estadoCorte().pospuesto") and pg.locator('#velo-corte').count() == 0)
+    pg.reload(); pg.wait_for_timeout(1800)
+    ok('pospuesto: no vuelve a salir hoy', pg.locator('#velo-corte').count() == 0)
+    pg.evaluate("(async()=>{await N.guardar('ajustes',{...N.obtener('ajustes','reportes'),pospuestoHasta:null})})()"); pg.reload(); pg.wait_for_timeout(1800)
+    with pg.expect_download() as d: pg.click('#ct-si')
+    ok('«Generar ahora» descarga el Excel', d.value.suggested_filename.endswith('.xlsx'))
+    pg.wait_for_timeout(600)
+    ok('tras generar: corte al día', not pg.evaluate("NEGOCIO.estadoCorte().vence"))
+    # ---------- 4. pagos: QR Bre-B, enlace y comprobante
+    pg.evaluate("s => document.querySelector(s).click()", ".ngNav [data-sec=ajustes]"); pg.wait_for_timeout(600)
+    pg.fill('#aj-llaveBreB', '@fogondelrio'); pg.fill('#aj-enlacePago', 'https://checkout.wompi.co/l/EJEMPLO')
+    pg.set_input_files('#aj-qr', files=[{'name': 'qr.png', 'mimeType': 'image/png', 'buffer': png()}]); pg.wait_for_timeout(1200)
+    pg.click('#aj-form button[type=submit]'); pg.wait_for_timeout(700)
+    ok('ajustes: QR Bre-B y enlace de pago guardados', pg.evaluate("!!CONFIG.pagos.transferencia.qrBreB && CONFIG.pagos.enlacePago.startsWith('https://')"))
+    pg.locator('#aj-qr-prev').scroll_into_view_if_needed(); pg.screenshot(path=OUT + '/53-ajustes-pagos.png')
+    pg.evaluate("document.querySelector('#ng-salir').click()"); pg.wait_for_timeout(1500)
+    pg.click('#b-ir-ingresar'); pg.fill('#in-usuario', 'cliente@demo.co'); pg.fill('#in-clave', 'DEMO-2026'); pg.click('#f-ingresar button[type=submit]'); pg.wait_for_timeout(1500)
+    if pg.locator('.tuVelo').count(): pg.click('#tu-cerrar')
+    pg.evaluate("MYR.E.modo={tipo:'recoger',fuente:'manual'}; localStorage.setItem('myr2_modo', JSON.stringify(MYR.E.modo))")
+    pg.click('#b-ver-menu'); pg.wait_for_timeout(800); pg.click('#cats-menu [data-cat=bebidas]'); pg.wait_for_timeout(500); pg.click('#b-agregar'); pg.wait_for_timeout(900)
+    pg.click('#b-bolsa'); pg.wait_for_timeout(900); pg.click("#res-pagos [data-pago='transferencia']"); pg.wait_for_timeout(500)
+    ok('pago: QR Bre-B, llave y botón «Pagar en línea»', pg.locator('.mQR').count() == 1 and '@fogondelrio' in pg.locator('#res-pago-detalle').inner_text() and pg.locator('#res-pago-detalle a.btn', has_text='Pagar en línea').count() == 1)
+    pg.locator('#res-pago-detalle').scroll_into_view_if_needed(); pg.screenshot(path=OUT + '/54-pago-transferencia.png')
+    pg.click('#b-pedir'); pg.wait_for_timeout(1500); pg.click('#b-tk-enviar'); pg.wait_for_timeout(1500); pg.click('#gr-inicio') if pg.locator('#gr-inicio').count() else None
+    if pg.locator('#velo-avisos').is_visible(): pg.click('#b-av-no')
+    pg.click('#in-encurso .enCurso'); pg.wait_for_timeout(900)
+    ok('pedido: tarjeta para subir comprobante', pg.locator('#pd-comp').count() == 1)
+    pg.set_input_files('#pd-comp', files=[{'name': 'comprobante.png', 'mimeType': 'image/png', 'buffer': png((20, 120, 60))}]); pg.wait_for_timeout(1500)
+    ok('comprobante enviado', 'Comprobante enviado' in pg.locator('#pd-pago').inner_text())
+    pg.locator('#pd-pago').scroll_into_view_if_needed(); pg.screenshot(path=OUT + '/55-comprobante.png')
+    pg.click('#b-pd-inicio'); pg.wait_for_timeout(400); pg.click('#b-perfil'); pg.wait_for_timeout(400); pg.click('#b-salir'); pg.wait_for_timeout(1200)
+    pg.click('#b-ir-negocio'); pg.fill('#ng-correo', 'admin@fogondelrio.co'); pg.fill('#ng-clave', 'FOGON-2026'); pg.click('#f-negocio button[type=submit]'); pg.wait_for_timeout(1500)
+    if pg.locator('.tuVelo').count(): pg.click('#tu-cerrar'); pg.wait_for_timeout(300)
+    pg.set_viewport_size({'width': 1280, 'height': 860}); pg.evaluate("s => document.querySelector(s).click()", '.ngNav [data-sec=pedidos]'); pg.wait_for_timeout(700)
+    ok('panel: tarjeta marca «comprobante»', 'comprobante' in pg.locator('.kanban').inner_text())
+    pg.locator('.kTarj', has_text='comprobante').first.click(); pg.wait_for_timeout(1800)
+    ok('panel: ve la foto del comprobante', pg.locator('.compFoto img').count() == 1)
+    pg.screenshot(path=OUT + '/56-panel-comprobante.png')
+    # ---------- 5. revisar fotos
+    pg.click('#caj-cerrar'); pg.evaluate("s => document.querySelector(s).click()", '.ngNav [data-sec=ajustes]'); pg.wait_for_timeout(500); pg.click('#aj-revisar'); pg.wait_for_timeout(4000)
+    ok('revisar fotos: informe', 'fotos cargan' in pg.locator('#aj-fotos-res').inner_text())
+    print('   ', pg.locator('#aj-fotos-res p').first.inner_text())
+    c1.close()
+    # ---------- 6. fotos locales del sitio con respaldo a Unsplash
+    c2 = ctx_nuevo()
+    pedidas = []
+    def local(r):
+        u = r.request.url
+        if u.endswith('lista.json'): return r.fulfill(status=200, content_type='application/json', body=json.dumps({'fotos': ['photo-1598103442097-8b74394b95c6', 'photo-1606728035253-49e8a23146de']}))
+        if 'photo-1606728035253' in u: return r.fulfill(status=404, body='')
+        b = io.BytesIO(); Image.new('RGB', (300, 300), (190, 90, 30)).save(b, 'WEBP'); r.fulfill(status=200, content_type='image/webp', body=b.getvalue())
+    c2.route('**/img/fotos/**', local)
+    def remota(r): pedidas.append(r.request.url); b = io.BytesIO(); Image.new('RGB', (300, 300), (40, 90, 190)).save(b, 'JPEG'); r.fulfill(status=200, content_type='image/jpeg', body=b.getvalue())
+    c2.route('https://images.unsplash.com/**', remota)
+    q = c2.new_page(); q.goto(B); q.wait_for_timeout(1500)
+    if q.locator('#velo-instalar').is_visible(): q.click('#b-it-luego')
+    q.click('#b-ir-ingresar'); q.fill('#in-usuario', 'cliente@demo.co'); q.fill('#in-clave', 'DEMO-2026'); q.click('#f-ingresar button[type=submit]'); q.wait_for_timeout(1500)
+    if q.locator('.tuVelo').count(): q.click('#tu-cerrar')
+    q.click('#b-ver-menu'); q.wait_for_timeout(500)
+    if q.locator('#velo-modo').is_visible(): q.click('#b-md-cerrar')
+    q.wait_for_timeout(1500)
+    srcs = q.evaluate("[...document.querySelectorAll('#plato img, #puntos img')].map(i=>[i.getAttribute('src'), i.classList.contains('ok')])")
+    ok('foto local del sitio se usa primero', any(s.startswith('img/fotos/photo-1598103442097') and okk for s, okk in srcs))
+    ok('si la local falla, usa Unsplash de respaldo', any('photo-1606728035253' in s and s.startswith('https://images.unsplash.com') and okk for s, okk in srcs))
+    c2.close(); br.close()
+print('errores', errs[:5]); print(json.dumps({'total': len(R), 'fallas': R.count(False)}))

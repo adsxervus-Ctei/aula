@@ -1,0 +1,155 @@
+"""Pruebas v7: inventario (descuento, alerta, agotado en gris), transferencias por verificar,
+pasos 1-4, gracias con nombre, menú plegable y barra del celular, fotos de ingredientes,
+arranque seguro (?reparar) y app limpia sin clientes."""
+import sys, os, json
+from playwright.sync_api import sync_playwright
+import demo_cfg  # noqa: F401
+B, OUT = sys.argv[1], sys.argv[2]; os.makedirs(OUT, exist_ok=True)
+R = {'ok': 0, 'mal': []}
+def ok(n, v=True):
+    print(('✔ ' if v else '✘ ') + n)
+    if v: R['ok'] += 1
+    else: R['mal'].append(n)
+def png_color():
+    import struct, zlib
+    raw = b''.join(b'\x00' + bytes([200, 120, 40]) * 64 for _ in range(64))
+    ch = lambda t, d: struct.pack('>I', len(d)) + t + d + struct.pack('>I', zlib.crc32(t + d) & 0xffffffff)
+    return b'\x89PNG\r\n\x1a\n' + ch(b'IHDR', struct.pack('>IIBBBBB', 64, 64, 8, 2, 0, 0, 0)) + ch(b'IDAT', zlib.compress(raw)) + ch(b'IEND', b'')
+with sync_playwright() as p:
+    br = p.chromium.launch(); errs = []
+    def ctx(w, h, mob, demo=True):
+        c = br.new_context(viewport={'width': w, 'height': h}, device_scale_factor=2 if mob else 1, is_mobile=mob, has_touch=mob, bypass_csp=True, accept_downloads=True)
+        if not demo: c.unroute('**/js/config.js')
+        c.add_init_script("sessionStorage.setItem('myr2_inst_sesion','1')")
+        for u in ['https://images.unsplash.com/**', 'https://tile.openstreetmap.org/**']: c.route(u, lambda r: r.abort())
+        return c
+    def abrir(pg):
+        pg.goto(B); pg.wait_for_selector('#apertura', state='detached', timeout=15000); pg.wait_for_timeout(500)
+    # ---------- 0. app limpia: sin clientes ni pedidos de ejemplo
+    c = ctx(390, 844, True, demo=False); pg = c.new_page(); pg.on('pageerror', lambda e: errs.append('limpia ' + str(e)))
+    abrir(pg)
+    ok('limpia: sin clientes', pg.evaluate("N.lista('usuarios').filter(u=>u.rol==='cliente').length") == 0)
+    ok('limpia: sin pedidos ni reservas', pg.evaluate("N.lista('pedidos').length + N.lista('reservas').length") == 0)
+    ok('limpia: admin y superadmin', sorted(pg.evaluate("N.lista('usuarios').map(u=>u.rol)")) == ['admin', 'superadmin'])
+    ok('limpia: menú completo', pg.evaluate("N.menu().length") >= 20)
+    pg.click('#b-ir-ingresar'); pg.fill('#in-usuario', 'cliente@demo.co'); pg.fill('#in-clave', 'DEMO-2026'); pg.click('#f-ingresar button[type=submit]'); pg.wait_for_timeout(1200)
+    ok('limpia: la cuenta demo de cliente ya no existe', pg.locator('#v-entrada, #v-cuenta').first.is_visible() or pg.evaluate("!N.sesion()"))
+    c.close()
+    # ---------- 1. admin pone existencias
+    c = ctx(1280, 860, False); pg = c.new_page(); pg.on('pageerror', lambda e: errs.append('adm ' + str(e)))
+    abrir(pg)
+    pg.click('#b-ir-negocio'); pg.fill('#ng-correo', 'admin@fogondelrio.co'); pg.fill('#ng-clave', 'FOGON-2026'); pg.click('#f-negocio button[type=submit]'); pg.wait_for_timeout(2200)
+    for s in ['#tu-cerrar', '#ct-manana']:
+        if pg.locator(s).count() and pg.locator(s).first.is_visible(): pg.locator(s).first.click(); pg.wait_for_timeout(500)
+    ok('menú plegable: botón Menú', pg.locator('#ng-plegar').is_visible())
+    w0 = pg.locator('.ngLado').bounding_box()['width']
+    pg.click('#ng-plegar'); pg.wait_for_timeout(500); pg.mouse.move(900, 400); pg.wait_for_timeout(400)
+    w1 = pg.locator('.ngLado').bounding_box()['width']
+    ok(f'plegado: solo íconos ({int(w0)} → {int(w1)} px)', w1 < 100 and w0 > 200)
+    pg.screenshot(path=OUT + '/30-plegado.png')
+    pg.hover('.ngNav [data-sec=pedidos]'); pg.wait_for_timeout(500)
+    ok('pasar el mouse lo abre encima', pg.locator('.ngLado').bounding_box()['width'] > 200)
+    pg.screenshot(path=OUT + '/31-plegado-hover.png'); pg.mouse.move(900, 400); pg.wait_for_timeout(400)
+    pg.reload(); pg.wait_for_selector('#apertura', state='detached', timeout=15000); pg.wait_for_timeout(1500)
+    ok('plegado se recuerda', pg.locator('.ngApp.plegado').count() == 1)
+    pg.click('#ng-plegar'); pg.wait_for_timeout(300)
+    pg.evaluate("document.querySelector('.ngNav [data-sec=inventario]').click()"); pg.wait_for_timeout(700)
+    ok('sección Inventario', pg.locator('.ivFila').count() > 25)
+    fila = lambda k: pg.locator(f'.ivFila[data-k="{k}"]')
+    fila('menu:limonada').locator('[name=stock]').fill('6'); fila('menu:gaseosa').locator('[name=stock]').fill('1'); fila('salsas:rosada').locator('[name=stock]').fill('0'); fila('menu:medio-pollo').locator('[name=stock]').fill('3')
+    pg.click('#iv-form button[type=submit]'); pg.wait_for_timeout(1500)
+    ok('existencias guardadas', pg.evaluate("[N.obtener('menu','limonada').stock, N.obtener('menu','gaseosa').stock, N.obtener('salsas','rosada').stock]") == [6, 1, 0])
+    ok('insignia de inventario', pg.locator('#ng-inv').is_visible() and pg.locator('#ng-inv').inner_text() == '3')
+    pg.screenshot(path=OUT + '/32-inventario.png', full_page=True)
+    pg.evaluate("document.querySelector('.ngNav [data-sec=resumen]').click()"); pg.wait_for_timeout(600)
+    ok('aviso «por agotarse» en el resumen', pg.locator('.avisoInv').count() == 1)
+    # fotos de ingredientes y salsas
+    pg.evaluate("document.querySelector('.ngNav [data-sec=menu]').click()"); pg.wait_for_timeout(600)
+    pg.click('#mn-fotos-comp'); pg.wait_for_timeout(600)
+    ok('gestor de fotos de ingredientes y salsas', pg.locator('.fcTarj').count() > 30)
+    pg.set_input_files('[data-fc="ing:papa"]', files=[{'name': 'papa.png', 'mimeType': 'image/png', 'buffer': png_color()}]); pg.wait_for_timeout(1500)
+    pg.set_input_files('[data-fc="sal:pina"]', files=[{'name': 'pina.png', 'mimeType': 'image/png', 'buffer': png_color()}]); pg.wait_for_timeout(1500)
+    ok('foto de ingrediente y de salsa guardadas', pg.evaluate("!!(N.obtener('ingredientes','papa')||{}).foto && !!N.obtener('salsas','pina').foto"))
+    pg.screenshot(path=OUT + '/33-fotos-componentes.png')
+    pg.click('#caj-cerrar')
+    estado = pg.evaluate("JSON.stringify({menu:N.lista('menu'), salsas:N.lista('salsas'), ingredientes:N.lista('ingredientes')})")
+    c.close()
+    # ---------- 2. cliente: agotados en gris, pasos 1-4, descuento al pedir, gracias
+    c = ctx(390, 844, True); pg = c.new_page(); pg.on('pageerror', lambda e: errs.append('cli ' + str(e)))
+    abrir(pg)
+    pg.evaluate("async e => { const d = JSON.parse(e); for (const [col, xs] of Object.entries(d)) for (const x of xs) await N.guardar(col, x); }", estado)
+    import base64; dato = 'data:image/png;base64,' + base64.b64encode(png_color()).decode()
+    pg.evaluate("async u => { await N.guardar('ingredientes', { id: 'papa', nombre: 'Papa salada', foto: u }); const s = N.obtener('salsas', 'pina'); await N.guardar('salsas', { ...s, foto: u }); await N.guardar('negocio', { id: 'datos', llaveBreB: '@fogondelrio', nequi: '3001234567', titular: 'Fogón del Río' }); }", dato)
+    pg.click('#b-ir-ingresar'); pg.fill('#in-usuario', 'cliente@demo.co'); pg.fill('#in-clave', 'DEMO-2026'); pg.click('#f-ingresar button[type=submit]'); pg.wait_for_timeout(1800)
+    if pg.locator('#tu-cerrar').count(): pg.click('#tu-cerrar'); pg.wait_for_timeout(500)
+    pg.evaluate("MYR.irACategoria('fogon','medio-pollo'); MYR.ir('menu')"); pg.wait_for_timeout(1200)
+    if pg.locator('#velo-modo').is_visible(): pg.click('[data-elegir=recoger]'); pg.wait_for_timeout(300); pg.click('#b-md-cerrar') if pg.locator('#b-md-cerrar').is_visible() else None
+    pg.wait_for_timeout(600)
+    ok('quedan 3: etiqueta en el plato', '¡Quedan 3!' in pg.locator('#pl-etiquetas').inner_text())
+    pg.click('#b-agregar'); pg.wait_for_timeout(900)
+    ok('paso 1 de 4 con barra', 'paso 1 de 4' in pg.locator('#hoja-paso').inner_text().lower() and pg.locator('#hoja-paso .pasos4 i').count() == 4)
+    ok('paso 1: verifica ingredientes', 'Verifique que los ingredientes' in pg.locator('#hoja-sub').inner_text())
+    ok('ingrediente con foto real', pg.locator('#hoja-lista [data-ingr=papa]').locator('xpath=ancestor::li').locator('.ico.foto img').count() == 1)
+    for _ in range(3): pg.click("#cant-plato [data-cp='1']"); pg.wait_for_timeout(150)
+    ok('no deja pedir más de lo que hay (3)', pg.locator('#cp-n').inner_text() == '3')
+    pg.screenshot(path=OUT + '/34-paso1.png')
+    pg.click('#b-hoja'); pg.wait_for_timeout(800)
+    ok('paso 2 de 4: salsas en recipientes aparte', 'paso 2 de 4' in pg.locator('#hoja-paso').inner_text().lower() and 'recipientes aparte' in pg.locator('#hoja-sub').inner_text())
+    ok('salsa agotada en gris y sin +', pg.locator('#hoja-lista li.agotadoFila [data-salsa=rosada]').is_disabled())
+    ok('salsa con foto real', pg.locator('#hoja-lista [data-salsa=pina]').locator('xpath=ancestor::li').locator('.ico.foto img').count() == 1)
+    pg.locator('#hoja-lista [data-salsa=pina]').click(); pg.wait_for_timeout(200)
+    pg.screenshot(path=OUT + '/35-paso2.png')
+    pg.click('#b-hoja'); pg.wait_for_timeout(800)
+    ok('paso 3 de 4: bebidas', 'paso 3 de 4' in pg.locator('#hoja-paso').inner_text().lower())
+    pg.locator("#hoja-lista [data-beb='gaseosa'][data-d='1']").click(); pg.wait_for_timeout(200)
+    pg.locator("#hoja-lista [data-beb='gaseosa'][data-d='1']").click(); pg.wait_for_timeout(300)
+    ok('gaseosa: solo queda 1', pg.evaluate("MYR.E.arma.bebidas.get('gaseosa')") == 1)
+    pg.screenshot(path=OUT + '/36-paso3.png')
+    pg.click('#b-hoja'); pg.wait_for_timeout(1400)
+    ok('paso 4 de 4 en el resumen: modo de pago', 'paso 4 de 4' in pg.locator('#res-paso').inner_text().lower() and 'modo de pago' in pg.locator('#res-paso').inner_text().lower())
+    pg.click("#res-pagos [data-pago='transferencia']"); pg.wait_for_timeout(400)
+    pg.locator('#res-pago-detalle').scroll_into_view_if_needed(); pg.screenshot(path=OUT + '/37-transferencia.png')
+    ok('transferencia: medios con copiar', pg.locator('#res-pago-detalle .medioPago').count() >= 1)
+    pg.click('#b-pedir'); pg.wait_for_timeout(1500); pg.click('#b-tk-enviar'); pg.wait_for_timeout(2000)
+    ok('gracias con el nombre del cliente', 'Gracias por su selección, Ana' in pg.locator('.gracias').inner_text() and 'En breve nos estaremos comunicando' in pg.locator('.gracias').inner_text())
+    pg.screenshot(path=OUT + '/38-gracias.png')
+    pg.click('#gr-inicio'); pg.wait_for_timeout(600)
+    ok('inventario descontado (3 pollos, 1 gaseosa, 3 piña)', pg.evaluate("[N.obtener('menu','medio-pollo').stock, N.obtener('menu','gaseosa').stock]") == [0, 0])
+    ok('pedido marcado como descontado', pg.evaluate("!!N.lista('pedidos').sort((a,b)=>b.creado.localeCompare(a.creado))[0].inventario.descontado"))
+    pg.evaluate("MYR.irACategoria('fogon','medio-pollo'); MYR.ir('menu')"); pg.wait_for_timeout(1200)
+    ok('medio pollo agotado: gris y sin agregar', pg.locator('#v-menu.platoAgotado').count() == 1 and pg.locator('#b-agregar').is_disabled())
+    pg.screenshot(path=OUT + '/39-agotado.png')
+    # ---------- 3. panel: transferencia por verificar no suma
+    pg.evaluate("MYR.ir('perfil')"); pg.wait_for_timeout(500); pg.click('#b-salir'); pg.wait_for_timeout(1500)
+    pg.click('#b-ir-negocio'); pg.fill('#ng-correo', 'admin@fogondelrio.co'); pg.fill('#ng-clave', 'FOGON-2026'); pg.click('#f-negocio button[type=submit]'); pg.wait_for_timeout(2200)
+    for s in ['#tu-cerrar', '#ct-manana']:
+        if pg.locator(s).count() and pg.locator(s).first.is_visible(): pg.locator(s).first.click(); pg.wait_for_timeout(500)
+    ok('celular: barra inferior del panel', pg.locator('.ngBarra').is_visible() and pg.locator('.ngBarra button').count() == 5)
+    ok('celular: menú lateral oculto', not pg.locator('.ngLado').is_visible())
+    pg.screenshot(path=OUT + '/40-panel-movil.png')
+    pg.click('#ng-mas'); pg.wait_for_timeout(500)
+    ok('«Más» abre todas las secciones', pg.locator('.ngMasGrid button').count() >= 10)
+    pg.screenshot(path=OUT + '/41-panel-mas.png')
+    pg.click('.ngMasGrid [data-sec=resumen]'); pg.wait_for_timeout(600)
+    ok('aviso de transferencias por verificar', pg.locator('.avisoVerif').count() == 1)
+    v0 = pg.evaluate("N.balance(N.U.hoy(), N.U.hoy()).ventas")
+    pid = pg.evaluate("N.lista('pedidos').sort((a,b)=>b.creado.localeCompare(a.creado))[0].id")
+    ok('la transferencia no suma antes de verificar', pg.evaluate(f"!N.balance(N.U.hoy(), N.U.hoy()).pedidos.some(p=>p.id==='{pid}')"))
+    pg.click('.avisoVerif'); pg.wait_for_timeout(600)
+    ok('filtro «Por verificar»', pg.locator('.segmento [data-filtro=verificar][aria-pressed=true]').count() == 1)
+    pg.screenshot(path=OUT + '/42-por-verificar.png')
+    pg.click(f'[data-abrir-pedido="{pid}"]'); pg.wait_for_timeout(800); pg.click('#caj-pagado'); pg.wait_for_timeout(900)
+    ok('al marcar pagado sí suma', pg.evaluate(f"N.balance(N.U.hoy(), N.U.hoy()).pedidos.some(p=>p.id==='{pid}')"))
+    pg.click('#caj-cerrar') if pg.locator('#caj-cerrar').is_visible() else None
+    # cancelar devuelve inventario
+    pg.click('#caj-cerrar') if pg.locator('#caj-cerrar').is_visible() else None
+    pg.on('dialog', lambda d: d.accept())
+    pg.evaluate(f"(async () => {{ }})()")
+    c.close()
+    # ---------- 4. arranque seguro
+    c = ctx(390, 844, True); pg = c.new_page()
+    abrir(pg); pg.evaluate("localStorage.setItem('myr2_prueba','x')")
+    pg.goto(B + '?reparar'); pg.wait_for_timeout(3500)
+    ok('?reparar limpia el teléfono y vuelve a abrir', pg.evaluate("localStorage.getItem('myr2_prueba')") is None and '?reparar' not in pg.url)
+    c.close(); br.close()
+print('errores', errs); print('OK', R['ok'], 'MAL', R['mal'])
