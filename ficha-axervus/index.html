@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Ficha resumen interactiva del proyecto de investigación — Axervus (CTeI), Ciencia, Tecnología e Innovación">
+  <meta name="theme-color" content="#0b1d45">
+  <title>Ficha Resumen · Axervus (CTeI)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Barra superior informativa -->
+  <div class="barra-info">
+    <div class="barra-info-contenido">
+      <span class="info-item">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v12H4z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="m4 7 8 6 8-6" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        <span id="info-correo">inbox.nativo@gmail.com</span>
+      </span>
+      <span class="info-item info-ocultable">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>
+        Desarrolla tu ficha durante la semana
+      </span>
+      <span class="info-item info-derecha">Ciencia · Tecnología · Innovación</span>
+    </div>
+  </div>
+
+  <!-- Cabecera -->
+  <header id="barra" class="cabecera">
+    <a class="logo" href="#" id="logo-inicio" aria-label="Axervus (CTeI), inicio">
+      <span class="logo-icono" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="M16 3 3 10l13 7 13-7z" fill="#fff"/><path d="M8 14v6c0 2.5 3.6 4.5 8 4.5s8-2 8-4.5v-6l-8 4.3z" fill="#ff4d4d"/></svg>
+      </span>
+      <span class="logo-texto">AXERVUS<small>CTeI</small></span>
+    </a>
+    <nav id="menu" class="menu" aria-label="Navegación principal"></nav>
+    <div class="cabecera-derecha">
+      <div id="usuario-zona" class="usuario" hidden>
+        <img id="usuario-foto" class="usuario-foto" alt="" referrerpolicy="no-referrer" hidden>
+        <span id="usuario-inicial" class="usuario-inicial" aria-hidden="true"></span>
+        <div class="usuario-datos">
+          <span id="usuario-nombre" class="usuario-nombre"></span>
+          <span id="usuario-rol" class="usuario-rol"></span>
+        </div>
+      </div>
+      <button id="btn-salir" class="btn btn-primario btn-salir" type="button" hidden>Salir <span aria-hidden="true">→</span></button>
+      <button id="btn-menu" class="btn-menu" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="menu"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="app">
+
+    <!-- 1. INGRESO ------------------------------------------------------- -->
+    <section id="v-ingreso" class="vista vista-ingreso">
+      <div class="hero">
+        <div class="hero-deco hero-deco-ondas" aria-hidden="true"></div>
+        <div class="hero-deco hero-deco-puntos" aria-hidden="true"></div>
+        <div class="hero-contenido">
+          <div class="hero-texto">
+            <p class="sobretitulo-linea"><span class="linea-roja" aria-hidden="true"></span>Ficha resumen · Proyecto de investigación</p>
+            <h1><span class="azul">Investiga, argumenta</span><br>y construye tu proyecto</h1>
+            <p class="hero-lead">Desarrolla con tus propias palabras cada sección de la ficha resumen de Axervus (CTeI), Ciencia, Tecnología e Innovación, y envíala a tu profesor.</p>
+            <ul class="hero-checks">
+              <li><span class="check azul">✓</span>8 secciones guiadas</li>
+              <li><span class="check rojo">✓</span>Dictado por voz</li>
+              <li><span class="check oscuro">✓</span>Asistente de redacción</li>
+            </ul>
+            <div class="acciones">
+              <a href="#ingreso-tarjeta" class="btn btn-primario">Empezar ahora <span aria-hidden="true">→</span></a>
+              <a href="#beneficios" class="btn btn-oscuro">Cómo funciona <span aria-hidden="true">→</span></a>
+            </div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="anillo" aria-hidden="true"></div>
+            <div id="ingreso-tarjeta" class="ingreso-tarjeta">
+              <p class="etiqueta">Ingreso</p>
+              <h2>Bienvenido a tu ficha</h2>
+              <div class="rol-selector" role="tablist" aria-label="Tipo de ingreso">
+                <button type="button" role="tab" class="rol-tab activo" data-rol="estudiante" aria-selected="true">Inicio del estudiante</button>
+                <button type="button" role="tab" class="rol-tab" data-rol="profesor" aria-selected="false">Inicio del profesor</button>
+              </div>
+              <p id="ingreso-ayuda" class="ingreso-ayuda">Ingresa con tu cuenta de Gmail para desarrollar tu ficha.</p>
+
+              <!-- Botón oficial de Google (Google Identity Services lo dibuja aquí) -->
+              <div id="google-boton" class="google-boton"></div>
+
+              <!-- Modo de prueba: solo aparece mientras no se configure el ID de cliente -->
+              <form id="form-demo" class="form-demo" hidden>
+                <p class="aviso aviso-info"><strong>Modo de prueba.</strong> Aún no se ha configurado el ID de cliente de Google en <code>app.js</code>. Escribe un nombre y un correo para probar; los datos se guardan solo en este navegador.</p>
+                <label>Nombre completo
+                  <input id="demo-nombre" type="text" autocomplete="name" required>
+                </label>
+                <label>Correo
+                  <input id="demo-correo" type="email" autocomplete="email" required>
+                </label>
+                <button type="submit" class="btn btn-primario btn-ancho">Ingresar en modo de prueba <span aria-hidden="true">→</span></button>
+              </form>
+
+              <p id="ingreso-error" class="aviso aviso-error" role="alert" hidden></p>
+            </div>
+            <div class="insignia insignia-arriba" aria-hidden="true">
+              <span class="insignia-icono rojo"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M9 11h6M9 15h6M9 7h3" stroke="currentColor" stroke-width="1.8"/></svg></span>
+              <span><strong>8</strong><small>Secciones de la ficha</small></span>
+            </div>
+            <div class="insignia insignia-abajo" aria-hidden="true">
+              <span class="insignia-icono"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="currentColor" stroke-width="1.8"/></svg></span>
+              <span><strong>Voz</strong><small>Dicta y revisa</small></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section id="beneficios" class="beneficios" aria-label="Qué ofrece la aplicación">
+        <div class="beneficio"><span class="beneficio-icono"><svg viewBox="0 0 24 24"><path d="M4 5h7a2 2 0 0 1 2 2v12a2 2 0 0 0-2-2H4zM20 5h-7a2 2 0 0 0-2 2v12a2 2 0 0 1 2-2h7z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></span>Secciones guiadas</div>
+        <div class="beneficio"><span class="beneficio-icono"><svg viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></span>Dictado por voz</div>
+        <div class="beneficio"><span class="beneficio-icono"><svg viewBox="0 0 24 24"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.7.7 1 1.5 1 2.5h6c0-1 .3-1.8 1-2.5A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></span>Asistente de redacción</div>
+        <div class="beneficio"><span class="beneficio-icono"><svg viewBox="0 0 24 24"><path d="M5 4h11l3 3v13H5z" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M8 4v5h7V4M8 20v-6h8v6" fill="none" stroke="currentColor" stroke-width="1.7"/></svg></span>Guardado automático</div>
+        <div class="beneficio"><span class="beneficio-icono"><svg viewBox="0 0 24 24"><path d="m3 11 18-8-8 18-2-8z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></span>Envío al profesor</div>
+      </section>
+    </section>
+
+    <!-- 2. BIENVENIDA ----------------------------------------------------- -->
+    <section id="v-bienvenida" class="vista vista-centrada" hidden>
+      <div class="bienvenida-tarjeta">
+        <div class="hero-deco hero-deco-puntos" aria-hidden="true"></div>
+        <p class="sobretitulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 8l10 5 10-5z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M6 10.5V15c0 1.7 2.7 3 6 3s6-1.3 6-3v-4.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Te damos la bienvenida</p>
+        <p id="bienvenida-texto" class="bienvenida-texto"></p>
+        <div class="acciones">
+          <button id="btn-continuar-bienvenida" type="button" class="btn btn-primario btn-grande">Continuar <span aria-hidden="true">→</span></button>
+        </div>
+        <p id="bienvenida-progreso" class="nota"></p>
+      </div>
+    </section>
+
+    <!-- 3. REPASO INICIAL ----------------------------------------------- -->
+    <section id="v-repaso" class="vista vista-suave" hidden>
+      <div class="contenedor">
+        <header class="encabezado-vista centrado">
+          <p class="sobretitulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5z" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M8 8h8M8 12h8M8 16h5" stroke="currentColor" stroke-width="1.8"/></svg>Antes de empezar</p>
+          <h2>Lo que vas a desarrollar esta semana</h2>
+          <p>Estas son las secciones de la ficha resumen que te corresponden. En cada una vas a escribir tu propio argumento, con tus palabras y desde tu punto de vista.</p>
+        </header>
+        <div id="repaso-lista" class="repaso-grid"></div>
+        <div class="repaso-pie">
+          <div id="repaso-profesor" class="aviso aviso-info aviso-profesor"></div>
+          <div class="como-funciona">
+            <h3>Cómo funciona</h3>
+            <ol>
+              <li>Lee las instrucciones de la sección y la guía para organizarla.</li>
+              <li>Escribe en el área de texto o pulsa <strong>🎙️ Dictar</strong> para hablar. Revisa y corrige lo que se reconoció.</li>
+              <li>Usa el <strong>asistente</strong> para encontrar sinónimos, palabras clave y formas de expresarte.</li>
+              <li>Pulsa <strong>Siguiente</strong>: tu respuesta se guarda y la sección queda marcada con ✓.</li>
+              <li>Al final revisa la lista de verificación y envía el consolidado a tu profesor.</li>
+            </ol>
+          </div>
+        </div>
+        <div class="acciones acciones-centro">
+          <button id="btn-empezar" type="button" class="btn btn-primario btn-grande">Empezar mi ficha <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. DESARROLLO POR SECCIONES ------------------------------------- -->
+    <section id="v-trabajo" class="vista vista-trabajo" hidden>
+      <nav id="pasos" class="pasos" aria-label="Secciones de la ficha"></nav>
+      <article id="editor" class="editor"></article>
+      <aside id="asistente" class="asistente" aria-label="Asistente de redacción"></aside>
+      <button id="btn-asistente-movil" type="button" class="btn btn-flotante" aria-controls="asistente" aria-expanded="false">💡 Asistente</button>
+    </section>
+
+    <!-- 5. CONSOLIDADO FINAL -------------------------------------------- -->
+    <section id="v-consolidado" class="vista vista-suave" hidden>
+      <div class="contenedor">
+        <header class="encabezado-vista centrado">
+          <p class="sobretitulo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4 10-10" fill="none" stroke="currentColor" stroke-width="2"/></svg>Consolidado final</p>
+          <h2>Lista de verificación de tu ficha</h2>
+          <p id="consolidado-intro"></p>
+        </header>
+        <div id="checklist" class="checklist"></div>
+        <div class="envio">
+          <div class="envio-destino">
+            <span class="envio-icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 11 18-8-8 18-2-8z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg></span>
+            <div>
+              <p class="etiqueta">Se enviará a</p>
+              <p id="envio-profesor" class="envio-profesor"></p>
+            </div>
+          </div>
+          <div class="acciones">
+            <button id="btn-volver-editar" type="button" class="btn btn-secundario">← Volver a editar</button>
+            <button id="btn-enviar" type="button" class="btn btn-primario btn-grande">Enviar consolidado al profesor <span aria-hidden="true">→</span></button>
+          </div>
+          <p id="envio-estado" class="nota" role="status"></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. PANEL DEL PROFESOR ------------------------------------------- -->
+    <section id="v-profesor" class="vista vista-suave" hidden>
+      <div class="contenedor contenedor-ancho">
+        <header class="encabezado-vista">
+          <p class="sobretitulo"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M4 21c1-4.5 4.5-6.5 8-6.5s7 2 8 6.5" fill="none" stroke="currentColor" stroke-width="1.8"/></svg>Inicio del profesor</p>
+          <h2 id="profesor-saludo">Consolidados de los estudiantes</h2>
+          <p id="profesor-cargo" class="nota"></p>
+        </header>
+
+        <div id="profesor-indicadores" class="indicadores"></div>
+
+        <!-- 6.1 Consolidados recibidos -->
+        <section id="tarjeta-consolidados" class="tarjeta">
+          <div class="tarjeta-cabeza">
+            <h3>Consolidados recibidos <span id="total-consolidados" class="contador">0</span></h3>
+            <button id="btn-actualizar" type="button" class="btn btn-secundario">↻ Actualizar</button>
+          </div>
+          <div id="lista-consolidados" class="tabla-scroll"></div>
+        </section>
+
+        <!-- 6.2 Datos del encabezado de la ficha -->
+        <section id="tarjeta-encabezado" class="tarjeta">
+          <div class="tarjeta-cabeza">
+            <h3>Encabezado de la ficha</h3>
+          </div>
+          <form id="form-encabezado" class="form-grid"></form>
+        </section>
+
+        <!-- 6.3 Análisis -->
+        <section id="tarjeta-analisis" class="tarjeta tarjeta-destacada">
+          <div class="tarjeta-cabeza">
+            <div>
+              <h3>Asistente de análisis</h3>
+              <p class="nota">Analiza a profundidad todos los consolidados, escoge lo mejor de cada estudiante en cada sección y arma la ficha final con el cronograma, el presupuesto y el anexo del prototipo.</p>
+            </div>
+            <button id="btn-analizar" type="button" class="btn btn-primario btn-grande">🤖 Analizar y generar ficha final</button>
+          </div>
+          <div id="analisis-progreso" class="progreso" hidden></div>
+          <div id="analisis-resultado"></div>
+        </section>
+
+        <!-- 6.4 Cronograma -->
+        <section id="tarjeta-cronograma" class="tarjeta" hidden>
+          <div class="tarjeta-cabeza">
+            <h3>7. Cronograma</h3>
+            <button id="btn-fila-cronograma" type="button" class="btn btn-secundario">+ Agregar actividad</button>
+          </div>
+          <p class="nota">Se propone a partir de los objetivos y la metodología escogidos. El profesor lo diseña, lo ajusta y lo explica en la socialización de los entregables.</p>
+          <div id="editor-cronograma" class="tabla-scroll"></div>
+        </section>
+
+        <!-- 6.5 Presupuesto -->
+        <section id="tarjeta-presupuesto" class="tarjeta" hidden>
+          <div class="tarjeta-cabeza">
+            <h3>9. Presupuesto</h3>
+            <button id="btn-fila-presupuesto" type="button" class="btn btn-secundario">+ Agregar gasto directo</button>
+          </div>
+          <p class="aviso aviso-alerta">Los valores son <strong>de referencia</strong>. Revísalos y ajústalos antes de descargar la ficha. El prototipo se desarrolla de manera externa, por eso sus costos aparecen en el rubro <strong>«Servicios técnicos externos (prototipo)»</strong>.</p>
+          <div id="editor-presupuesto"></div>
+        </section>
+
+        <!-- 6.6 Anexo prototipo -->
+        <section id="tarjeta-prototipo" class="tarjeta" hidden>
+          <div class="tarjeta-cabeza">
+            <h3>Anexo. Prototipo de interfaz de la estrategia</h3>
+            <button id="btn-regenerar-prototipo" type="button" class="btn btn-secundario">↻ Regenerar pantallas</button>
+          </div>
+          <p class="nota">Pantallas de referencia para el desarrollo externo del prototipo, una por cada módulo de la estrategia (derivadas de los objetivos específicos). Puedes editar el texto o reemplazar cualquier pantalla con una imagen propia.</p>
+          <div id="editor-prototipo" class="prototipo-grid"></div>
+        </section>
+
+        <!-- 6.7 Vista previa y descargas -->
+        <section id="tarjeta-vista" class="tarjeta" hidden>
+          <div class="tarjeta-cabeza">
+            <h3>Vista previa de la ficha final</h3>
+            <div class="acciones">
+              <button id="btn-word" type="button" class="btn btn-secundario">⬇ Descargar Word</button>
+              <button id="btn-pdf" type="button" class="btn btn-primario">⬇ Descargar PDF</button>
+            </div>
+          </div>
+          <div class="vista-previa-marco">
+            <div id="vista-previa" class="ficha-doc"></div>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <p><strong>Axervus (CTeI)</strong> · Ciencia, Tecnología e Innovación</p>
+    <p id="pie-profesor"></p>
+  </footer>
+
+  <!-- Ventana modal genérica -->
+  <div id="modal" class="modal" hidden>
+    <div class="modal-tarjeta" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+      <div class="modal-cabeza">
+        <h3 id="modal-titulo"></h3>
+        <button id="modal-cerrar" type="button" class="btn btn-sutil" aria-label="Cerrar">✕</button>
+      </div>
+      <div id="modal-cuerpo" class="modal-cuerpo"></div>
+    </div>
+  </div>
+
+  <!-- Reingreso cuando la sesión de Google vence (dura 1 hora) -->
+  <div id="reingreso" class="modal" hidden>
+    <div class="modal-tarjeta modal-pequena" role="dialog" aria-modal="true">
+      <h3>Tu sesión venció</h3>
+      <p>Por seguridad, vuelve a ingresar con tu cuenta de Google para continuar. Tus respuestas siguen guardadas.</p>
+      <div id="google-boton-reingreso" class="google-boton"></div>
+      <button id="reingreso-cancelar" type="button" class="btn btn-sutil">Cancelar</button>
+    </div>
+  </div>
+
+  <div id="aviso-flotante" class="aviso-flotante" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
