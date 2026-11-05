@@ -1,0 +1,22 @@
+{
+  "name": "HatilloMall · El mercado de Hatillo de Loba",
+  "short_name": "HatilloMall",
+  "description": "Pide en los negocios de Hatillo de Loba, Chimí y San Martín de Loba. Paga al recibir, con QR o con HatilloPago.",
+  "lang": "es-CO",
+  "start_url": "./index.html#inicio",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EDEDED",
+  "theme_color": "#FFE600",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Ofertas de hoy", "url": "./index.html#c-ofertas" },
+    { "name": "Mis pedidos", "url": "./index.html#cuenta-pedidos" },
+    { "name": "Entrar a mi negocio", "url": "./index.html#panel" }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "name": "hatillomall-prototipo",
+  "version": "5.0.0",
+  "description": "Prototipo navegable de HatilloMall: marketplace + sistema de negocios (PWA) para Hatillo de Loba, Bolívar.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node servidor.mjs",
+    "test": "node tests/pruebas.mjs",
+    "instalar-navegador": "npx playwright install chromium",
+    "fotos": "node fotos/descargar-fotos.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  },
+  "author": "Powered by AXERVUS CTeI",
+  "license": "UNLICENSED"
+}
