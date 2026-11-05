@@ -1,0 +1,117 @@
+{
+ "voz": "Kokoro ef_dora con fonética latinoamericana (es-419), Apache-2.0",
+ "pasos": [
+  {
+   "id": "c01",
+   "texto": "¡Hola! Te muestro en un minuto lo fácil que es pedir. Arriba ves las ofertas del día.",
+   "dur": 6.31
+  },
+  {
+   "id": "c02",
+   "texto": "Toca «Ver el menú». Primero escoges cómo quieres tu pedido. Esta vez, lo pedimos a domicilio.",
+   "dur": 6.86
+  },
+  {
+   "id": "c03",
+   "texto": "Mueve el mapa hasta que el pin quede sobre tu casa. La app calcula sola la ruta y el valor del domicilio. Luego tocas «Confirmar dirección».",
+   "dur": 9.89
+  },
+  {
+   "id": "c04",
+   "texto": "Este es el menú. Desliza el plato a los lados para ver más, o cambia de categoría arriba. Si tocas el plato, ves su detalle.",
+   "dur": 8.61
+  },
+  {
+   "id": "c05",
+   "texto": "¿Te antojaste? Toca «Agregar al pedido». Aquí puedes quitar ingredientes y escoger cuántos quieres.",
+   "dur": 7.03
+  },
+  {
+   "id": "c06",
+   "texto": "Ahora las salsas. Te llegan en un recipiente aparte.",
+   "dur": 4.09
+  },
+  {
+   "id": "c07",
+   "texto": "Y la bebida, bien fría. Tocas «Confirmar».",
+   "dur": 3.55
+  },
+  {
+   "id": "c08",
+   "texto": "En el resumen ves todo tu pedido y el total. Con los botones grandes subes o bajas la cantidad.",
+   "dur": 6.61
+  },
+  {
+   "id": "c09",
+   "texto": "Escoge cómo pagas: efectivo, transferencia o tarjeta. Y tocas «Ver ticket».",
+   "dur": 5.75
+  },
+  {
+   "id": "c10",
+   "texto": "Revisa tu ticket y toca «Enviar pedido». ¡Listo! El negocio lo recibe al instante.",
+   "dur": 6.5
+  },
+  {
+   "id": "c11",
+   "texto": "Aquí sigues tu pedido. Cuando esté listo, la app te avisa con voz, y en el mapa ves por dónde va la moto.",
+   "dur": 7.31
+  },
+  {
+   "id": "c12",
+   "texto": "Si tienes alguna duda, escríbele al negocio por el chat. ¡Buen provecho!",
+   "dur": 5.37
+  }
+ ],
+ "musica": {
+  "archivo": "musica.mp3",
+  "dur": 38.4,
+  "autor": "Música original generada para Mesa y Ruta (sin derechos de terceros)"
+ },
+ "negocio": [
+  {
+   "id": "n01",
+   "texto": "¡Bienvenido al panel de tu negocio! Desde aquí manejas todo, en el celular, la tableta o el computador.",
+   "dur": 6.82
+  },
+  {
+   "id": "n02",
+   "texto": "En «Resumen» ves las ventas del día, los gastos y el balance, con la gráfica de las últimas dos semanas.",
+   "dur": 6.33
+  },
+  {
+   "id": "n03",
+   "texto": "Cuando entra un pedido, suena una alerta. Lo tocas, y ves el detalle y el ticket del cliente.",
+   "dur": 6.16
+  },
+  {
+   "id": "n04",
+   "texto": "Avanzas el pedido con el botón verde: confirmar, a la cocina, y listo. El cliente recibe el aviso con voz.",
+   "dur": 7.25
+  },
+  {
+   "id": "n05",
+   "texto": "En «Caja y balance» registras gastos e ingresos. Para abrir y cerrar la caja, se pide la clave del administrador.",
+   "dur": 7.42
+  },
+  {
+   "id": "n06",
+   "texto": "En «Menú y fotos» cambias precios, subes las fotos de tus platos y creas ofertas.",
+   "dur": 5.26
+  },
+  {
+   "id": "n07",
+   "texto": "En «Equipo y roles» creas a tus empleados, les das permisos, y generas su carné con código QR.",
+   "dur": 6.29
+  },
+  {
+   "id": "n08",
+   "texto": "Cuando llegan a trabajar, cada uno escanea su carné en «Asistencia», y queda registrada la hora de entrada.",
+   "dur": 6.65
+  },
+  {
+   "id": "n09",
+   "texto": "Y cada quince días, la app te recuerda generar el consolidado en Excel. ¡Listo, a vender!",
+   "dur": 6.67
+  }
+ ]
+}
