@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HatilloMall · El mercado de Hatillo de Loba</title>
+<meta name="description" content="Marketplace y sistema de negocios de Hatillo de Loba, Chimí y San Martín de Loba.">
+<meta name="theme-color" content="#FFE600">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..900&family=Fraunces:opsz,wght@9..144,700..900&family=Lilita+One&family=Bricolage+Grotesque:opsz,wght@12..96,700..800&family=Silkscreen&display=swap">
+<link rel="stylesheet" href="css/estilos.css">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}</style>
+</head>
+<body>
+<div class="store-only">
+<header class="top ml">
+  <div class="wrap hr1">
+    <button class="ham dept-btn" type="button" data-act="dept" aria-expanded="false" aria-controls="deptMenu" aria-label="Menú y categorías"><span data-i="menu"></span></button>
+    <button class="logo" type="button" data-act="go" data-h="inicio" aria-label="HatilloMall, inicio"><span class="lg-ic" data-i="bolsa"></span><span class="lg-t"><b>HatilloMall</b><small>El mercado de Hatillo de Loba</small></span></button>
+    <form class="search" data-form="buscar" role="search" autocomplete="off">
+      <label class="sr" for="qCat">Categoría</label>
+      <select id="qCat" name="cat" hidden><option value="">Todo el pueblo</option></select>
+      <label class="sr" for="q">Buscar</label>
+      <input id="q" name="q" type="search" placeholder="Buscar productos, negocios y más…" autocomplete="off" aria-controls="ac">
+      <button type="submit" aria-label="Buscar"><span data-i="search"></span></button>
+      <div class="ac" id="ac" hidden></div>
+    </form>
+    <button class="hplus" type="button" data-act="tono"><span data-i="spark"></span><span><b>Toño</b> · tu asistente con IA<small>Dile qué necesitas y él lo busca</small></span></button>
+    <button class="ibtn m-only" type="button" data-act="carrito" aria-label="Carrito"><span data-i="cart"></span><span class="badge num" data-n="0" id="nCart3">0</span></button>
+  </div>
+  <div class="wrap hr2">
+    <button class="envio" type="button" data-act="zona"><span data-i="pin"></span><span><small>Enviar a</small><b id="zonaTx">Hatillo cabecera</b></span></button>
+    <nav class="hnav" aria-label="Secciones">
+      <button type="button" data-act="dept">Categorías <span data-i="chevr" class="rot"></span></button>
+      <button type="button" data-act="go" data-h="c-ofertas">Ofertas</button>
+      <button type="button" data-act="go" data-h="cupones">Cupones</button>
+      <button type="button" data-act="go" data-h="historial">Historial</button>
+      <button type="button" data-act="ancla" data-h="negocios">Negocios</button>
+      <button type="button" data-act="go" data-h="c-campo">Del campo</button>
+      <button type="button" data-act="go" data-h="cuenta-billetera">HatilloPago</button>
+      <button type="button" data-act="login" data-tab="negocio">Vender</button>
+    </nav>
+    <div class="hacts">
+      <button class="senal" type="button" data-act="senal" aria-pressed="false"><i></i><span class="senal-t">Con señal</span></button>
+      <button class="hl" type="button" data-act="cuenta" id="btnCuenta"><span data-i="user"></span><span id="cuSm" class="sr">Hola</span><span id="cuTx">Ingresa</span><span class="badge num" data-n="0" id="nNot">0</span></button>
+      <button class="hl" type="button" data-act="go" data-h="cuenta-pedidos">Mis compras</button>
+      <button class="hl ico" type="button" data-act="go" data-h="cuenta-favoritos" aria-label="Favoritos"><span data-i="heart"></span><span class="badge num" data-n="0" id="nFav">0</span></button>
+      <button class="hl ico" type="button" data-act="carrito" aria-label="Carrito"><span data-i="cart"></span><span class="sr" id="cartTot">$0</span><span class="badge num" data-n="0" id="nCart">0</span></button>
+    </div>
+    <div class="dept-menu" id="deptMenu" hidden></div>
+  </div>
+  <div class="offline-bar" id="offBar" hidden><div class="wrap"><span data-i="wifioff"></span><span>Sin señal. Puedes seguir mirando y pidiendo: tu pedido queda guardado en el celular y sale solo cuando vuelva el internet.</span></div></div>
+</header>
+</div>
+
+<div id="scrollProg" aria-hidden="true"></div>
+<main id="app"></main>
+
+<div class="store-only">
+<footer class="ft">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <button class="logo" type="button" data-act="go" data-h="inicio"><span class="lg-ic" data-i="bolsa"></span><span class="lg-t"><b>HatilloMall</b></span></button>
+        <p style="margin:12px 0 0;max-width:36ch">Todos los negocios de Hatillo de Loba, Chimí y San Martín de Loba en una sola app. Pides, sigues tu pedido y hablas con el negocio sin salir de aquí.</p>
+        <p style="margin:12px 0 0"><b style="color:#fff">Soporte:</b> Hatillo de Loba, Bolívar · todos los días</p>
+      </div>
+      <div><h4>Comprar</h4><ul><li><button type="button" data-act="go" data-h="c-ofertas">Ofertas de hoy</button></li><li><button type="button" data-act="go" data-h="c-comida">Restaurantes y asaderos</button></li><li><button type="button" data-act="go" data-h="c-farmacia">Droguerías</button></li><li><button type="button" data-act="go" data-h="c-campo">Del campo</button></li></ul></div>
+      <div><h4>Mi cuenta</h4><ul><li><button type="button" data-act="go" data-h="cuenta">Mi cuenta</button></li><li><button type="button" data-act="go" data-h="cuenta-pedidos">Mis pedidos</button></li><li><button type="button" data-act="go" data-h="cuenta-fiados">Mis fiados</button></li><li><button type="button" data-act="go" data-h="cuenta-favoritos">Favoritos</button></li></ul></div>
+      <div><h4>Negocios</h4><ul><li><button type="button" data-act="login" data-tab="negocio">Entrar a mi negocio</button></li><li><button type="button" data-act="go" data-h="marcas">Marcas del pueblo</button></li><li><button type="button" data-act="inst-abrir">Instalar la app</button></li><li><button type="button" data-act="ancla" data-h="negocios">Directorio de negocios</button></li><li><button type="button" data-act="reset">Reiniciar la demostración</button></li></ul></div>
+    </div>
+    <div class="kw" id="kw"></div>
+    <div class="legal"><span>© 2026 HatilloMall · Hatillo de Loba, Bolívar · Powered by <b>AXERVUS CTeI</b></span><span class="paychips"><span>Efectivo</span><span>Nequi</span><span>DaviPlata</span><span>Bancolombia</span><span>Fiado</span></span></div>
+  </div>
+</footer>
+<nav class="bnav" aria-label="Navegación principal">
+  <button type="button" data-act="go" data-h="inicio"><span data-i="home"></span>Inicio</button>
+  <button type="button" data-act="go" data-h="c-ofertas"><span data-i="tag"></span>Ofertas</button>
+  <button type="button" class="bn-tono" data-act="tono"><span data-i="spark"></span>Toño</button>
+  <button type="button" data-act="carrito"><span data-i="cart"></span>Carrito<span class="badge num" data-n="0" id="nCart2">0</span></button>
+  <button type="button" data-act="cuenta" data-h="cuenta"><span data-i="user"></span>Cuenta</button>
+</nav>
+</div>
+
+<div class="scrim" id="scrim" data-act="cerrar-todo"></div>
+<aside class="drawer" id="drawer" aria-label="Carrito" aria-hidden="true">
+  <div class="dr-h"><h3>Tu carrito</h3><button class="x" type="button" data-act="cerrar-carrito" aria-label="Cerrar carrito"><span data-i="x"></span></button></div>
+  <div class="dr-b" id="drB"></div>
+</aside>
+<div class="modal" id="modal" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+<script>
+/* PWA: registra el service worker para que funcione sin señal */
+if('serviceWorker' in navigator&&location.protocol!=='file:'){
+  window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(e=>console.warn('SW no registrado',e)));
+}
+</script>
+</body>
+</html>
