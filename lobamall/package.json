@@ -1,0 +1,30 @@
+{
+  "name": "lobamall",
+  "version": "7.0.0",
+  "description": "LobaMall: el centro comercial digital de La Loba (Hatillo, San Martín y Barranco de Loba). PWA + API con repartidores en modo dual.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node servidor.mjs",
+    "migrar": "node -e \"import('./api/db.mjs').then(async d=>{d.conectar();await d.migrar();await d.cerrar()})\"",
+    "semilla": "node api/semilla.mjs",
+    "llaves-push": "node -e \"const w=require('web-push');const k=w.generateVAPIDKeys();console.log('VAPID_PUBLICA='+k.publicKey+'\\nVAPID_PRIVADA='+k.privateKey)\"",
+    "test": "node tests/pruebas.mjs",
+    "test:api": "node --test --test-reporter=spec tests/api/api.test.mjs",
+    "instalar-navegador": "npx playwright install chromium",
+    "fotos": "node fotos/descargar-fotos.mjs",
+    "test:v7": "node tests/pruebas-v7.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "pg": "^8.23.1",
+    "web-push": "^3.6.7"
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  },
+  "author": "Powered by AXERVUS CTeI",
+  "license": "UNLICENSED"
+}

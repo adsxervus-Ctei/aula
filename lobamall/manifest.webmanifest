@@ -1,0 +1,105 @@
+{
+  "name": "LobaMall · El centro comercial de La Loba",
+  "short_name": "LobaMall",
+  "description": "El centro comercial digital de La Loba (Hatillo, San Martín y Barranco de Loba) en una sola app: pide, sigue tu domicilio en vivo y paga en efectivo, Nequi o fiado. Para negocios: ventas, caja, inventario con QR y repartidores. Para mototaxistas: domicilios en modo trabajo y compras en modo cliente.",
+  "lang": "es-CO",
+  "start_url": "./index.html?app=1#inicio",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EDEDED",
+  "theme_color": "#FFE600",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ofertas de hoy",
+      "url": "./index.html#c-ofertas"
+    },
+    {
+      "name": "Mis pedidos",
+      "url": "./index.html#cuenta-pedidos"
+    },
+    {
+      "name": "Entrar a mi negocio",
+      "url": "./index.html#panel"
+    },
+    {
+      "name": "Repartidores",
+      "url": "./index.html?app=1#rep"
+    },
+    {
+      "name": "Escanear un producto",
+      "url": "./index.html#escanear"
+    }
+  ],
+  "id": "./index.html?app=1",
+  "categories": [
+    "shopping",
+    "food",
+    "business"
+  ],
+  "launch_handler": {
+    "client_mode": "focus-existing"
+  },
+  "screenshots": [
+    {
+      "src": "icons/screens/01-portada.jpg",
+      "sizes": "720x1560",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Portada con ofertas del día"
+    },
+    {
+      "src": "icons/screens/02-categorias.jpg",
+      "sizes": "720x1560",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Categorías: desliza para cambiar"
+    },
+    {
+      "src": "icons/screens/03-producto.jpg",
+      "sizes": "720x1560",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Ficha del producto"
+    },
+    {
+      "src": "icons/screens/04-asistente.jpg",
+      "sizes": "720x1560",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Toño, tu asistente"
+    },
+    {
+      "src": "icons/screens/05-seguimiento.jpg",
+      "sizes": "720x1560",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Sigue tu pedido en vivo"
+    },
+    {
+      "src": "icons/screens/06-panel.jpg",
+      "sizes": "720x1560",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Panel del negocio"
+    }
+  ]
+}
