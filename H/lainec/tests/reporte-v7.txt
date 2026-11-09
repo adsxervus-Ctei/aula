@@ -1,0 +1,23 @@
+Lainec v7 · Reporte de pruebas de navegador (lo nuevo)
+Fecha: 8/11/2026, 8:09:27 p. m.
+Resultado: 19 de 19 pruebas pasaron
+
+01. PASÓ   Repartidor pendiente: solo ve "Tu solicitud está en revisión", sin ofertas  (0.8 s)
+02. PASÓ   Registro con fotos, Habeas Data obligatorio y aprobación del admin en tiempo real  (4.7 s)
+03. PASÓ   Negocio publica [NECESITO REPARTIDOR] y la oferta llega al instante; dos aceptan a la vez y solo uno gana  (5.1 s)
+04. PASÓ   Con el domicilio en curso no puede cambiar a modo cliente  (0.2 s)
+05. PASÓ   Flujo RECOGÍ → EN CAMINO → ENTREGADO con foto; el negocio ve el pedido entregado y la caja  (0.5 s)
+06. PASÓ   Modo cliente: no suenan ofertas, ve la vitrina con [VOLVER A MODO TRABAJO] y sobrevive a recargar  (2.7 s)
+07. PASÓ   El repartidor que pide como cliente no ve su propio pedido en la cartelera  (0.9 s)
+08. PASÓ   Cliente en otro celular: pide, el negocio acepta, el repartidor lo lleva y la cliente ve quién va, la entrega y califica  (4.4 s)
+09. PASÓ   Asistente: producto nuevo con foto profesional, código y QR, y la etiqueta se imprime  (1.2 s)
+10. PASÓ   Un cliente nuevo escanea el QR desde OTRO celular y ve el producto con el lugar donde está  (0.7 s)
+11. PASÓ   Lector USB (teclado rápido) y buscador: RC-0001 y RC'0001 abren el producto  (1.3 s)
+12. PASÓ   Billar: la mesera configura la mesa, sale un QR de un solo uso, los jugadores lo escanean y ven chicos, extras y su cuenta  (5.9 s)
+13. PASÓ   Punto de venta: tienda con lector y cambio, comida rápida con turno, droguería pide fórmula, ropa pide talla  (5.0 s)
+14. PASÓ   Entrada a la app: ficha de instalación con "dónde va a quedar", municipio y "¿cómo vas a usar Lainec?"  (5.1 s)
+15. PASÓ   Barbería: turnos con estilista; al marcar ATENDIDO se registra la venta  (1.6 s)
+16. PASÓ   Taller: orden de servicio con repuesto, lista, entrega y cobro; historial por placa  (2.0 s)
+17. PASÓ   Ropa: apartado con abonos; Agro: un lote vencido no se deja vender  (2.9 s)
+18. PASÓ   Pantallas del repartidor: botones de 48 px o más, letra de 18 px o más y sin desplazamiento lateral  (0.0 s)
+19. PASÓ   Ninguna pantalla nueva dejó errores de JavaScript  (0.0 s)

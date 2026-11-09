@@ -1,0 +1,160 @@
+/* Lainec v8 · Identidad visual
+   Se carga después de estilos.css y lobamall.css: solo cambia la piel, no la estructura.
+   Colores con nombre propio (manual de marca): Ciénaga, Corozo, Luciérnaga, Garza, Bocachico, Totumo.
+   Letras: Bricolage Grotesque (títulos) + Figtree (textos). */
+:root{
+  --cienaga:#0B5D63;--cienaga-osc:#084A4F;--cienaga-cla:#167C83;--corozo:#C2272D;--corozo-osc:#A51F25;
+  --luciernaga:#F4C21B;--garza:#F3F7F6;--bocachico:#93A6AE;--totumo:#1E2B2B;
+
+  /* Tokens heredados de las versiones anteriores, ahora con la paleta Lainec */
+  --cal:#EAF1F0;--blanco:#FFFFFF;--tinta:#1E2B2B;--tinta-2:#56696B;--gris:#93A6AE;--linea:#D5E1DF;--linea-2:#F0F5F4;
+  --fucsia:#0B5D63;--azul-osc:#084A4F;--rio:#0B5D63;--sol:#F4C21B;--rojo:#C2272D;--violeta:#2F4746;
+  --texto:#1E2B2B;--azul-sua:rgba(11,93,99,.11);
+  --f-display:"Bricolage Grotesque","Avenir Next","Segoe UI",system-ui,sans-serif;
+  --f-body:"Figtree","Segoe UI",system-ui,sans-serif;--f-logo:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+}
+body{background:var(--cal);color:var(--texto)}
+body::before{background:var(--cienaga)}
+:focus-visible{outline-color:var(--cienaga)}
+.btn:hover{background:rgba(11,93,99,.18)}
+.b-fucsia:hover,.b-rio:hover{background:var(--cienaga-osc)}
+.b-sol{background:var(--luciernaga);color:var(--totumo)}.b-sol:hover{background:#E5B40F}
+.b-tinta{background:var(--totumo)}.b-tinta:hover{background:#0F1818}
+
+/* El botón más importante de cada pantalla va en Corozo */
+.btn[data-act="pv-buy"],.btn[data-act="checkout"],.btn.lx-cta,.lx-buybar .lx-buy,
+.btn[data-act="co-go"]{background:var(--corozo);color:#fff}
+.btn[data-act="pv-buy"]:hover,.btn[data-act="checkout"]:hover,.btn.lx-cta:hover,.btn[data-act="co-go"]:hover{background:var(--corozo-osc)}
+
+/* ---------- encabezado en Ciénaga ---------- */
+header.top,header.top.ml{background:var(--cienaga);color:#fff;box-shadow:none}
+header.top.ml.sc{box-shadow:0 2px 12px rgba(7,40,43,.35)}
+.logo,.logo .lg-t b{color:#fff}
+.logo .lg-t b{font-family:var(--f-display);font-weight:800;letter-spacing:-.04em;font-size:27px;line-height:1}
+.logo .lg-t b i{font-style:normal;color:var(--luciernaga)}
+.logo .lg-t small{color:rgba(255,255,255,.78);font-weight:600;font-size:11.5px;margin-top:2px}
+.lg-ic{background:var(--garza);color:var(--cienaga);border-radius:12px}
+.lg-ic .ic{stroke-width:3.2;width:26px;height:26px}
+.lg-ic .ic .lw{stroke:var(--corozo);stroke-width:2.2}
+.pn-brand .lg-ic{background:var(--garza);color:var(--cienaga)}
+.pn-brand .logo .lg-t b{color:#fff}
+.ft .logo .lg-t b{color:#fff}
+.ham.dept-btn,.ibtn{color:#fff}
+.ham.dept-btn:hover,.ibtn:hover{background:rgba(255,255,255,.12)}
+.ml .search{box-shadow:none;border-radius:12px;overflow:hidden}
+.ml .search input{border-radius:12px 0 0 12px;border:0;padding:12px 16px}
+.ml .search button{border-radius:0 12px 12px 0;background:var(--corozo);color:#fff;border-left:0;padding:0 18px}
+.ml .search button:hover{color:#fff;background:var(--corozo-osc)}
+.envio,.envio .ic{color:#fff}
+.envio small{color:rgba(255,255,255,.72)}
+.envio:hover{box-shadow:inset 0 0 0 1px rgba(255,255,255,.35)}
+.hnav button{color:rgba(255,255,255,.82)}
+.hnav button:hover{color:#fff}
+.hl{color:#fff}
+.hl:hover{color:#fff;background:rgba(255,255,255,.1)}
+.hacts .senal{color:#fff;border-color:rgba(255,255,255,.4)}
+.hplus{background:linear-gradient(100deg,var(--totumo),#2F4746)}
+.hplus .ic{color:var(--luciernaga)}
+.badge{background:var(--corozo);color:#fff}
+
+/* ---------- títulos con la letra de la marca ---------- */
+.mlh h2,.mlt,.sec-h h2,.hs-tx h2,.panel-h h1,.pinfo h1,.sb-body h1,.dr-h h3,.news h3,.paybn h3,.lm-card h1,.lm-card h2,.gt-top h1{font-family:var(--f-display);letter-spacing:-.02em}
+.hs-tx h2{font-weight:800}
+.hs-k{letter-spacing:.1em}
+
+/* ---------- precios y descuentos ---------- */
+.off-g,.pbig4 b{color:#0E7A43}
+.tmr .cd span,.cd span{background:var(--corozo)}
+.mv{background:var(--luciernaga);color:var(--totumo)}
+
+/* ---------- barra inferior del celular ---------- */
+.bnav{border-top:1px solid var(--linea)}
+.bnav button{color:var(--tinta-2)}
+.bnav button.on,.bnav button[aria-current="page"]{color:var(--cienaga)}
+.bn-tono .ic{color:var(--corozo)}
+
+/* ---------- pie de página ---------- */
+.ft{background:var(--totumo)}
+
+/* =========================================================
+   Mejoras v8 tomadas de las plataformas de referencia
+   ========================================================= */
+
+/* 1. Atajos de categorías (Temu, Shein, Dafiti): fila deslizable justo debajo del encabezado */
+.lx-chips{background:var(--blanco);border-bottom:1px solid var(--linea)}
+.lx-chips .wrap{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-block:10px;scroll-snap-type:x proximity}
+.lx-chips .wrap::-webkit-scrollbar{display:none}
+.lx-chip{flex:none;display:inline-flex;align-items:center;gap:7px;border:1px solid var(--linea);background:var(--garza);color:var(--totumo);border-radius:99px;padding:7px 14px 7px 8px;font-weight:600;font-size:14px;white-space:nowrap;scroll-snap-align:start}
+.lx-chip i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--c,var(--cienaga));color:#fff}
+.lx-chip i .ic{width:15px;height:15px}
+.lx-chip:hover{border-color:var(--cienaga);background:#E3EEEC}
+.lx-chip.hot{background:var(--corozo);border-color:var(--corozo);color:#fff}
+.lx-chip.hot i{background:rgba(255,255,255,.2)}
+
+/* 2. Franja de confianza (Dafiti, Temu): lo que el cliente quiere saber antes de pedir */
+.lx-trust{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}
+.lx-tr{display:flex;gap:10px;align-items:center;background:var(--blanco);border:1px solid var(--linea);border-radius:12px;padding:12px 14px;min-width:0}
+.lx-tr .ic{width:26px;height:26px;color:var(--cienaga);flex:none}
+.lx-tr b{display:block;font-size:14px;line-height:1.2}
+.lx-tr small{display:block;color:var(--tinta-2);font-size:12.5px;line-height:1.3}
+@media(max-width:899px){
+  .lx-trust{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:minmax(220px,78%);overflow-x:auto;scrollbar-width:none;scroll-snap-type:x mandatory}
+  .lx-trust::-webkit-scrollbar{display:none}
+  .lx-tr{scroll-snap-align:start}
+}
+
+/* 3. Pedir de nuevo (Amazon, Rappi): lo que la cliente ya pidió, a un toque */
+.lx-again{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(250px,1fr);gap:10px;overflow-x:auto;scrollbar-width:thin;padding-bottom:4px}
+.lx-ag{display:grid;grid-template-columns:56px minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--blanco);border:1px solid var(--linea);border-radius:12px;padding:10px}
+.lx-ag .art{width:56px;height:56px;border-radius:10px;overflow:hidden;display:grid;place-items:center;background:var(--garza)}
+.lx-ag .art > *{max-width:100%;max-height:100%}
+.lx-ag b{display:block;font-size:14px;line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lx-ag small{display:block;color:var(--tinta-2);font-size:12.5px}
+.lx-ag .btn{padding:8px 12px;font-size:13.5px}
+
+/* 4. En el celular los accesos grandes se vuelven fichas compactas (Mercado Libre app) */
+@media(max-width:759px){
+  .shorts{grid-auto-columns:minmax(150px,46%)!important}
+  .sht{padding:14px!important;gap:6px!important}
+  .sht h3{font-size:14.5px!important}
+  .sht p{display:none}
+  .sht .shi{width:44px!important;height:44px!important}
+}
+
+/* 5. Barra fija de compra en la ficha del producto (Shein, Temu, Mercado Libre app) */
+.lx-buybar{position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:45;background:var(--blanco);border-top:1px solid var(--linea);box-shadow:0 -6px 18px rgba(30,43,43,.1);padding-block:10px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));display:none;gap:10px;align-items:center;transform:translateY(120%);transition:transform .25s}
+.lx-buybar.on{transform:none}
+.lx-buybar .pz{display:grid;line-height:1.1;margin-right:auto;min-width:0}
+.lx-buybar .pz b{font-size:20px;font-family:var(--f-display);font-weight:800}
+.lx-buybar .pz small{color:var(--tinta-2);font-size:12px}
+.lx-buybar .btn{padding:11px 14px;font-size:14.5px}
+@media(max-width:899px){.lx-buybar{display:flex}}
+@media(prefers-reduced-motion:reduce){.lx-buybar{transition:none}}
+
+/* 6. Búsquedas populares en el buscador (Amazon, Mercado Libre) */
+.ac .lx-pop{display:flex;flex-wrap:wrap;gap:6px;padding:4px 12px 12px}
+.ac .lx-pop button{border:1px solid var(--linea);background:var(--garza);border-radius:99px;padding:5px 12px;font-size:13px;font-weight:600;color:var(--totumo);width:auto}
+.ac .lx-pop button:hover{border-color:var(--cienaga)}
+
+/* ---------- entrada a la app en Ciénaga ---------- */
+.lm-muni-ovl,.ovl.lm-muni-ovl{background:linear-gradient(170deg,var(--cienaga) 0%,var(--cienaga-osc) 100%)}
+.lm-muni-ovl .lm-muni-in h1,.lm-muni-ovl .lm-muni-in>p,.lm-muni-ovl .gt-top h1{color:#fff}
+.lm-muni-ovl .lm-muni-in>p{color:rgba(255,255,255,.85)}
+.lm-muni-ovl .gt-top p,.lm-muni-ovl .muted{color:rgba(255,255,255,.8)}
+.lm-rol-ic{background:#E3EEEC;color:var(--cienaga)}
+.lm-muni-it>.ic,.lm-rol>.ic{color:var(--cienaga)}
+.gt-top img{box-shadow:0 8px 20px rgba(7,40,43,.3)}
+.acc-user{background:var(--cienaga);color:#fff}.acc-user small{color:rgba(255,255,255,.8)}
+.acc-user .av{background:var(--luciernaga);color:var(--totumo)}
+.chat-h{background:#E3EEEC;color:var(--totumo)}
+.tonofab{background:linear-gradient(120deg,var(--totumo),#2F4746)}
+.tonofab .ic{color:var(--luciernaga)}
+.wcard{background:linear-gradient(135deg,var(--cienaga),var(--cienaga-cla));color:#fff}
+.clip .ring{background:conic-gradient(from 200deg,var(--luciernaga),var(--corozo),var(--cienaga),var(--luciernaga))}
+/* la barra fija de compra no queda debajo del botón de Toño */
+@media(max-width:899px){body.lx-bar .tonofab{bottom:calc(150px + env(safe-area-inset-bottom,0px))}}
+.gate-in{background:linear-gradient(180deg,var(--cienaga) 0 230px,var(--cal) 230px)}
+.gate-in .gt-top h1{color:#fff}
+.gate-in .gt-top p{color:rgba(255,255,255,.82)}
+.gate-in .gt-top .lm-muni-chip{color:var(--totumo)}
+.paybn{background:linear-gradient(100deg,var(--cienaga-osc),var(--cienaga) 55%,var(--cienaga-cla))}
