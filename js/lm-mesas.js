@@ -1,4 +1,4 @@
-/* LobaMall v7 · MESAS EN VIVO (billar y restaurantes / asaderos)
+/* Lainec v7 · MESAS EN VIVO (billar y restaurantes / asaderos)
    Mesera: configura la mesa → INICIAR → sale un QR en toda la pantalla → los clientes lo escanean.
    Billar: anota cada chico (quién ganó y quién perdió) y los extras (cervezas, rondas) para quien los pidió.
    Restaurante: anota lo que pide cada comensal y lo manda a la cocina.
@@ -211,7 +211,7 @@
   LM.EXT.panelFn.mesas = function (t, N, ords, caj) {
     if (conectado(t.id)) return pMesasVivo(t, N);
     if (t.cat === 'billar' && pLocal) return '<div class="aviso">' + ic('wifioff') + '<span>Sin conexión con el servidor: las mesas funcionan solo en este celular y <b>sin código QR</b> para los jugadores. Conecta el negocio para usar el QR.</span></div>' + pLocal(t, N, ords, caj);
-    return LM.head('Mesas y comandas', '') + '<div class="aviso warn">' + ic('wifioff') + '<span>Las mesas con código QR necesitan el servidor de LobaMall. Conecta el negocio (usuario y clave) cuando haya señal.</span></div>';
+    return LM.head('Mesas y comandas', '') + '<div class="aviso warn">' + ic('wifioff') + '<span>Las mesas con código QR necesitan el servidor de Lainec. Conecta el negocio (usuario y clave) cuando haya señal.</span></div>';
   };
   LM.EXT.panelFn.mesas.cajero = true;
   // Los restaurantes y asaderos también tienen "Mesas y comandas"
@@ -226,10 +226,10 @@
     if (!API.yo) { pintarCliente(entrarH(token)); return; }
     pintarCliente('<div class="lm-card lm-centro"><div class="lm-spin"></div><p>Uniéndote a la mesa…</p></div>');
     try { const r = await API.post('/api/mesas/unirse', { token }); miMesa = r.mesa; sesionLocal(); LM.sonar(); history.replaceState(null, '', '#mi-mesa-' + r.mesa.id); vMiMesa(); }
-    catch (e) { pintarCliente('<div class="lm-card lm-centro">' + ic('alert') + '<h1>' + (e.codigo === 'usado' ? 'Este código ya se usó' : 'No pudimos unirte') + '</h1><p class="lm-grande">' + esc(e.message) + '</p><button class="btn lm-btn-xl" type="button" data-act="go" data-h="inicio">' + ic('home') + 'Ir a LobaMall</button></div>'); }
+    catch (e) { pintarCliente('<div class="lm-card lm-centro">' + ic('alert') + '<h1>' + (e.codigo === 'usado' ? 'Este código ya se usó' : 'No pudimos unirte') + '</h1><p class="lm-grande">' + esc(e.message) + '</p><button class="btn lm-btn-xl" type="button" data-act="go" data-h="inicio">' + ic('home') + 'Ir a Lainec</button></div>'); }
   }
   function entrarH(token) {
-    return '<form class="lm-card lm-form" data-form="mm-entrar" data-t="' + esc(token) + '"><h1>' + ic('billar') + 'Únete a la mesa</h1><p class="lm-grande">Entra con tu cuenta de LobaMall para ver tu marcador y tu cuenta en vivo.</p>' +
+    return '<form class="lm-card lm-form" data-form="mm-entrar" data-t="' + esc(token) + '"><h1>' + ic('billar') + 'Únete a la mesa</h1><p class="lm-grande">Entra con tu cuenta de Lainec para ver tu marcador y tu cuenta en vivo.</p>' +
       '<div class="campo"><label for="mmU">Tu celular o usuario</label><input id="mmU" name="u" required autocomplete="username"></div><div class="campo"><label for="mmP">Clave</label><input id="mmP" name="p" type="password" required autocomplete="current-password"></div>' +
       '<button class="btn b-sol lm-btn-xl" type="submit">' + ic('arrow') + 'ENTRAR Y UNIRME</button>' +
       '<details><summary><b>No tengo cuenta: crearla ahora</b></summary><div class="stack" style="margin-top:10px"><div class="campo"><label for="mmN">Nombre</label><input id="mmN" name="n" autocomplete="name"></div><p class="muted">Usa el celular de arriba y crea una clave de mínimo 4 números o letras.</p><button class="btn lm-btn-xl" type="button" data-act="mm-crear">' + ic('user') + 'CREAR CUENTA Y UNIRME</button></div></details>' +
@@ -252,7 +252,7 @@
   }
   async function cargarMiMesa(id) {
     if (API.disponible === null) await API.listo;
-    if (!API.yo) { pintarCliente('<div class="lm-card lm-centro"><h1>Entra con tu cuenta</h1><button class="btn b-sol lm-btn-xl" type="button" data-act="go" data-h="inicio">Ir a LobaMall</button></div>'); return; }
+    if (!API.yo) { pintarCliente('<div class="lm-card lm-centro"><h1>Entra con tu cuenta</h1><button class="btn b-sol lm-btn-xl" type="button" data-act="go" data-h="inicio">Ir a Lainec</button></div>'); return; }
     try { miMesa = (await API.get('/api/mesas/' + id)).mesa; vMiMesa(); } catch (e) { pintarCliente('<div class="lm-card lm-centro">' + ic('alert') + '<p class="lm-grande">' + esc(e.message) + '</p></div>'); }
   }
   function vMiMesa() {
@@ -272,7 +272,7 @@
     if (pend.length) h += '<div class="aviso">' + ic('clock') + '<span>Esperando que la mesera acepte: ' + pend.map(e => esc(e.texto.split(' · ')[0])).join(', ') + '</span></div>';
     if (!cerrada) h += '<button class="btn b-sol lm-btn-xl" type="button" data-act="mm-menu">' + ic('plus') + (billar ? 'PEDIR UNA CERVEZA O ALGO MÁS' : 'PEDIR ALGO MÁS') + '</button><div id="mmMenu"></div>';
     h += '<section class="lm-card"><h2>' + ic('history') + 'Lo que ha pasado</h2>' + (m.eventos.length ? m.eventos.slice().reverse().slice(0, 20).map(e => '<div class="lm-ev ' + e.estado + '">' + ic(e.tipo === 'chico' ? 'billar' : 'plus') + '<span>' + esc(e.texto) + (e.estado === 'pendiente' ? ' (por aceptar)' : '') + (e.cocina === 'en_cocina' ? ' · en la cocina' : e.cocina === 'servido' ? ' · servido' : '') + '</span><b class="num">' + pesos(e.monto) + '</b></div>').join('') : '<p class="muted">Aún no hay movimientos.</p>') + '</section>' +
-      '<button class="btn b-ghost" type="button" data-act="go" data-h="inicio">' + ic('home') + 'Seguir en LobaMall</button>';
+      '<button class="btn b-ghost" type="button" data-act="go" data-h="inicio">' + ic('home') + 'Seguir en Lainec</button>';
     pintarCliente(h);
   }
   LM.A['mm-menu'] = async () => {

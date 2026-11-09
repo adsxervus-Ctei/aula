@@ -1,4 +1,4 @@
-/* HatilloMall · configuración
+/* Lainec · configuración
    Para activar "Continuar con Google" de verdad:
    1. Entra a https://console.cloud.google.com → APIs y servicios → Credenciales.
    2. Crear credenciales → ID de cliente de OAuth → Aplicación web.

@@ -1,4 +1,4 @@
-/* LobaMall v7 · TIPOS DE NEGOCIO
+/* Lainec v7 · TIPOS DE NEGOCIO
    Todos los negocios comparten un núcleo igual (tablero, caja, gastos, balance, productos,
    inventario con foto y QR, promociones, clientes y fiados, reseñas, empleados, configuración).
    Encima de ese núcleo, cada tipo de negocio trae SU herramienta propia, porque un billar no

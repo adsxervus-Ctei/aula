@@ -1,3 +1,60 @@
+# Lainec v8 · Entrega
+
+**Fecha:** 8 nov. 2026 · **Antes:** LobaMall v7 (y antes HatilloMall).
+**Qué es:** la misma plataforma de la v7, con el nombre nuevo **Lainec**, la identidad visual aprobada (eslogan **"Lo que conecta a Loba"**) y cinco mejoras de experiencia tomadas de las plataformas de referencia. No se reconstruyó nada: todos los flujos de la v7 siguen igual.
+
+## 1. Qué cambió
+
+### Nombre e identidad
+- **Lainec** en toda la app, la ficha de instalación, el manifiesto, el servidor, los avisos, la política de datos y los documentos. Lainec Pago reemplaza a LobaPago/HatilloPago.
+- **Logo:** la "C" abierta (la curva del río) con la onda de agua, en el encabezado, el panel del negocio, el pie de página y los íconos de la app (`icons/favicon.svg`, `icon-192.png`, `icon-512.png`, `maskable-512.png`).
+- **Colores con nombre propio:** Ciénaga (encabezado, botones), Corozo (el botón más importante: Buscar, Comprar, Pedir, Hacer pedido), Luciérnaga (resaltados), Garza (fondos), Bocachico y Totumo. Todo está en un solo archivo nuevo: `css/lainec.css`.
+- **Letras:** Bricolage Grotesque para títulos y el logo, Figtree para textos.
+- **Entrada de la app** (municipio, "¿Cómo vas a usar Lainec?", iniciar sesión) en Ciénaga en vez de amarillo.
+- **6 pantallazos nuevos** de la ficha de instalación, tomados de la app real con la nueva identidad.
+
+### Mejoras de experiencia (tomadas de las referencias)
+| Mejora | De dónde se tomó | Dónde está |
+|---|---|---|
+| Atajos de categorías deslizables arriba del inicio | Temu, Shein, Dafiti | Inicio, debajo del encabezado |
+| Franja de confianza: pagas al recibir, domicilio desde $X, compra protegida, funciona sin señal | Dafiti, Temu | Inicio |
+| **Pedir de nuevo** con lo que la cliente ya recibió, con botón Agregar | Amazon, Rappi | Inicio (solo con sesión de cliente) |
+| **Lo más buscado en el pueblo** al tocar el buscador | Amazon, Mercado Libre | Buscador |
+| Barra fija de compra (precio, Agregar, Comprar) en la ficha del producto, solo en celular | Shein, Temu, Mercado Libre app | Ficha del producto |
+| Accesos grandes del inicio más compactos en el celular | Mercado Libre app | Inicio en celular |
+
+Lo que ya traía la v7 al estilo Mercado Libre (carrusel, ofertas del día con cuenta regresiva, cupones, más vendidos, carrito por negocio, opiniones, preguntas, seguimiento) se mantuvo.
+
+## 2. Supuestos
+1. **Los identificadores internos no cambian de nombre**, para no perder datos ni romper celulares que ya tienen la app: la clave del almacenamiento del celular (`hatillomall-4-demo`), la cookie de sesión (`lm_sesion`), el valor `origen = 'lobamall'` en la tabla de pedidos (marca lo que se vendió por la app), los nombres de archivos `lm-*.js` y `css/lobamall.css`, y el puente `window.LM`. Nadie los ve en pantalla.
+2. El encabezado de seguridad pasa a llamarse `X-Lainec`. El servidor acepta también el viejo `X-LobaMall`, para que un celular con la versión anterior en caché no falle mientras se actualiza.
+3. El dominio supuesto es **lainec.com**: está en `related_applications` del manifiesto (sirve para detectar que la app ya está instalada) y en el contacto de los avisos (`soporte@lainec.com`). Si usan otro, cámbienlo ahí y en `VAPID_CONTACTO`.
+4. Los logos de los 17 negocios de ejemplo y los emblemas provisionales de los municipios no se cambiaron.
+
+## 3. Qué probé
+- Tienda: **29/29** · API con base de datos: **22/22** · Navegador con base de datos (repartidor, admin, QR, billar, punto de venta): **19/19** · **Nuevas de la v8: 9/9** (`npm run test:v8`, no necesita base de datos). Total **79 pruebas pasaron**.
+- Las pruebas v8 revisan: que no quede "LobaMall" ni "HatilloMall" en pantalla, el manifiesto y el ícono, los colores del encabezado y del buscador, los atajos (y que el celular no se desplace de lado), la franja de confianza, "Pedir de nuevo" sumando al carrito, lo más buscado, la barra fija (aparece en celular, no en computador, y desaparece al salir de la ficha) y la entrada en Ciénaga.
+- Revisé a ojo las pantallas del celular y del computador.
+
+**No probé:** en un celular físico, ni en el servidor de Render (no tengo acceso). Antes de anunciar, ábranla en un Android y un iPhone.
+
+## 4. Cómo subirla sin perder nada
+1. Reemplacen los archivos del repositorio por los de `lainec-v8.zip` (no suban `node_modules/`).
+2. Render se actualiza solo al detectar el cambio. **No hay migraciones nuevas**: la base de Neon queda igual, con las mismas cuentas y pedidos.
+3. Los celulares que ya tenían la app reciben la versión nueva la próxima vez que la abran con señal (el `sw.js` cambió de versión a `lainec-v8-1`). Si alguien sigue viendo el amarillo, que la cierre y la vuelva a abrir.
+4. El ícono de la app ya instalada puede tardar en cambiar: Android lo actualiza solo en unos días; en iPhone y computador hay que quitarla e instalarla otra vez.
+5. Cuando tengan el dominio: Render → Settings → Custom Domains → `lainec.com`.
+
+## 5. Pendientes y alertas
+- **Marca:** registrar Lainec y Lainek en la SIC (clases 35, 39 y 42) y Lainet (clase 38); comprar `lainec.com`, `lainec.co` y `lainek.com`. Hasta entonces, el nombre no es de ustedes.
+- **Etiquetas QR impresas:** los QR llevan el dominio con el que se crearon. Impriman las etiquetas cuando ya estén en `lainec.com`.
+- **Seguridad:** sigue pendiente cambiar la clave de la base de Neon que salió en pantallazos, y la clave del administrador.
+- **Lo que no se hizo:** la red Lainet (servidor local con batería), el corte mensual automático de comisiones, la confirmación del pedido por WhatsApp y el flujo de devoluciones. Son desarrollos nuevos que se discutieron, no parte de esta versión.
+
+---
+
+# Historial (LobaMall v7)
+
 # LobaMall v7 · Entrega
 
 ## Segunda entrega (6 nov. 2026): entrada a la app, punto de venta por categoría y mesas con QR

@@ -1,4 +1,4 @@
-/* LobaMall v7 · Integración NEGOCIO ↔ REPARTIDOR ↔ CLIENTE
+/* Lainec v7 · Integración NEGOCIO ↔ REPARTIDOR ↔ CLIENTE
    - Botón [NECESITO REPARTIDOR] en los pedidos a domicilio
    - Sección "Domicilios" del panel: ofertas, vencidas (reintentar / subir valor / cancelar),
      caja de los repartidores y pagos Nequi por confirmar
@@ -43,7 +43,7 @@
         S.orders.push({ n: num, srv: p.id, cli: 'srv:' + p.cliente_id, cliN: p.cliente_nombre, t: tid, items: p.items.map(i => ({ id: LM.PR(i.id) ? i.id : (LM.S.prods.find(x => x.t === tid) || {}).id, q: i.q, p: i.p })), modo: p.modo, zona: zl, dir: p.direccion || '', pago: p.pago, sub: p.subtotal, desc: p.descuento, env: p.domicilio, total: p.total, ts: Date.parse(p.creado), te: Date.now(), e: 0, chat: [], fecha: 'Hoy, ' + LM.hora(p.creado), hold: true, personas: 2, hora: '' });
         nuevos++;
       });
-      if (nuevos) { LM.save(); toast(nuevos === 1 ? 'Llegó un pedido nuevo por LobaMall' : 'Llegaron ' + nuevos + ' pedidos nuevos'); }
+      if (nuevos) { LM.save(); toast(nuevos === 1 ? 'Llegó un pedido nuevo por Lainec' : 'Llegaron ' + nuevos + ' pedidos nuevos'); }
     } catch (e) {}
   }
 
@@ -101,7 +101,7 @@
   };
   function avisoSinServidor() {
     sheet('<div class="sh-h"><div class="tt"><h3>Falta conectar el servidor</h3></div><button class="x" type="button" data-act="cerrar" aria-label="Cerrar">' + ic('x') + '</button></div><div class="sh-b stack">' +
-      (API.disponible ? '<p class="lm-grande">Tu negocio todavía no tiene cuenta en el servidor de LobaMall, o no has entrado con ella.</p><form class="stack" data-form="neg-entrar"><div class="campo"><label for="neU">Usuario del negocio</label><input id="neU" name="u" value="' + esc(ses().u) + '" required></div><div class="campo"><label for="neP">Clave</label><input id="neP" name="p" type="password" required></div><button class="btn b-sol" type="submit">' + ic('lock') + 'Conectar</button></form>'
+      (API.disponible ? '<p class="lm-grande">Tu negocio todavía no tiene cuenta en el servidor de Lainec, o no has entrado con ella.</p><form class="stack" data-form="neg-entrar"><div class="campo"><label for="neU">Usuario del negocio</label><input id="neU" name="u" value="' + esc(ses().u) + '" required></div><div class="campo"><label for="neP">Clave</label><input id="neP" name="p" type="password" required></div><button class="btn b-sol" type="submit">' + ic('lock') + 'Conectar</button></form>'
         : '<p class="lm-grande">Los repartidores necesitan la app publicada con su servidor. Mira la guía de despliegue.</p>') + '</div>');
   }
   LM.F['neg-entrar'] = async (f, d) => { try { await API.entrar(String(d.get('u')), String(d.get('p'))); closeModal(); toast('Negocio conectado'); LM.rerender(); } catch (e) { toast(e.message); } };
@@ -109,7 +109,7 @@
   /* ---------------- sección "Domicilios" del panel ---------------- */
   function pDomicilios(t, N, ords) {
     const head = LM.head('Domicilios con repartidor', 'Pide un repartidor, mira quién lo lleva y cuadra la caja con cada uno.');
-    if (API.disponible === false) return head + '<div class="aviso warn">' + ic('wifioff') + '<span>Esta sección necesita el servidor de LobaMall (la app publicada con base de datos).</span></div>';
+    if (API.disponible === false) return head + '<div class="aviso warn">' + ic('wifioff') + '<span>Esta sección necesita el servidor de Lainec (la app publicada con base de datos).</span></div>';
     if (!conectadoNeg(t.id)) return head + '<div class="box stack"><p>Para pedir repartidores, conecta tu negocio con el servidor.</p><button class="btn b-sol" type="button" data-act="neg-conectar">' + ic('lock') + 'Conectar mi negocio</button></div>';
     const c = D.cache[t.id];
     if (!c) { cargar(t.id); return head + '<div class="box"><div class="lm-spin"></div> Cargando…</div>'; }

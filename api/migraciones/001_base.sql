@@ -1,4 +1,4 @@
--- LobaMall · Migración 001 · Tablas base
+-- Lainec · Migración 001 · Tablas base
 -- El prototipo v6 guardaba todo en localStorage, así que estas tablas no existían en SQL.
 -- Todo usa IF NOT EXISTS: si ya existen (por ejemplo, en una base que alguien creó a mano),
 -- no se borra ni se reemplaza nada.

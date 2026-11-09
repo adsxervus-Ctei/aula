@@ -1,4 +1,4 @@
-// LobaMall · Canal Web Push (Fase 2). Requiere llaves VAPID en variables de entorno.
+// Lainec · Canal Web Push (Fase 2). Requiere llaves VAPID en variables de entorno.
 // Genera las llaves una vez con:  npm run llaves-push
 import webpush from 'web-push';
 import { q, filas } from '../db.mjs';
@@ -7,7 +7,7 @@ let listo = false;
 export function iniciarPush() {
   const { VAPID_PUBLICA, VAPID_PRIVADA, VAPID_CONTACTO } = process.env;
   if (!VAPID_PUBLICA || !VAPID_PRIVADA) { listo = false; return false; }
-  webpush.setVapidDetails(VAPID_CONTACTO || 'mailto:soporte@lobamall.com', VAPID_PUBLICA, VAPID_PRIVADA);
+  webpush.setVapidDetails(VAPID_CONTACTO || 'mailto:soporte@lainec.com', VAPID_PUBLICA, VAPID_PRIVADA);
   listo = true;
   return true;
 }

@@ -1,4 +1,4 @@
--- LobaMall · Migración 004 · Mesas en vivo con código QR de un solo uso
+-- Lainec · Migración 004 · Mesas en vivo con código QR de un solo uso
 -- Billar (chicos o tiempo, jugadores, extras) y restaurantes / asaderos (comensales y comanda).
 -- Cada vez que se abre una mesa nace un código nuevo; al cerrarla, ese código queda usado para siempre.
 

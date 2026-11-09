@@ -1,4 +1,4 @@
-/* LobaMall v7 · conexión con el servidor (API), tiempo real, avisos push y utilidades comunes.
+/* Lainec v7 · conexión con el servidor (API), tiempo real, avisos push y utilidades comunes.
    Si la app se abre sin servidor (archivo suelto o Netlify), todo lo de antes sigue funcionando
    y las pantallas nuevas explican que necesitan el servidor. */
 (function () {
@@ -13,7 +13,7 @@
     try {
       r = await fetch(ruta, {
         method: metodo, credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json', 'X-LobaMall': '1' },
+        headers: { 'Content-Type': 'application/json', 'X-Lainec': '1' },
         body: cuerpo ? JSON.stringify(cuerpo) : undefined
       });
     } catch (e) { throw new ErrorLM('No hay señal o el servidor no responde. Intenta de nuevo.', 'sin_red', 0); }
@@ -187,7 +187,7 @@
   E.trasRender = r => trasRender.forEach(f => { try { f(r); } catch (e) { console.error(e); } });
 
   // Pantalla estándar de "necesita el servidor"
-  LM.sinServidorH = (que) => '<div class="lm-wrap"><div class="lm-card lm-centro">' + ic('wifioff') + '<h1>Esto necesita el servidor de LobaMall</h1><p>' + esc(que) +
+  LM.sinServidorH = (que) => '<div class="lm-wrap"><div class="lm-card lm-centro">' + ic('wifioff') + '<h1>Esto necesita el servidor de Lainec</h1><p>' + esc(que) +
     ' funciona cuando la app está publicada con su servidor y base de datos. Si estás sin señal, espera a que vuelva y presiona <b>Reintentar</b>.</p><button class="btn b-sol b-lg" type="button" data-act="lm-reintentar">' + ic('repeat') + 'Reintentar</button><button class="btn b-lg" type="button" data-act="go" data-h="inicio">' + ic('home') + 'Ir a la tienda</button></div></div>';
   LM.A['lm-reintentar'] = async () => { await API.estado(); await API.cargarYo(); LM.rerender(); };
 

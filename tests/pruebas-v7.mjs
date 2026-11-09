@@ -1,4 +1,4 @@
-// LobaMall v7 · pruebas de navegador de lo nuevo: repartidor en modo dual, admin, domicilios,
+// Lainec v7 · pruebas de navegador de lo nuevo: repartidor en modo dual, admin, domicilios,
 // inventario con foto y QR, escáner y los 5 tipos de negocio.
 // Uso:  TEST_DATABASE_URL=postgres://usuario:clave@localhost/lobamall_test npm run test:v7
 // ¡OJO! Borra y recrea el esquema de la base de PRUEBAS.
@@ -28,7 +28,7 @@ async function prueba(nombre, fn) {
 }
 const afirmar = (c, m) => { if (!c) throw new Error(m); };
 async function pagina(movil = true) {
-  const ctx = await nav.newContext(movil ? { viewport: { width: 390, height: 844 }, hasTouch: true } : { viewport: { width: 1366, height: 900 } });
+  const ctx = await nav.newContext(movil ? { viewport: { width: 390, height: 844 }, hasTouch: true, deviceScaleFactor: +(process.env.ESCALA || 1) } : { viewport: { width: 1366, height: 900 } });
   await ctx.addInitScript(() => { try { localStorage.setItem('hm-pruebas', '1'); } catch (e) {} });
   const page = await ctx.newPage(); ABIERTAS.push(page);
   page.errores = [];
@@ -65,7 +65,7 @@ try {
     const b64 = await page.evaluate(() => { const c = document.createElement('canvas'); c.width = 640; c.height = 480; const g = c.getContext('2d'); g.fillStyle = '#fff'; g.fillRect(0, 0, 640, 480); g.fillStyle = '#e33'; g.beginPath(); g.arc(320, 240, 150, 0, 7); g.fill(); return c.toDataURL('image/jpeg', .9).split(',')[1]; });
     JPG = Buffer.from(b64, 'base64'); await ctx.close();
   }
-  console.log('\nLobaMall v7 · pruebas de navegador (lo nuevo)\n');
+  console.log('\nLainec v7 · pruebas de navegador (lo nuevo)\n');
 
   console.log('Repartidor');
   await prueba('Repartidor pendiente: solo ve "Tu solicitud está en revisión", sin ofertas', async () => {
@@ -404,8 +404,8 @@ try {
     afirmar(!page.errores.length, page.errores.join(' | ')); await ctx.close();
   });
 
-  await prueba('Entrada a la app: ficha de instalación con "dónde va a quedar", municipio y "¿cómo vas a usar LobaMall?"', async () => {
-    const ctx = await nav.newContext({ viewport: { width: 390, height: 844 }, userAgent: 'Mozilla/5.0 (Linux; Android 13; SM-A145M) AppleWebKit/537.36 Chrome/130 Mobile Safari/537.36' });
+  await prueba('Entrada a la app: ficha de instalación con "dónde va a quedar", municipio y "¿cómo vas a usar Lainec?"', async () => {
+    const ctx = await nav.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: +(process.env.ESCALA || 1), userAgent: 'Mozilla/5.0 (Linux; Android 13; SM-A145M) AppleWebKit/537.36 Chrome/130 Mobile Safari/537.36' });
     const page = await ctx.newPage(); const err = []; page.on('pageerror', e => err.push(e.message));
     await page.goto(BASE);
     await page.waitForSelector('#instOv .st-sheet', { timeout: 6000 });
@@ -486,7 +486,7 @@ try {
 }
 
 const ok = resultados.filter(r => r.ok).length;
-const rep = ['LobaMall v7 · Reporte de pruebas de navegador (lo nuevo)', 'Fecha: ' + new Date().toLocaleString('es-CO'), `Resultado: ${ok} de ${resultados.length} pruebas pasaron`, '',
+const rep = ['Lainec v7 · Reporte de pruebas de navegador (lo nuevo)', 'Fecha: ' + new Date().toLocaleString('es-CO'), `Resultado: ${ok} de ${resultados.length} pruebas pasaron`, '',
   ...resultados.map((r, i) => `${String(i + 1).padStart(2, '0')}. ${r.ok ? 'PASÓ ' : 'FALLÓ'}  ${r.nombre}  (${(r.ms / 1000).toFixed(1)} s)${r.ok ? '' : '\n      → ' + r.error}`)].join('\n');
 await writeFile(new URL('./reporte-v7.txt', import.meta.url), rep + '\n');
 console.log(`\n${ok} de ${resultados.length} pruebas pasaron. Reporte: tests/reporte-v7.txt`);

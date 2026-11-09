@@ -3,17 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>LobaMall · El centro comercial de La Loba</title>
-<meta name="description" content="El centro comercial digital de La Loba: Hatillo de Loba, San Martín de Loba y Barranco de Loba. Pide, sigue tu domicilio y vende.">
-<meta name="theme-color" content="#FFE600">
+<title>Lainec · Lo que conecta a Loba</title>
+<meta name="description" content="Lainec, lo que conecta a Loba: Hatillo de Loba, San Martín de Loba y Barranco de Loba. Pide, sigue tu domicilio y vende.">
+<meta name="theme-color" content="#0B5D63">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..900&family=Fraunces:opsz,wght@9..144,700..900&family=Lilita+One&family=Bricolage+Grotesque:opsz,wght@12..96,700..800&family=Silkscreen&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..900&family=Fraunces:opsz,wght@9..144,700..900&family=Lilita+One&family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Silkscreen&display=swap">
 <link rel="stylesheet" href="css/estilos.css">
 <link rel="stylesheet" href="css/lobamall.css">
+<link rel="stylesheet" href="css/lainec.css">
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font-size:14px}img{max-width:100%}</style>
 </head>
 <body>
@@ -21,7 +22,7 @@
 <header class="top ml">
   <div class="wrap hr1">
     <button class="ham dept-btn" type="button" data-act="dept" aria-expanded="false" aria-controls="deptMenu" aria-label="Menú y categorías"><span data-i="menu"></span></button>
-    <button class="logo" type="button" data-act="go" data-h="inicio" aria-label="LobaMall, inicio"><span class="lg-ic" data-i="bolsa"></span><span class="lg-t"><b>LobaMall</b><small>El centro comercial de La Loba</small></span></button>
+    <button class="logo" type="button" data-act="go" data-h="inicio" aria-label="Lainec, inicio"><span class="lg-ic" data-i="lainec"></span><span class="lg-t"><b>laine<i>c</i></b><small>Lo que conecta a Loba</small></span></button>
     <form class="search" data-form="buscar" role="search" autocomplete="off">
       <label class="sr" for="qCat">Categoría</label>
       <select id="qCat" name="cat" hidden><option value="">Todo el pueblo</option></select>
@@ -43,7 +44,7 @@
       <button type="button" data-act="go" data-h="historial">Historial</button>
       <button type="button" data-act="ancla" data-h="negocios">Negocios</button>
       <button type="button" data-act="go" data-h="c-campo">Del campo</button>
-      <button type="button" data-act="go" data-h="cuenta-billetera">LobaPago</button>
+      <button type="button" data-act="go" data-h="cuenta-billetera">Lainec Pago</button>
       <button type="button" data-act="login" data-tab="negocio">Vender</button>
     </nav>
     <div class="hacts">
@@ -67,16 +68,16 @@
   <div class="wrap">
     <div class="cols">
       <div>
-        <button class="logo" type="button" data-act="go" data-h="inicio"><span class="lg-ic" data-i="bolsa"></span><span class="lg-t"><b>LobaMall</b></span></button>
+        <button class="logo" type="button" data-act="go" data-h="inicio"><span class="lg-ic" data-i="lainec"></span><span class="lg-t"><b>laine<i>c</i></b></span></button>
         <p style="margin:12px 0 0;max-width:36ch">Todos los negocios de Hatillo de Loba, San Martín de Loba y Barranco de Loba en una sola app. Pides, sigues tu pedido y hablas con el negocio sin salir de aquí.</p>
-        <p style="margin:12px 0 0"><b style="color:#fff">Soporte:</b> La Loba, Bolívar · todos los días · lobamall.com</p>
+        <p style="margin:12px 0 0"><b style="color:#fff">Soporte:</b> La Loba, Bolívar · todos los días · lainec.com</p>
       </div>
       <div><h4>Comprar</h4><ul><li><button type="button" data-act="go" data-h="c-ofertas">Ofertas de hoy</button></li><li><button type="button" data-act="go" data-h="c-comida">Restaurantes y asaderos</button></li><li><button type="button" data-act="go" data-h="c-farmacia">Droguerías</button></li><li><button type="button" data-act="go" data-h="c-campo">Del campo</button></li></ul></div>
       <div><h4>Mi cuenta</h4><ul><li><button type="button" data-act="go" data-h="cuenta">Mi cuenta</button></li><li><button type="button" data-act="go" data-h="cuenta-pedidos">Mis pedidos</button></li><li><button type="button" data-act="go" data-h="cuenta-fiados">Mis fiados</button></li><li><button type="button" data-act="go" data-h="cuenta-favoritos">Favoritos</button></li></ul></div>
       <div><h4>Negocios</h4><ul><li><button type="button" data-act="login" data-tab="negocio">Entrar a mi negocio</button></li><li><button type="button" data-act="go" data-h="marcas">Marcas del pueblo</button></li><li><button type="button" data-act="inst-abrir">Instalar la app</button></li><li><button type="button" data-act="ancla" data-h="negocios">Directorio de negocios</button></li><li><button type="button" data-act="go" data-h="rep">Trabaja como repartidor</button></li><li><button type="button" data-act="go" data-h="escanear">Escanear un producto</button></li><li><button type="button" data-act="go" data-h="admin">Administración</button></li><li><a href="privacidad.html">Tratamiento de datos</a></li><li><button type="button" data-act="reset">Reiniciar la demostración</button></li></ul></div>
     </div>
     <div class="kw" id="kw"></div>
-    <div class="legal"><span>© 2026 LobaMall · La Loba, Bolívar · Powered by <b>AXERVUS CTeI</b></span><span class="paychips"><span>Efectivo</span><span>Nequi</span><span>DaviPlata</span><span>Bancolombia</span><span>Fiado</span></span></div>
+    <div class="legal"><span>© 2026 Lainec · La Loba, Bolívar · Powered by <b>AXERVUS CTeI</b></span><span class="paychips"><span>Efectivo</span><span>Nequi</span><span>DaviPlata</span><span>Bancolombia</span><span>Fiado</span></span></div>
   </div>
 </footer>
 <nav class="bnav" aria-label="Navegación principal">

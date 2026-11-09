@@ -1,4 +1,4 @@
-/* LobaMall v7 · Rol REPARTIDOR / MOTOTAXISTA con MODO DUAL
+/* Lainec v7 · Rol REPARTIDOR / MOTOTAXISTA con MODO DUAL
    Una sola cuenta: la persona es cliente y además repartidor. El modo (trabajo / cliente)
    y el estado conectado se guardan en el servidor, que es quien decide a quién avisar. */
 (function () {
@@ -93,18 +93,18 @@
     return vTablero(r);
   }
 
-  const barra = (r, extra) => '<header class="lm-barra"><div class="lm-barra-id"><span class="lm-av">' + (r && r.foto_id ? '<img src="/api/archivos/' + r.foto_id + '" alt="">' : ic('moto')) + '</span><div><b>' + esc(r ? r.nombre_completo.split(' ')[0] : 'Repartidor') + '</b><small>' + esc(r ? ESTRELLAS(r.promedio) : 'LobaMall') + '</small></div></div>' + (extra || '') + '</header>';
+  const barra = (r, extra) => '<header class="lm-barra"><div class="lm-barra-id"><span class="lm-av">' + (r && r.foto_id ? '<img src="/api/archivos/' + r.foto_id + '" alt="">' : ic('moto')) + '</span><div><b>' + esc(r ? r.nombre_completo.split(' ')[0] : 'Repartidor') + '</b><small>' + esc(r ? ESTRELLAS(r.promedio) : 'Lainec') + '</small></div></div>' + (extra || '') + '</header>';
 
   function vLanding() {
     const z = API.zonas;
     const tar = z.length ? z.map(x => '<li><b>' + pesos(x.tarifa) + '</b> ' + esc(x.nombre) + (x.tipo === 'vereda' ? ' (vereda)' : '') + '</li>').join('') : '<li><b>$4.000</b> dentro del pueblo</li><li><b>$8.000</b> a veredas como Chimí</li>';
     if (!z.length) API.cargarZonas().then(() => { if (enRep() && !API.yo) pintar(); });
     return '<div class="lm-wrap">' + barra(null) +
-      '<section class="lm-card"><h1>' + ic('moto') + 'Repartidores y mototaxistas</h1><p class="lm-grande">Con tu misma cuenta de LobaMall puedes <b>hacer domicilios</b> y también <b>comprar como cliente</b>.</p>' +
+      '<section class="lm-card"><h1>' + ic('moto') + 'Repartidores y mototaxistas</h1><p class="lm-grande">Con tu misma cuenta de Lainec puedes <b>hacer domicilios</b> y también <b>comprar como cliente</b>.</p>' +
       '<ul class="lm-lista-ok"><li>' + ic('check') + 'Ganas el <b>100 % del domicilio</b>. Sin pagar membresía.</li><li>' + ic('check') + 'Tú decides cuándo te conectas.</li><li>' + ic('check') + 'Te avisa con sonido cuando hay un domicilio cerca.</li></ul>' +
       '<h2>Lo que ganas por domicilio</h2><ul class="lm-tarifas">' + tar + '</ul>' +
       '<div class="lm-botones"><button class="btn b-sol lm-btn-xl" type="button" data-act="rep-vista" data-v="registro">' + ic('user') + 'QUIERO SER REPARTIDOR</button><button class="btn lm-btn-xl" type="button" data-act="rep-vista" data-v="entrar">' + ic('lock') + 'YA TENGO CUENTA · ENTRAR</button></div></section>' +
-      LM.ayuda('¿Cómo funciona?', ['Te registras con tus datos, tu foto, la cédula, el pase y la moto.', 'LobaMall revisa tus papeles y te aprueba.', 'Presionas <b>ESTOY CONECTADO</b> y te llegan los domicilios de tu zona.', 'Aceptas uno, lo recoges, lo llevas, tomas la foto de entrega y listo.']) +
+      LM.ayuda('¿Cómo funciona?', ['Te registras con tus datos, tu foto, la cédula, el pase y la moto.', 'Lainec revisa tus papeles y te aprueba.', 'Presionas <b>ESTOY CONECTADO</b> y te llegan los domicilios de tu zona.', 'Aceptas uno, lo recoges, lo llevas, tomas la foto de entrega y listo.']) +
       '</div>';
   }
 
@@ -131,7 +131,7 @@
     const cuenta = !API.yo;
     return '<div class="lm-wrap">' + barra(null) + '<form class="lm-card lm-form" data-form="rep-registro" novalidate><h1>' + ic('user') + (prev ? 'Corrige tu solicitud' : 'Registro de repartidor') + '</h1>' +
       (prev && prev.motivo_rechazo ? '<div class="aviso warn">' + ic('alert') + '<span><b>Lo que hay que corregir:</b> ' + esc(prev.motivo_rechazo) + '</span></div>' : '') +
-      '<p class="muted">Todo se revisa con cuidado. Tus documentos solo los ve el equipo de LobaMall.</p>' +
+      '<p class="muted">Todo se revisa con cuidado. Tus documentos solo los ve el equipo de Lainec.</p>' +
       '<fieldset class="lm-fs"><legend>1. Tus datos</legend>' +
       '<div class="campo"><label for="rgNom">Nombre completo</label><input id="rgNom" name="nombre_completo" required value="' + esc(v.nombre_completo || (API.yo && API.yo.nombre) || '') + '" autocomplete="name"></div>' +
       '<div class="campo"><label for="rgCed">Número de cédula</label><input id="rgCed" name="cedula" inputmode="numeric" required value="' + esc(v.cedula || '') + '"></div>' +
@@ -146,7 +146,7 @@
       '</fieldset><fieldset class="lm-fs"><legend>4. ¿Dónde trabajas?</legend><div class="lm-opciones">' +
       (z.length ? z : [{ id: 'hatillo', nombre: 'Hatillo cabecera' }]).map(x => '<label class="lm-opcion"><input type="radio" name="zona_id" value="' + esc(x.id) + '"' + ((v.zona_id || 'hatillo') === x.id ? ' checked' : '') + '><span>' + ic('pin') + esc(x.nombre) + '</span></label>').join('') +
       '</div></fieldset>' +
-      '<label class="lm-habeas"><input type="checkbox" name="habeas_data" required><span><b>Autorizo el tratamiento de mis datos personales.</b> LobaMall usará mi nombre, cédula, fotos, datos de la moto, celular, Nequi y mi ubicación (solo mientras llevo un domicilio) para verificar mi identidad, asignarme domicilios, pagarme y atender reclamos, según la Ley 1581 de 2012. Puedo conocer, corregir o pedir que borren mis datos cuando quiera. <a href="privacidad.html" target="_blank" rel="noopener">Leer la política de tratamiento de datos</a>.</span></label>' +
+      '<label class="lm-habeas"><input type="checkbox" name="habeas_data" required><span><b>Autorizo el tratamiento de mis datos personales.</b> Lainec usará mi nombre, cédula, fotos, datos de la moto, celular, Nequi y mi ubicación (solo mientras llevo un domicilio) para verificar mi identidad, asignarme domicilios, pagarme y atender reclamos, según la Ley 1581 de 2012. Puedo conocer, corregir o pedir que borren mis datos cuando quiera. <a href="privacidad.html" target="_blank" rel="noopener">Leer la política de tratamiento de datos</a>.</span></label>' +
       (R.err ? '<p class="err" role="alert">' + esc(R.err) + '</p>' : '') +
       '<button class="btn b-sol lm-btn-xl" type="submit"' + (R.enviando ? ' disabled' : '') + '>' + ic('check') + (R.enviando ? 'ENVIANDO…' : 'ENVIAR MI SOLICITUD') + '</button>' +
       (cuenta ? '<button class="btn b-ghost" type="button" data-act="rep-vista" data-v="landing">' + ic('chevl') + 'Volver</button>' : '<button class="btn b-ghost" type="button" data-act="go" data-h="inicio">' + ic('chevl') + 'Ahora no, ir a la tienda</button>') +
@@ -155,15 +155,15 @@
 
   function vPendiente(r) {
     return '<div class="lm-wrap">' + barra(r) + '<section class="lm-card lm-centro lm-espera"><span class="lm-reloj">' + ic('clock') + '</span><h1>Tu solicitud está en revisión</h1>' +
-      '<p class="lm-grande">El equipo de LobaMall está revisando tus papeles. Cuando te aprueben te llega un aviso y aquí mismo aparece tu tablero de trabajo.</p>' +
-      '<p class="muted">Mientras tanto no recibes domicilios. Puedes seguir usando LobaMall como cliente.</p>' +
-      '<div class="lm-botones"><button class="btn b-sol lm-btn-xl" type="button" data-act="rep-recargar">' + ic('repeat') + 'VER SI YA ME APROBARON</button><button class="btn lm-btn-xl" type="button" data-act="go" data-h="inicio">' + ic('bolsa') + 'USAR LOBAMALL COMO CLIENTE</button></div>' +
+      '<p class="lm-grande">El equipo de Lainec está revisando tus papeles. Cuando te aprueben te llega un aviso y aquí mismo aparece tu tablero de trabajo.</p>' +
+      '<p class="muted">Mientras tanto no recibes domicilios. Puedes seguir usando Lainec como cliente.</p>' +
+      '<div class="lm-botones"><button class="btn b-sol lm-btn-xl" type="button" data-act="rep-recargar">' + ic('repeat') + 'VER SI YA ME APROBARON</button><button class="btn lm-btn-xl" type="button" data-act="go" data-h="inicio">' + ic('bolsa') + 'USAR LAINEC COMO CLIENTE</button></div>' +
       '<button class="btn b-ghost" type="button" data-act="rep-salir">' + ic('logout') + 'Salir</button></section></div>';
   }
   function vRechazado(r) {
     return '<div class="lm-wrap">' + barra(r) + '<section class="lm-card lm-centro"><span class="lm-reloj no">' + ic('alert') + '</span><h1>Tu solicitud no fue aprobada</h1>' +
       '<div class="aviso warn" style="text-align:left">' + ic('alert') + '<span><b>Motivo:</b> ' + esc(r.motivo_rechazo || 'Sin motivo') + '</span></div>' +
-      '<div class="lm-botones"><button class="btn b-sol lm-btn-xl" type="button" data-act="rep-vista" data-v="corregir">' + ic('edit') + 'CORREGIR Y ENVIAR DE NUEVO</button><button class="btn lm-btn-xl" type="button" data-act="go" data-h="inicio">' + ic('bolsa') + 'USAR LOBAMALL COMO CLIENTE</button></div>' +
+      '<div class="lm-botones"><button class="btn b-sol lm-btn-xl" type="button" data-act="rep-vista" data-v="corregir">' + ic('edit') + 'CORREGIR Y ENVIAR DE NUEVO</button><button class="btn lm-btn-xl" type="button" data-act="go" data-h="inicio">' + ic('bolsa') + 'USAR LAINEC COMO CLIENTE</button></div>' +
       '<button class="btn b-ghost" type="button" data-act="rep-salir">' + ic('logout') + 'Salir</button></section></div>';
   }
   function vVolver() {

@@ -1,4 +1,4 @@
-// Pruebas automáticas de la tienda (LobaMall v7, antes HatilloMall v6)
+// Pruebas automáticas de la tienda (Lainec v8; antes LobaMall y HatilloMall)
 // Uso:  npm test        (necesita: npm install  y  npm run instalar-navegador)
 // Abre la app en un navegador Chromium invisible, recorre los flujos del cliente,
 // del dueño y del cajero, y deja un reporte en tests/reporte.txt y capturas en tests/capturas/.
@@ -35,7 +35,7 @@ async function pasarEntrada(page, rol = 'cliente') {
 }
 
 async function nuevaPagina(opts = {}, real = false) {
-  const ctx = await navegador.newContext({ viewport: { width: 1366, height: 900 }, ...opts });
+  const ctx = await navegador.newContext({ viewport: { width: 1366, height: 900 }, ...opts, ...(opts.viewport && opts.viewport.width < 500 ? { deviceScaleFactor: +(process.env.ESCALA || 1) } : {}) });
   // Las pruebas de flujo desactivan la ficha de instalación y el tutorial para que no tapen la pantalla.
   if (!real) await ctx.addInitScript(() => { try { localStorage.setItem('hm-pruebas', '1'); } catch (e) {} });
   const page = await ctx.newPage();
@@ -63,7 +63,7 @@ async function entrarNegocio(page, usuario) {
 try {
   servidor = await iniciar(PUERTO);
   navegador = await chromium.launch();
-  console.log('\nLobaMall v7 · pruebas de la tienda\n');
+  console.log('\nLainec v7 · pruebas de la tienda\n');
 
   console.log('Portada y PWA');
   await prueba('La portada carga sin errores de JavaScript', async () => {
@@ -153,7 +153,7 @@ try {
     afirmar((await page.textContent('#sheet')).includes('Descuento'), 'No se aplicó el descuento');
     await ctx.close();
   });
-  await prueba('Pagar con HatilloPago descuenta el saldo', async () => {
+  await prueba('Pagar con Lainec Pago descuenta el saldo', async () => {
     const { ctx, page } = await nuevaPagina();
     await entrarCliente(page);
     await page.evaluate(() => location.hash = 'p-jugo'); await page.waitForSelector('.buybox');
@@ -348,7 +348,7 @@ try {
     afirmar((await page.textContent('#tvCap')).includes('Hola María'), 'El tutorial no saluda a la cliente');
     afirmar(await page.locator('.tv-bars span').count() === 8, 'El tutorial de cliente no tiene 8 escenas');
     await page.click('[data-act="tut-n"]'); await page.waitForTimeout(300);
-    afirmar((await page.textContent('#tvCap')).includes('barra amarilla'), 'Siguiente no pasó a la escena de buscar');
+    afirmar((await page.textContent('#tvCap')).includes('barra de búsqueda'), 'Siguiente no pasó a la escena de buscar');
     await page.waitForTimeout(2600);
     await page.screenshot({ path: new URL('12-tutorial.png', CAP).pathname });
     await page.click('.tv-ft [data-act="tut-x"]'); await page.waitForTimeout(400);
@@ -398,7 +398,7 @@ try {
 const ok = resultados.filter(r => r.ok).length;
 const fecha = new Date().toLocaleString('es-CO', { timeZone: 'America/Bogota' });
 const reporte = [
-  'LobaMall v7 · Reporte de pruebas de la tienda',
+  'Lainec v7 · Reporte de pruebas de la tienda',
   `Fecha: ${fecha}`,
   `Resultado: ${ok} de ${resultados.length} pruebas pasaron`,
   '',

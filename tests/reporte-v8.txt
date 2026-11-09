@@ -1,0 +1,13 @@
+Lainec v8 · Reporte de pruebas de identidad y experiencia
+Fecha: 8/11/2026, 8:13:42 p. m.
+Resultado: 9 de 9 pruebas pasaron
+
+01. PASÓ   El nombre visible es Lainec y no queda "LobaMall" ni "HatilloMall" en pantalla  (0.9 s)
+02. PASÓ   El manifiesto, el color del tema y el ícono son de Lainec  (0.0 s)
+03. PASÓ   El encabezado usa Ciénaga y el botón de buscar usa Corozo  (0.9 s)
+04. PASÓ   Inicio: atajos de categorías que llevan a la categoría (Temu, Shein, Dafiti)  (1.3 s)
+05. PASÓ   Inicio: franja de confianza con pago al recibir, domicilio, compra protegida y sin señal  (0.9 s)
+06. PASÓ   Inicio: "Pedir de nuevo" aparece para la cliente con pedidos entregados y agrega al carrito  (2.5 s)
+07. PASÓ   Buscador: "Lo más buscado en el pueblo" busca con un toque (Amazon, Mercado Libre)  (1.4 s)
+08. PASÓ   Ficha en el celular: barra fija con precio, Agregar y Comprar (Shein, Temu); en computador no aparece  (2.8 s)
+09. PASÓ   La entrada de la app (municipio y rol) usa Ciénaga, no amarillo  (0.8 s)

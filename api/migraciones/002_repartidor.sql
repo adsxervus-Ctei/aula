@@ -1,7 +1,7 @@
--- LobaMall · Migración 002 · Rol repartidor / mototaxista con modo dual
+-- Lainec · Migración 002 · Rol repartidor / mototaxista con modo dual
 -- Segura para datos existentes: solo crea tablas nuevas y agrega columnas con IF NOT EXISTS.
 
--- 1. Origen del pedido (obligatorio). Se usa para cobrar el 10 % solo a lo que vende LobaMall.
+-- 1. Origen del pedido (obligatorio). Se usa para cobrar el 10 % solo a lo que vende Lainec.
 --    Los pedidos que ya existían vinieron todos por la app (las ventas de mostrador del
 --    prototipo van en la caja, no en pedidos), por eso se rellenan con 'lobamall'.
 alter table pedidos add column if not exists origen text;

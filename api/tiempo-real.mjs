@@ -1,4 +1,4 @@
-// LobaMall · tiempo real con Server-Sent Events (SSE). Sin dependencias.
+// Lainec · tiempo real con Server-Sent Events (SSE). Sin dependencias.
 // Cada usuario puede tener varias pestañas o celulares conectados al tiempo.
 const conexiones = new Map(); // usuarioId -> Set(res)
 

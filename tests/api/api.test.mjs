@@ -1,4 +1,4 @@
-// LobaMall · pruebas de la API (casos críticos del repartidor)
+// Lainec · pruebas de la API (casos críticos del repartidor)
 // Uso:  TEST_DATABASE_URL=postgres://usuario:clave@localhost/lobamall_test npm run test:api
 // ¡OJO! Borra y recrea el esquema de la base de PRUEBAS. Nunca la apuntes a la base real.
 import test, { before, after } from 'node:test';
@@ -23,7 +23,7 @@ let srv;
 async function api(token, metodo, ruta, cuerpo) {
   const r = await fetch(BASE + ruta, {
     method: metodo,
-    headers: { 'Content-Type': 'application/json', 'X-LobaMall': '1', ...(token ? { Authorization: 'Bearer ' + token } : {}) },
+    headers: { 'Content-Type': 'application/json', 'X-Lainec': '1', ...(token ? { Authorization: 'Bearer ' + token } : {}) },
     body: cuerpo ? JSON.stringify(cuerpo) : undefined
   });
   const tipo = r.headers.get('content-type') || '';
@@ -93,7 +93,7 @@ test('Migración segura: los pedidos que ya existían quedan intactos y con orig
   await assert.rejects(q(`insert into pedidos(negocio_id, origen) values ('viejo','otro')`), /pedidos_origen_chk/);
 });
 
-test('Sin el encabezado X-LobaMall las escrituras se rechazan', async () => {
+test('Sin el encabezado X-Lainec las escrituras se rechazan', async () => {
   const r = await fetch(BASE + '/api/auth/entrar', { method: 'POST', body: '{}' });
   assert.equal(r.status, 403);
 });
@@ -303,7 +303,7 @@ test('Nequi manual: el cliente sube el comprobante y el negocio lo confirma', as
   assert.equal((await api(T.drog, 'POST', `/api/negocio/drogueria/pagos/${pago.id}/confirmar`)).status, 200);
 });
 
-test('Comisión del 10 % solo sobre pedidos con origen LobaMall', async () => {
+test('Comisión del 10 % solo sobre pedidos con origen Lainec', async () => {
   const { oferta } = await nuevaOferta(T.rancho, { origen: 'directo', items: [{ id: 'mojarra', n: 'Mojarra', q: 1, p: 30000 }] });
   await api(T.danto, 'POST', `/api/repartidor/ofertas/${oferta.id}/aceptar`);
   await api(T.danto, 'POST', `/api/repartidor/ofertas/${oferta.id}/estado`, { estado: 'recogida' });

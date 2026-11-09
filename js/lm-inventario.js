@@ -1,6 +1,6 @@
-/* LobaMall v7 · INVENTARIO CON FOTO PROFESIONAL Y CÓDIGO QR (para TODOS los tipos de negocio)
+/* Lainec v7 · INVENTARIO CON FOTO PROFESIONAL Y CÓDIGO QR (para TODOS los tipos de negocio)
    1. Cada producto recibe un código corto (RC-0012) apenas se crea.
-   2. Se le toma la foto profesional (la toma el equipo de LobaMall o el dueño).
+   2. Se le toma la foto profesional (la toma el equipo de Lainec o el dueño).
    3. Al terminar el inventario se imprimen las etiquetas: QR + código de barras + código escrito.
    4. Cualquiera la lee: con la cámara del celular (sin instalar nada), con el escáner de la app,
       con una cámara USB en el computador, con un lector de códigos USB, o escribiendo el código. */
@@ -133,7 +133,7 @@
       '<div class="lm-video"><video id="lmVid" playsinline muted></video><span class="lm-marco"></span><p id="lmEstado" class="lm-estado">Toca <b>ABRIR LA CÁMARA</b></p></div>' +
       '<div class="lm-botones"><button class="btn b-sol lm-btn-xl" type="button" data-act="esc-abrir">' + ic('camera') + 'ABRIR LA CÁMARA</button><button class="btn" type="button" data-act="esc-luz" id="lmLuz" hidden>' + ic('sol') + 'Linterna</button></div>' +
       buscadorH('') +
-      LM.ayuda('Otras formas de leer el código', ['Con la <b>cámara normal del celular</b> (sin abrir LobaMall): apunta al QR y toca el enlace que aparece.', 'En el computador, con una <b>cámara USB</b>: presiona ABRIR LA CÁMARA y acerca la etiqueta.', 'Con un <b>lector de códigos USB</b> (pistola): conéctalo y dispara a la etiqueta en cualquier pantalla de LobaMall. Lee el QR o las barras.', 'O escribe el código que está debajo del QR, por ejemplo <b>RC-0012</b>.'], true) +
+      LM.ayuda('Otras formas de leer el código', ['Con la <b>cámara normal del celular</b> (sin abrir Lainec): apunta al QR y toca el enlace que aparece.', 'En el computador, con una <b>cámara USB</b>: presiona ABRIR LA CÁMARA y acerca la etiqueta.', 'Con un <b>lector de códigos USB</b> (pistola): conéctalo y dispara a la etiqueta en cualquier pantalla de Lainec. Lee el QR o las barras.', 'O escribe el código que está debajo del QR, por ejemplo <b>RC-0012</b>.'], true) +
       '</section></div>';
     LM.paint(app);
   }
@@ -218,7 +218,7 @@
     const conectado = API.disponible && API.yo && API.esDeNegocio(t.id);
     setTimeout(() => sincronizar(t), 0);
     return LM.head('Inventario y etiquetas QR', 'Cada producto con su foto, su código y su etiqueta para pegar.') +
-      LM.ayuda('Paso a paso: inventario con QR', ['Presiona <b>AGREGAR PRODUCTO CON FOTO Y QR</b>.', 'Escribe el nombre, el precio, cuántos hay y <b>dónde está en el local</b>.', 'El equipo de LobaMall toma la <b>foto profesional</b> (fondo blanco, buena luz). Si no está, puedes dejarla pendiente.', 'Se crea solo el <b>código QR</b> del producto.', 'Cuando termines todo el inventario, presiona <b>IMPRIMIR ETIQUETAS</b> y pega cada una en su producto.', 'Para buscar un producto: escanéalo con el celular, con el lector USB, o escribe el código.'], !ps.some(p => p.impreso)) +
+      LM.ayuda('Paso a paso: inventario con QR', ['Presiona <b>AGREGAR PRODUCTO CON FOTO Y QR</b>.', 'Escribe el nombre, el precio, cuántos hay y <b>dónde está en el local</b>.', 'El equipo de Lainec toma la <b>foto profesional</b> (fondo blanco, buena luz). Si no está, puedes dejarla pendiente.', 'Se crea solo el <b>código QR</b> del producto.', 'Cuando termines todo el inventario, presiona <b>IMPRIMIR ETIQUETAS</b> y pega cada una en su producto.', 'Para buscar un producto: escanéalo con el celular, con el lector USB, o escribe el código.'], !ps.some(p => p.impreso)) +
       '<div class="quick"><button class="btn b-sol lm-btn-xl" type="button" data-act="inv-nuevo">' + ic('plus') + 'AGREGAR PRODUCTO CON FOTO Y QR</button><button class="btn lm-btn-xl" type="button" data-act="go" data-h="escanear">' + ic('scan') + 'ESCANEAR</button></div>' +
       '<div class="lm-kpis"><div><small>Productos</small><b>' + ps.length + '</b></div><div><small>Sin foto profesional</small><b>' + sinFoto.length + '</b></div><div><small>Etiquetas por imprimir</small><b>' + sinImp.length + '</b></div></div>' +
       (!conectado ? '<div class="aviso">' + ic('wifioff') + '<span>Los códigos funcionan en este celular. Para que cualquier cliente pueda escanearlos desde su teléfono, conecta el negocio con el servidor (se suben solos).</span></div>' : '') +

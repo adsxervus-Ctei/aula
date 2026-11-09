@@ -1,4 +1,4 @@
-// LobaMall · conexión a PostgreSQL y migraciones
+// Lainec · conexión a PostgreSQL y migraciones
 import pg from 'pg';
 import { readdir, readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';

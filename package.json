@@ -1,7 +1,7 @@
 {
-  "name": "lobamall",
-  "version": "7.0.0",
-  "description": "LobaMall: el centro comercial digital de La Loba (Hatillo, San Martín y Barranco de Loba). PWA + API con repartidores en modo dual.",
+  "name": "lainec",
+  "version": "8.0.0",
+  "description": "Lainec: lo que conecta a Loba (Hatillo, San Martín y Barranco de Loba). PWA + API con repartidores en modo dual.",
   "private": true,
   "type": "module",
   "scripts": {
@@ -13,7 +13,8 @@
     "test:api": "node --test --test-reporter=spec tests/api/api.test.mjs",
     "instalar-navegador": "npx playwright install chromium",
     "fotos": "node fotos/descargar-fotos.mjs",
-    "test:v7": "node tests/pruebas-v7.mjs"
+    "test:v7": "node tests/pruebas-v7.mjs",
+    "test:v8": "node tests/pruebas-v8.mjs"
   },
   "engines": {
     "node": ">=20"

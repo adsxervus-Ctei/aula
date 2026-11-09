@@ -1,4 +1,4 @@
-# LobaMall · Cómo trabaja cada tipo de negocio
+# Lainec · Cómo trabaja cada tipo de negocio
 
 **Regla general:** lo que es igual para todos se aprende una sola vez; lo que cambia es la manera de vender.
 

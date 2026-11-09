@@ -1,14 +1,14 @@
 {
-  "name": "LobaMall · El centro comercial de La Loba",
-  "short_name": "LobaMall",
-  "description": "El centro comercial digital de La Loba (Hatillo, San Martín y Barranco de Loba) en una sola app: pide, sigue tu domicilio en vivo y paga en efectivo, Nequi o fiado. Para negocios: ventas, caja, inventario con QR y repartidores. Para mototaxistas: domicilios en modo trabajo y compras en modo cliente.",
+  "name": "Lainec · Lo que conecta a Loba",
+  "short_name": "Lainec",
+  "description": "Lainec, lo que conecta a Loba (Hatillo, San Martín y Barranco de Loba) en una sola app: pide, sigue tu domicilio en vivo y paga en efectivo, Nequi o fiado. Para negocios: ventas, caja, inventario con QR y repartidores. Para mototaxistas: domicilios en modo trabajo y compras en modo cliente.",
   "lang": "es-CO",
   "start_url": "./index.html?app=1#inicio",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#EDEDED",
-  "theme_color": "#FFE600",
+  "background_color": "#F3F7F6",
+  "theme_color": "#0B5D63",
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -108,7 +108,7 @@
   "related_applications": [
     {
       "platform": "webapp",
-      "url": "https://lobamall.com/manifest.webmanifest"
+      "url": "https://lainec.com/manifest.webmanifest"
     }
   ],
   "handle_links": "preferred"

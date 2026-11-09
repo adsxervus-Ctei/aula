@@ -1,4 +1,4 @@
-// LobaMall · API. Todas las reglas de permisos se validan AQUÍ, en el servidor.
+// Lainec · API. Todas las reglas de permisos se validan AQUÍ, en el servidor.
 // Ocultar un botón en la pantalla nunca es suficiente.
 import { q, uno, filas, tx, config } from './db.mjs';
 import * as auth from './auth.mjs';
@@ -586,7 +586,7 @@ ruta('POST', '/api/negocio/:nid/ofertas', async (ctx, b, p) => {
     const d = b.pedido || {};
     const items = (Array.isArray(d.items) ? d.items : []).slice(0, 40).map(i => ({ id: txt(i.id, 40), n: txt(i.n, 80), q: Math.max(1, entero(i.q, 1)), p: Math.max(0, entero(i.p)) }));
     if (!items.length) falla(400, 'items', 'El pedido está vacío.');
-    const origen = d.origen === 'lobamall' ? 'lobamall' : d.origen === 'directo' ? 'directo' : falla(400, 'origen', 'Indica si el pedido llegó por LobaMall o directo (WhatsApp, llamada, mostrador).');
+    const origen = d.origen === 'lobamall' ? 'lobamall' : d.origen === 'directo' ? 'directo' : falla(400, 'origen', 'Indica si el pedido llegó por Lainec o directo (WhatsApp, llamada, mostrador).');
     const z = await zona(txt(d.zona_id, 20));
     if (!z) falla(400, 'zona', 'Elige la zona de entrega.');
     const pago = ['efectivo', 'nequi', 'banco', 'fiado'].includes(d.pago) ? d.pago : 'efectivo';
@@ -748,7 +748,7 @@ ruta('GET', '/api/negocio/:nid/productos', async (ctx, b, p) => {
   await requiereNegocio(ctx, p.nid);
   return { productos: (await filas(SQL_PROD + ' where pr.negocio_id=$1 order by pr.codigo', [p.nid])).map(pubProducto) };
 });
-// Foto profesional: la sube el dueño o el equipo de LobaMall (rol "equipo" o admin)
+// Foto profesional: la sube el dueño o el equipo de Lainec (rol "equipo" o admin)
 ruta('POST', '/api/productos/:id/foto', async (ctx, b, p) => {
   const u = requiereSesion(ctx);
   const pr = await uno('select * from productos where id=$1', [txt(p.id, 60)]);
@@ -805,7 +805,7 @@ for (const accion of ['aprobar', 'rechazar']) {
                           where usuario_id=$1 returning usuario_id, nombre_completo`, [entero(p.id), accion === 'aprobar' ? 'aprobado' : 'rechazado', accion === 'rechazar' ? motivo : null, a.id]);
     if (!r) falla(404, 'no_existe', 'Ese repartidor no existe.');
     rt.enviar(r.usuario_id, 'repartidor_revisado', { estado: accion === 'aprobar' ? 'aprobado' : 'rechazado', motivo });
-    await N.notificar(r.usuario_id, { tipo: 'solicitud_' + accion, titulo: accion === 'aprobar' ? '¡Ya eres repartidor de LobaMall!' : 'Tu solicitud no fue aprobada', cuerpo: accion === 'aprobar' ? 'Entra y presiona ESTOY CONECTADO para recibir domicilios.' : `Motivo: ${motivo}`, datos: { url: './index.html?app=1#rep' }, clave: `rev:${r.usuario_id}:${accion}:${Date.now()}` });
+    await N.notificar(r.usuario_id, { tipo: 'solicitud_' + accion, titulo: accion === 'aprobar' ? '¡Ya eres repartidor de Lainec!' : 'Tu solicitud no fue aprobada', cuerpo: accion === 'aprobar' ? 'Entra y presiona ESTOY CONECTADO para recibir domicilios.' : `Motivo: ${motivo}`, datos: { url: './index.html?app=1#rep' }, clave: `rev:${r.usuario_id}:${accion}:${Date.now()}` });
     return { ok: true };
   });
 }
@@ -842,7 +842,7 @@ ruta('GET', '/api/admin/cajas', async ctx => {
                                   from caja_repartidor c join repartidores r on r.usuario_id=c.repartidor_id join negocios n on n.id=c.negocio_id
                                  group by 1,2,3,4,5 having sum(c.monto) <> 0 order by 2, 5`) };
 });
-// Comisión: 10 % SOLO de lo vendido por LobaMall (origen = 'lobamall'), sobre productos (sin el domicilio)
+// Comisión: 10 % SOLO de lo vendido por Lainec (origen = 'lobamall'), sobre productos (sin el domicilio)
 ruta('GET', '/api/admin/comisiones', async (ctx, b, p, qs) => {
   requiereRol(ctx, 'admin');
   const desde = txt(qs.get('desde'), 10) || null, hasta = txt(qs.get('hasta'), 10) || null;
@@ -877,7 +877,7 @@ export async function manejar(req, res, { segura = false } = {}) {
       return responder(otro ? 405 : 404, { error: 'No existe esa ruta de la API.', codigo: 'ruta' });
     }
     // Protección contra peticiones desde otros sitios: las escrituras deben traer este encabezado
-    if (metodo !== 'GET' && req.headers['x-lobamall'] !== '1') return responder(403, { error: 'Petición no permitida.', codigo: 'csrf' });
+    if (metodo !== 'GET' && req.headers['x-lainec'] !== '1' && req.headers['x-lobamall'] !== '1') return responder(403, { error: 'Petición no permitida.', codigo: 'csrf' });
     ctx.u = await auth.usuarioDeToken(auth.tokenDe(req));
     const m = r.re.exec(url.pathname);
     const params = Object.fromEntries(r.claves.map((k, i) => [k, decodeURIComponent(m[i + 1])]));

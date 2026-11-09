@@ -1,13 +1,14 @@
-/* LobaMall · Service worker
+/* Lainec · Service worker
    1. Guarda la app en el celular para que abra sin señal (apagón o datos caídos).
    2. Recibe los avisos Web Push (domicilios nuevos) aunque la app esté cerrada.
    La API (/api/…) NUNCA se guarda: los datos de pedidos y ofertas siempre vienen frescos. */
-const VERSION = 'lobamall-v7-3';
+const VERSION = 'lainec-v8-1';
 const CASCARA = [
   './',
   './index.html',
   './css/estilos.css',
   './css/lobamall.css',
+  './css/lainec.css',
   './js/config.js',
   './js/app.js',
   './js/lm-api.js',
@@ -61,9 +62,9 @@ self.addEventListener('fetch', e => {
 /* ---------- Web Push ---------- */
 self.addEventListener('push', e => {
   let d = {};
-  try { d = e.data ? e.data.json() : {}; } catch (x) { d = { titulo: 'LobaMall', cuerpo: e.data ? e.data.text() : '' }; }
+  try { d = e.data ? e.data.json() : {}; } catch (x) { d = { titulo: 'Lainec', cuerpo: e.data ? e.data.text() : '' }; }
   const domicilio = d.tipo === 'oferta_domicilio';
-  e.waitUntil(self.registration.showNotification(d.titulo || 'LobaMall', {
+  e.waitUntil(self.registration.showNotification(d.titulo || 'Lainec', {
     body: d.cuerpo || '',
     icon: './icons/icon-192.png',
     badge: './icons/icon-192.png',

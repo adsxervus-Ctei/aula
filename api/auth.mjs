@@ -1,4 +1,4 @@
-// LobaMall · claves, sesiones y límite de intentos (sin dependencias: node:crypto)
+// Lainec · claves, sesiones y límite de intentos (sin dependencias: node:crypto)
 import { scryptSync, randomBytes, timingSafeEqual, createHash } from 'node:crypto';
 import { q, uno } from './db.mjs';
 

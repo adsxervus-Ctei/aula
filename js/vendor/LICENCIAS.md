@@ -1,4 +1,4 @@
-# Librerías de terceros incluidas en LobaMall
+# Librerías de terceros incluidas en Lainec
 
 | Archivo | Librería | Versión | Licencia | Para qué |
 |---|---|---|---|---|

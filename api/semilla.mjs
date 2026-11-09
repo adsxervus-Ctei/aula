@@ -1,4 +1,4 @@
-// LobaMall · datos semilla de PRUEBA
+// Lainec · datos semilla de PRUEBA
 // Uso: DATABASE_URL=postgres://… npm run semilla
 // Crea: 1 admin, 2 negocios, 3 repartidores (pendiente, aprobado, rechazado), 2 clientes,
 // productos con código QR y un pedido con oferta abierta. Todas las claves son 1234: cámbialas
@@ -20,8 +20,8 @@ async function usuario(tel, usuario, nombre, roles) {
 }
 
 export async function sembrar({ conOferta = true } = {}) {
-  const admin = await usuario('3000000001', 'admin', 'Administración LobaMall', ['admin', 'cliente']);
-  await usuario('3000000002', 'equipo', 'Equipo de fotos LobaMall', ['equipo', 'cliente']);
+  const admin = await usuario('3000000001', 'admin', 'Administración Lainec', ['admin', 'cliente']);
+  await usuario('3000000002', 'equipo', 'Equipo de fotos Lainec', ['equipo', 'cliente']);
   const maria = await usuario('3105550102', 'maria', 'María de Chimí', ['cliente']);
   const juan = await usuario('3124441020', 'juan', 'Juan Pérez', ['cliente']);
   const dRancho = await usuario('3001004000', 'rancho', 'Don Juan Ríos', ['negocio', 'cliente']);

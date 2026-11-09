@@ -1,4 +1,4 @@
-/* LobaMall v7 · PUNTO DE VENTA (caja rápida) — la base es la misma para todos los negocios:
+/* Lainec v7 · PUNTO DE VENTA (caja rápida) — la base es la misma para todos los negocios:
    buscar o escanear → ticket → cobrar (con vueltas) → queda en la caja y baja el inventario.
    Lo que cambia según el tipo de negocio está en POS_TIPO (abajo). */
 (function () {
@@ -138,7 +138,7 @@
   function imprimirRecibo(r, titulo) {
     let w = document.getElementById('lmPrint'); if (!w) { w = document.createElement('div'); w.id = 'lmPrint'; document.body.appendChild(w); }
     w.className = 'lm-print ticket';
-    w.innerHTML = '<div class="lm-tk"><b>' + esc(r.t) + '</b><span>' + titulo + ' · ' + esc(r.h) + '</span>' + (r.turno ? '<b class="lm-tk-turno">TURNO ' + r.turno + '</b>' : '') + '<hr>' + r.lineas.map(l => '<div><span>' + esc(l.n) + (l.talla ? ' T' + esc(l.talla) : '') + ' x' + String(l.q).replace('.', ',') + '</span><span>' + pesos(l.p * l.q) + '</span></div>').join('') + '<hr>' + (r.desc ? '<div><span>Descuento</span><span>-' + pesos(r.desc) + '</span></div>' : '') + (r.flete ? '<div><span>Flete</span><span>' + pesos(r.flete) + '</span></div>' : '') + '<div class="tot"><span>TOTAL</span><span>' + pesos(r.tot) + '</span></div>' + (r.m ? '<div><span>Pago</span><span>' + esc(r.m) + '</span></div>' : '') + (r.r > r.tot ? '<div><span>Cambio</span><span>' + pesos(r.r - r.tot) + '</span></div>' : '') + (titulo === 'COTIZACIÓN' ? '<p>Precios válidos por 8 días.</p>' : '<p>¡Gracias por su compra!</p>') + '<p>LobaMall · lobamall.com</p></div>';
+    w.innerHTML = '<div class="lm-tk"><b>' + esc(r.t) + '</b><span>' + titulo + ' · ' + esc(r.h) + '</span>' + (r.turno ? '<b class="lm-tk-turno">TURNO ' + r.turno + '</b>' : '') + '<hr>' + r.lineas.map(l => '<div><span>' + esc(l.n) + (l.talla ? ' T' + esc(l.talla) : '') + ' x' + String(l.q).replace('.', ',') + '</span><span>' + pesos(l.p * l.q) + '</span></div>').join('') + '<hr>' + (r.desc ? '<div><span>Descuento</span><span>-' + pesos(r.desc) + '</span></div>' : '') + (r.flete ? '<div><span>Flete</span><span>' + pesos(r.flete) + '</span></div>' : '') + '<div class="tot"><span>TOTAL</span><span>' + pesos(r.tot) + '</span></div>' + (r.m ? '<div><span>Pago</span><span>' + esc(r.m) + '</span></div>' : '') + (r.r > r.tot ? '<div><span>Cambio</span><span>' + pesos(r.r - r.tot) + '</span></div>' : '') + (titulo === 'COTIZACIÓN' ? '<p>Precios válidos por 8 días.</p>' : '<p>¡Gracias por su compra!</p>') + '<p>Lainec · lainec.com</p></div>';
     document.body.classList.add('lm-imprimiendo');
     const fin = () => { document.body.classList.remove('lm-imprimiendo'); removeEventListener('afterprint', fin); };
     addEventListener('afterprint', fin); setTimeout(() => { try { window.print(); } catch (e) { fin(); } }, 60);

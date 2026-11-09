@@ -1,6 +1,6 @@
-// LobaMall · MESAS EN VIVO con código QR de un solo uso
+// Lainec · MESAS EN VIVO con código QR de un solo uso
 // Billar: la mesera configura la mesa (juego, cobro por chico o por tiempo), la inicia y sale un QR.
-// Los jugadores (clientes de LobaMall) lo escanean y ven en su celular el marcador, lo que llevan
+// Los jugadores (clientes de Lainec) lo escanean y ven en su celular el marcador, lo que llevan
 // y la cuenta. Restaurante / asadero: igual, pero con comensales y comanda a la cocina.
 // Al cerrar la mesa se hace la factura de cada uno y ese código ya no sirve más.
 import { randomBytes } from 'node:crypto';

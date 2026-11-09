@@ -1,4 +1,6 @@
-# LobaMall v7 · Guía de despliegue (paso a paso)
+# Lainec v8 · Guía de despliegue (paso a paso)
+
+> **¿Ya tenían la v7 funcionando en Render y Neon?** No repitan esta guía: reemplacen los archivos del repositorio por los de la v8 y Render se actualiza solo. No hay migraciones nuevas y la base queda igual. Ver `ENTREGA.md` → "Cómo subirla sin perder nada".
 
 > Yo no puedo publicar por ti ni darte un enlace: los pasos de abajo los haces tú en cada servicio.
 > Lo que sí probé está en `ENTREGA.md` → "Qué probé y qué no".
@@ -10,7 +12,7 @@ La v6 se podía publicar en Netlify porque era solo HTML. **La v7 necesita un se
 |---|---|---|
 | Base de datos PostgreSQL | **Neon** (neon.tech) o Supabase | Plan gratis |
 | Servidor Node.js (app + API) | **Render** (render.com) → Web Service | Plan gratis (ver advertencia) |
-| Dominio lobamall.com | El registrador donde lo compres | Pago anual |
+| Dominio lainec.com | El registrador donde lo compres | Pago anual |
 
 ⚠️ **Advertencia del plan gratis de Render:** el servidor se duerme tras ~15 minutos sin visitas y tarda unos 50 segundos en despertar.
 Para pruebas está bien; para operar con repartidores reales usa el plan pago más barato (Starter), que no se duerme.
@@ -19,8 +21,8 @@ Si se duerme, los avisos push y el vencimiento de ofertas se detienen mientras d
 ---
 
 ## Paso 1 · Subir el código a GitHub
-1. Descomprime `lobamall-v7.zip`.
-2. Súbelo a tu repositorio (el mismo de HatilloMall, en una rama nueva `v7`, o uno nuevo).
+1. Descomprime `lainec-v8.zip`.
+2. Súbelo a tu repositorio (el mismo de Lainec, en una rama nueva `v7`, o uno nuevo).
 3. Verifica que **no** subiste `node_modules/` ni ningún `.env` (el `.gitignore` ya los excluye).
 
 ## Paso 2 · Crear la base de datos (Neon)
@@ -77,15 +79,15 @@ Entra a `https://TU-SERVICIO.onrender.com/#admin` → **Tarifas y reglas**:
 - Agrega las veredas que falten (La Victoria, Las Brisas…).
 - Minutos para que venza una oferta (10 por defecto).
 
-## Paso 8 · Dominio lobamall.com
-1. En Render → tu servicio → **Settings → Custom Domains** → agrega `lobamall.com` y `www.lobamall.com`.
+## Paso 8 · Dominio lainec.com
+1. En Render → tu servicio → **Settings → Custom Domains** → agrega `lainec.com` y `www.lainec.com`.
 2. En tu registrador crea los registros DNS que Render te indique (A/ALIAS y CNAME).
 3. Render saca el certificado HTTPS solo. **Sin HTTPS no funcionan la cámara, la ubicación ni los avisos.**
-4. Si usas un dominio distinto de lobamall.com, cambia `related_applications` en `manifest.webmanifest` (sirve para detectar que la app ya está instalada).
-5. Los QR impresos llevan el dominio con el que se crearon: **imprime las etiquetas cuando ya estés en lobamall.com**, no en la dirección de prueba.
+4. Si usas un dominio distinto de lainec.com, cambia `related_applications` en `manifest.webmanifest` (sirve para detectar que la app ya está instalada).
+5. Los QR impresos llevan el dominio con el que se crearon: **imprime las etiquetas cuando ya estés en lainec.com**, no en la dirección de prueba.
 
 ## Paso 9 · Probar en celulares (lista corta)
-- [ ] Android con Chrome: abrir lobamall.com → Instalar.
+- [ ] Android con Chrome: abrir lainec.com → Instalar.
 - [ ] Repartidor: registrarse en `/#rep`, el admin lo aprueba, presiona ESTOY CONECTADO, toca **Activar avisos**.
 - [ ] Negocio en otro celular: acepta un pedido → NECESITO REPARTIDOR → al repartidor le suena.
 - [ ] Cerrar la app del repartidor y publicar otra oferta → debe llegar la notificación del sistema.
@@ -107,7 +109,8 @@ En `localhost` la cámara y los avisos funcionan (el navegador lo trata como seg
 ## Pruebas automáticas
 ```bash
 npm test                                                     # 29 pruebas de la tienda (no necesitan base)
-TEST_DATABASE_URL=postgres://…/lobamall_test npm run test:api   # 20 pruebas de la API
-TEST_DATABASE_URL=postgres://…/lobamall_test npm run test:v7    # 17 pruebas de navegador de lo nuevo
+TEST_DATABASE_URL=postgres://…/lobamall_test npm run test:api   # 22 pruebas de la API
+TEST_DATABASE_URL=postgres://…/lobamall_test npm run test:v7    # 19 pruebas de navegador (repartidor, admin, QR, billar)
+npm run test:v8                                              # 9 pruebas de la identidad Lainec y las mejoras v8
 ```
 `TEST_DATABASE_URL` debe ser una base **solo de pruebas** (el nombre debe contener "test"): las pruebas la borran.

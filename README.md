@@ -1,6 +1,11 @@
-# LobaMall v7 (antes HatilloMall)
+# Lainec v8 (antes LobaMall y HatilloMall)
 
-El centro comercial digital de **Hatillo de Loba, San Martín de Loba y Barranco de Loba**. Un solo enlace: lobamall.com.
+**Lo que conecta a Loba.** Los negocios, los vecinos y los domiciliarios de **Hatillo de Loba, San Martín de Loba y Barranco de Loba** en una sola app. Un solo enlace: lainec.com.
+
+## Novedades de la versión 8
+- **Nuevo nombre e identidad:** Lainec, con la C del río, los colores Ciénaga, Corozo y Luciérnaga, y las letras Bricolage Grotesque y Figtree (`css/lainec.css`).
+- **Mejoras tomadas de Temu, Shein, Dafiti, Amazon y Mercado Libre:** atajos de categorías, franja de confianza, "Pedir de nuevo", lo más buscado y barra fija de compra en el celular.
+- Pruebas nuevas: `npm run test:v8`. Detalle en `ENTREGA.md`.
 
 ## Novedades de la versión 7
 - **Repartidores y mototaxistas con modo dual** (`/#rep`): una sola cuenta para trabajar y para comprar. Registro con fotos y Habeas Data, aprobación del admin, ESTOY CONECTADO, ofertas en tiempo real con sonido, aceptación atómica, foto de entrega, mapa, ganancias y caja.
@@ -18,12 +23,12 @@ Negocios nuevos en la tienda: `billar`, `barberia`, `taller`, `ropa`, `agro`.
 
 ---
 
-# Historia: HatilloMall v6
+# Historia: Lainec v6
 
 
 Marketplace + sistema de negocios para **Hatillo de Loba, Chimí y San Martín de Loba** (Bolívar).
 Prototipo funcional en estilo Mercado Libre: 12 negocios de ejemplo, cuenta de cliente, panel del dueño,
-postventa, asistente con IA simulada (Toño), billetera HatilloPago y modo sin señal.
+postventa, asistente con IA simulada (Toño), billetera Lainec Pago y modo sin señal.
 
 Powered by **AXERVUS CTeI**
 
@@ -126,7 +131,7 @@ Chrome → menú ⋮ → *Agregar a pantalla de inicio*.
 
 | Usuario          | Rol      | Qué ve                                                        |
 |------------------|----------|---------------------------------------------------------------|
-| `maria`          | Cliente  | Pedidos, seguimiento, fiados, favoritos, HatilloPago          |
+| `maria`          | Cliente  | Pedidos, seguimiento, fiados, favoritos, Lainec Pago          |
 | `rancho`         | Dueño    | Panel completo de Rancho Costeño                              |
 | `rancho-cajero`  | Cajero   | Solo Pedidos y Caja (no ve la ganancia)                       |
 | `drogueria`, `jugos`, `estanque`, `arepas`… | Dueño | Panel de cada uno de los 12 negocios      |
@@ -141,7 +146,7 @@ El botón **"Reiniciar la demostración"** (pie de página) borra los cambios y 
 4. Toño (botón morado) → "almuerzo por menos de 20 mil en Chimí" → **Pídelo por mí**.
 5. Entra como `maria`, confirma el pedido y mira el seguimiento, el chat ("más yuca") y el mapa.
 6. Cupones → activa CHIMI10 → pide en Rancho Costeño: se aplica solo.
-7. Mi cuenta → HatilloPago → Pagar con QR, copiar llave Bre-B.
+7. Mi cuenta → Lainec Pago → Pagar con QR, copiar llave Bre-B.
 8. Botón **Con señal / Sin señal** → pide algo sin señal → vuelve la señal → se envía solo.
 9. Sal y entra como `rancho` → acepta el pedido #127, publica una oferta con foto, haz cierre de caja.
 10. Entra como `rancho-cajero` y compara lo que ve.
@@ -157,7 +162,7 @@ Resultado de la última corrida: **29 de 29 pruebas pasaron** (ver `tests/report
 
 Qué revisan: carga sin errores, manifiesto e íconos, service worker y apertura sin internet,
 celular sin desplazamiento lateral, buscador, ficha, carrito, compra completa con avance de estados,
-cupón, pago con HatilloPago, asistente Toño, cola sin señal, tablero del dueño, aceptar pedido,
+cupón, pago con Lainec Pago, asistente Toño, cola sin señal, tablero del dueño, aceptar pedido,
 publicar oferta, permisos del cajero y eliminar usuario.
 
 ## 7. Limitaciones de este prototipo (léelas antes de mostrarlo)

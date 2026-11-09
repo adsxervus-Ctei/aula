@@ -1,4 +1,4 @@
-# LobaMall v7 · Tecnologías y complementos
+# Lainec v7 · Tecnologías y complementos
 
 ## A. Tecnologías del prototipo (lo que hay en esta carpeta)
 
@@ -14,18 +14,18 @@
 | 8 | **Web Animations API** | "vuelo" al carrito | Animación del producto hacia el carrito |
 | 9 | **localStorage** | estado de la demo | Guardar pedidos, ofertas, sesión y billetera en el navegador |
 | 10 | **Service Worker + Cache API** | `sw.js` | Que la app abra sin internet (apagón o datos caídos) |
-| 11 | **Web App Manifest (PWA)** | `manifest.webmanifest`, `icons/` | Instalar HatilloMall como app en el celular y el computador |
+| 11 | **Web App Manifest (PWA)** | `manifest.webmanifest`, `icons/` | Instalar Lainec como app en el celular y el computador |
 | 12 | **Google Fonts – Figtree** | `index.html` | Tipografía redonda parecida a la de Mercado Libre |
 | 13 | **Node.js 18+** | `servidor.mjs` | Servidor local sin dependencias (`npm start`) |
 | 14 | **Playwright** | `tests/pruebas.mjs` | 17 pruebas automáticas en un navegador Chromium |
 
 ## B. Funciones que simulan tecnologías del mercado actual
 
-| Función en HatilloMall | Referente del mercado | Cómo está hecho en el prototipo |
+| Función en Lainec | Referente del mercado | Cómo está hecho en el prototipo |
 |------------------------|----------------------|---------------------------------|
 | Toño, asistente de compras con IA | MAGO de Mercado Libre, compra agéntica | Reglas en JS que entienden presupuesto, zona y tipo de producto |
 | Resumen de opiniones con IA | Resúmenes de reseñas de Mercado Libre | Palabras clave de las reseñas → ventajas y desventajas |
-| HatilloPago (saldo, QR, llave Bre-B) | Mercado Pago, Bre-B del Banco de la República | Saldo y movimientos simulados, QR dibujado en SVG |
+| Lainec Pago (saldo, QR, llave Bre-B) | Mercado Pago, Bre-B del Banco de la República | Saldo y movimientos simulados, QR dibujado en SVG |
 | Clips de negocios | Clips de Mercado Libre, historias | Visor con barras de avance, pausa al mantener presionado |
 | ⚡RÁPIDO, "Llega hoy" | Sello FULL de Mercado Libre | Calculado con el tiempo de preparación y la zona |
 | Reputación del vendedor | Termómetro de Mercado Libre | Barra de 5 colores según la calificación |
@@ -85,7 +85,7 @@
 | Tutorial narrado | Web Speech API (`speechSynthesis`) con voz es-CO → es-MX → es-US | Usa las voces del dispositivo, sin descargar audio |
 | Escenas del tutorial | HTML + animaciones CSS | Sin archivos de video |
 
-## G. Nuevo en la versión 7 (LobaMall)
+## G. Nuevo en la versión 7 (Lainec)
 
 | Elemento | Tecnología | Nota |
 |---|---|---|

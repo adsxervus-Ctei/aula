@@ -1,4 +1,4 @@
-// LobaMall · distancia y tiempo estimados, sin servicios de pago.
+// Lainec · distancia y tiempo estimados, sin servicios de pago.
 // Fórmula de Haversine (línea recta) × 1,3 para aproximar las calles y trochas,
 // a la velocidad promedio de una moto (configurable, 25 km/h por defecto) + 3 minutos de recogida.
 export function haversineKm(a, b) {

@@ -1,4 +1,4 @@
-// LobaMall · servidor: archivos de la app + API (si hay base de datos)
+// Lainec · servidor: archivos de la app + API (si hay base de datos)
 //   Solo la tienda (sin repartidores):   node servidor.mjs
 //   Con API y base de datos:             DATABASE_URL=postgres://… node servidor.mjs
 import http from 'node:http';
@@ -93,7 +93,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1]) {
     try {
       const api = await iniciarApi();
       await iniciar();
-      console.log(`LobaMall corriendo en http://localhost:${PUERTO}  (Ctrl+C para detener)`);
+      console.log(`Lainec corriendo en http://localhost:${PUERTO}  (Ctrl+C para detener)`);
       console.log(api ? 'API y base de datos: activas.' : 'Sin DATABASE_URL: solo la tienda (modo prototipo). Repartidores y admin desactivados.');
     } catch (e) {
       console.error('No se pudo iniciar:', e.message);

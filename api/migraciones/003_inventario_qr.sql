@@ -1,4 +1,4 @@
--- LobaMall · Migración 003 · Inventario con foto profesional y código QR
+-- Lainec · Migración 003 · Inventario con foto profesional y código QR
 -- Cada producto tiene un código corto (ej. RC-0007) que va en el QR y en la etiqueta.
 -- Así cualquier celular, tablet o lector USB lo encuentra aunque el producto se haya
 -- creado en otro dispositivo.

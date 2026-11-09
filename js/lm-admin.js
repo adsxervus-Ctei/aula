@@ -1,4 +1,4 @@
-/* LobaMall v7 · ADMIN: aprobación de repartidores, tarifas por zona, configuración,
+/* Lainec v7 · ADMIN: aprobación de repartidores, tarifas por zona, configuración,
    caja de repartidores, comisiones por origen y fotos pendientes del equipo. */
 (function () {
   'use strict';
@@ -34,12 +34,12 @@
     if (!esAdmin) AD.tab = 'fotos';
     const tabs = esAdmin ? [['solicitudes', 'users', 'Repartidores'], ['zonas', 'pin', 'Tarifas y reglas'], ['ofertas', 'moto', 'Domicilios'], ['cajas', 'cash', 'Cajas'], ['comisiones', 'chart', 'Comisiones'], ['fotos', 'camera', 'Fotos pendientes']] : [['fotos', 'camera', 'Fotos pendientes']];
     const cuerpo = { solicitudes: vSolicitudes, zonas: vZonas, ofertas: vOfertas, cajas: vCajas, comisiones: vComisiones, fotos: vFotos }[AD.tab]();
-    return '<div class="lm-wrap lm-admin"><header class="lm-barra"><div class="lm-barra-id"><span class="lm-av">' + ic('shield') + '</span><div><b>' + (esAdmin ? 'Administración' : 'Equipo de fotos') + '</b><small>LobaMall · ' + esc(API.yo.nombre) + '</small></div></div><button class="btn b-sm" type="button" data-act="ad-salir">' + ic('logout') + 'Salir</button></header>' +
+    return '<div class="lm-wrap lm-admin"><header class="lm-barra"><div class="lm-barra-id"><span class="lm-av">' + ic('shield') + '</span><div><b>' + (esAdmin ? 'Administración' : 'Equipo de fotos') + '</b><small>Lainec · ' + esc(API.yo.nombre) + '</small></div></div><button class="btn b-sm" type="button" data-act="ad-salir">' + ic('logout') + 'Salir</button></header>' +
       '<nav class="lm-tabs" role="tablist">' + tabs.map(t => '<button type="button" role="tab" aria-selected="' + (AD.tab === t[0]) + '" data-act="ad-tab" data-t="' + t[0] + '">' + ic(t[1]) + t[2] + '</button>').join('') + '</nav>' +
       (AD.err ? '<div class="aviso warn">' + ic('alert') + '<span>' + esc(AD.err) + '</span></div>' : '') + cuerpo + '</div>';
   }
   function vEntrar() {
-    return '<div class="lm-wrap"><form class="lm-card lm-form" data-form="ad-entrar"><h1>' + ic('shield') + 'Administración de LobaMall</h1>' +
+    return '<div class="lm-wrap"><form class="lm-card lm-form" data-form="ad-entrar"><h1>' + ic('shield') + 'Administración de Lainec</h1>' +
       (API.yo ? '<div class="aviso warn">' + ic('lock') + '<span>Tu cuenta (' + esc(API.yo.nombre) + ') no es de administración.</span></div>' : '') +
       '<div class="campo"><label for="adU">Usuario</label><input id="adU" name="u" required autocomplete="username"></div><div class="campo"><label for="adP">Clave</label><input id="adP" name="p" type="password" required autocomplete="current-password"></div>' +
       (AD.err ? '<p class="err">' + esc(AD.err) + '</p>' : '') + '<button class="btn b-sol lm-btn-xl" type="submit">' + ic('lock') + 'ENTRAR</button><p class="muted">Prueba: <b>admin</b> / 1234 · equipo de fotos: <b>equipo</b> / 1234</p></form></div>';
@@ -77,9 +77,9 @@
     const ls = AD.datos.com || [];
     const tot = ls.reduce((a, f) => a + f.comision, 0), mens = ls.reduce((a, f) => a + f.mensualidad, 0);
     let mun = '';
-    return '<section class="lm-card"><h2>' + ic('chart') + 'Comisiones por municipio</h2><p class="muted">10 % solo sobre lo que se vendió por LobaMall (origen <b>lobamall</b>), sin contar el domicilio. Lo que llega directo (WhatsApp, llamada, mostrador) no paga comisión.</p>' +
+    return '<section class="lm-card"><h2>' + ic('chart') + 'Comisiones por municipio</h2><p class="muted">10 % solo sobre lo que se vendió por Lainec (origen <b>lobamall</b>), sin contar el domicilio. Lo que llega directo (WhatsApp, llamada, mostrador) no paga comisión.</p>' +
       '<div class="lm-kpis"><div><small>Comisiones</small><b class="num">' + pesos(tot) + '</b></div><div><small>Mensualidades</small><b class="num">' + pesos(mens) + '</b><span>' + ls.length + ' negocios × $70.000</span></div></div>' +
-      '<div class="tbl-w"><table class="tbl"><thead><tr><th>Negocio</th><th class="r">Por LobaMall</th><th class="r">Directo</th><th class="r">Comisión</th></tr></thead><tbody>' +
+      '<div class="tbl-w"><table class="tbl"><thead><tr><th>Negocio</th><th class="r">Por Lainec</th><th class="r">Directo</th><th class="r">Comisión</th></tr></thead><tbody>' +
       ls.map(f => (f.municipio !== mun ? '<tr class="lm-sep"><td colspan="4"><b>' + esc(mun = f.municipio) + '</b></td></tr>' : '') + '<tr><td>' + esc(f.nombre) + '</td><td class="r num">' + pesos(f.ventas_lobamall) + '</td><td class="r num">' + pesos(f.ventas_directas) + '</td><td class="r num"><b>' + pesos(f.comision) + '</b></td></tr>').join('') + '</tbody></table></div></section>';
   }
   function vFotos() {

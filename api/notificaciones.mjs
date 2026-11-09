@@ -1,4 +1,4 @@
-// LobaMall · despachador de notificaciones
+// Lainec · despachador de notificaciones
 // Fase 1: tiempo real dentro de la app (SSE).  Fase 2: Web Push.  Fase 3: WhatsApp (adaptador apagado).
 // La regla de oro: a un repartidor en MODO CLIENTE, DESCONECTADO o NO APROBADO no se le envía
 // ningún aviso de domicilio. Se filtra aquí, en el servidor, con la consulta de elegibles.

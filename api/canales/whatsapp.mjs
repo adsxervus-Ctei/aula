@@ -1,4 +1,4 @@
-// LobaMall · Canal WhatsApp (Fase 3, OPCIONAL, NO ACTIVO)
+// Lainec · Canal WhatsApp (Fase 3, OPCIONAL, NO ACTIVO)
 // Requiere la API de WhatsApp Business (Cloud API de Meta): tiene costo por conversación,
 // plantillas aprobadas y verificación del negocio. Por eso aquí solo queda la interfaz.
 //
