@@ -1,0 +1,115 @@
+{
+  "name": "Lainec · Lo que conecta a Loba",
+  "short_name": "Lainec",
+  "description": "Lainec, lo que conecta a Loba (Hatillo, San Martín y Barranco de Loba) en una sola app: pide, sigue tu domicilio en vivo y paga en efectivo, Nequi o fiado. Para negocios: ventas, caja, inventario con QR y repartidores. Para mototaxistas: domicilios en modo trabajo y compras en modo cliente.",
+  "lang": "es-CO",
+  "start_url": "./index.html?app=1#inicio",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F3F7F6",
+  "theme_color": "#0B5D63",
+  "icons": [
+    {
+      "src": "icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Ofertas de hoy",
+      "url": "./index.html#c-ofertas"
+    },
+    {
+      "name": "Mis pedidos",
+      "url": "./index.html#cuenta-pedidos"
+    },
+    {
+      "name": "Entrar a mi negocio",
+      "url": "./index.html#panel"
+    },
+    {
+      "name": "Repartidores",
+      "url": "./index.html?app=1#rep"
+    },
+    {
+      "name": "Escanear un producto",
+      "url": "./index.html#escanear"
+    }
+  ],
+  "id": "./index.html?app=1",
+  "categories": [
+    "shopping",
+    "food",
+    "business"
+  ],
+  "launch_handler": {
+    "client_mode": [
+      "focus-existing",
+      "auto"
+    ]
+  },
+  "screenshots": [
+    {
+      "src": "icons/screens/01-portada.jpg",
+      "sizes": "720x1560",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Elige tu municipio"
+    },
+    {
+      "src": "icons/screens/02-categorias.jpg",
+      "sizes": "720x1560",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Todos los negocios de La Loba"
+    },
+    {
+      "src": "icons/screens/03-producto.jpg",
+      "sizes": "720x1560",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Escanea el QR y mira dónde está"
+    },
+    {
+      "src": "icons/screens/04-asistente.jpg",
+      "sizes": "720x1560",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Mesa de billar en vivo"
+    },
+    {
+      "src": "icons/screens/05-seguimiento.jpg",
+      "sizes": "720x1560",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Domicilios con repartidor"
+    },
+    {
+      "src": "icons/screens/06-panel.jpg",
+      "sizes": "720x1560",
+      "type": "image/jpeg",
+      "form_factor": "narrow",
+      "label": "Punto de venta del negocio"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://lainec.com/manifest.webmanifest"
+    }
+  ],
+  "handle_links": "preferred"
+}
