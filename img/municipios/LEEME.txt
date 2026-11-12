@@ -1,3 +1,0 @@
-Pon aquí los escudos oficiales (con permiso de cada alcaldía):
-hatillo.png, sanmartin.png, barranco.png (cuadrados, fondo transparente).
-Si no están, la app usa los logos provisionales.
